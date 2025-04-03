@@ -160,7 +160,6 @@ export class DesignReportInventarioComponent {
         } else {
           this.titulosOpciones = 'Sin datos';
         }
-
       });
   }
 
