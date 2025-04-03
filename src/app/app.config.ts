@@ -1,4 +1,4 @@
-import { ApplicationConfig, importProvidersFrom } from '@angular/core';
+import { ApplicationConfig, importProvidersFrom, isDevMode } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { CargaDatosGateway } from './Domain/models/cargaDatos/gateway/cargaDatos-gateway';
@@ -14,21 +14,26 @@ import { RolesService } from './Infraestructure/driven-adapter/roles/roles.servi
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ToastrModule } from 'ngx-toastr';
+import { provideServiceWorker } from '@angular/service-worker';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     HttpClientModule,
-    {provide: CargaDatosGateway, useClass: CargaDatosService},
-    {provide: InventariosGateway, useClass: InventariosService},
-    {provide: UsuariosGateway, useClass: SeguridadService},
-    {provide: RolesGateway, useClass: RolesService},
-    {provide: LocationStrategy, useClass: HashLocationStrategy },
+    { provide: CargaDatosGateway, useClass: CargaDatosService },
+    { provide: InventariosGateway, useClass: InventariosService },
+    { provide: UsuariosGateway, useClass: SeguridadService },
+    { provide: RolesGateway, useClass: RolesService },
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
     provideHttpClient(withInterceptorsFromDi()),
     provideAnimationsAsync(),
     importProvidersFrom(MatDialogModule),
-    importProvidersFrom(ToastrModule.forRoot())
-  ],
+    importProvidersFrom(ToastrModule.forRoot()),
+    provideServiceWorker('ngsw-worker.js', {
+        enabled: !isDevMode(),
+        registrationStrategy: 'registerWhenStable:30000'
+    })
+],
 
 
 };

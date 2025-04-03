@@ -16,11 +16,16 @@ import { RolesService } from 'src/app/Infraestructure/driven-adapter/roles/roles
 import { RolesModel } from 'src/app/Domain/models/roles/roles.model';
 import { MensajeResponseEmpresas } from 'src/app/Domain/models/empresas/ResponseEmpresas.model';
 import { MensajeRolesModel } from 'src/app/Domain/models/roles/mensajeRoles.model';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'registro-usuario',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [
+    ReactiveFormsModule,
+    CommonModule,
+    MatInputModule
+  ],
   templateUrl: './registro-usuario.component.html',
   styleUrl: './registro-usuario.component.css',
 })

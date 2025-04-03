@@ -2,6 +2,7 @@
   width: 100%;
   height: auto;
   background-image: url("../../../../../../assets/images/bg_fondo.webp");
+  /* background-image: url("/db-inventory-gestor/browser/assets/images/bg_fondo.webp"); */
   background-repeat: no-repeat;
   object-fit: cover;
   background-position: center center;

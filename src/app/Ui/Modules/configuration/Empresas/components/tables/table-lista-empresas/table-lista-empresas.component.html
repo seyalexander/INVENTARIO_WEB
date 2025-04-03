@@ -34,7 +34,7 @@
                   </th>
                   <td class="rol" mat-cell *matCellDef="let element">
                     <button class="px-6 py-1 flex gap-2 align-center">
-                      <span class="text-sm text-gray-600 dark:text-neutral-400">
+                      <span class="text-sm text-gray-600 ">
                         {{
                           element.fechacreacion
                             ? (element.fechacreacion | date : "dd/MM/yyyy")
@@ -54,7 +54,7 @@
                   </th>
                   <td class="rol" mat-cell *matCellDef="let element">
                     <button class="px-6 py-1 flex gap-2 align-center">
-                      <span class="text-sm text-gray-600 dark:text-neutral-400">
+                      <span class="text-sm text-gray-600 ">
                         {{ element.rucempresa || "-" }}
                       </span>
                     </button>
@@ -70,7 +70,7 @@
                   </th>
                   <td class="rol" mat-cell *matCellDef="let element">
                     <button class="px-6 py-1 flex gap-2 align-center">
-                      <span class="text-sm text-gray-600 dark:text-neutral-400">
+                      <span class="text-sm text-gray-600 ">
                         {{ element.razonsocial || "-" }}
                       </span>
                     </button>

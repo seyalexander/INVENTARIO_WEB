@@ -23,88 +23,94 @@
     class="offcanvas-body py-8 px-6 h-full flex flex-col items-center justify-center"
   >
     <div class="grid grid-cols-3 gap-8 w-full max-w-3xl mx-auto">
+      <!-- ================================================================================================== -->
+      <!-- TOTAL REGISTROS -->
+      <!-- ================================================================================================== -->
       <button
-      class="bg-white p-6 rounded-xl shadow-md border-2 border-[#20477E]
-             hover:bg-[#F0F4FA] transition-colors duration-200 cursor-pointer
-             text-center flex flex-col gap-4 justify-center items-center"
-      type="button"
-      data-bs-toggle="offcanvas"
-      data-bs-target="#disenoreportedata"
-      aria-controls="offcanvasRight"
-      (click)="ObtenerDetalleInventariosPDF(0, 2)"
-    >
-      <p class="text-[#20477E] font-semibold">Total de registros</p>
-      <p class="text-[3rem] font-bold text-[#20477E]">{{ TotalRegistros }}</p>
-    </button>
-
-
-
-      <button
-      class="bg-white p-6 rounded-xl shadow-md border-2 border-[#00D1AE]
-      hover:bg-[#F0F4FA] transition-colors duration-200 cursor-pointer
-      text-center flex flex-col gap-4 justify-center items-center"
+        class="bg-white p-6 rounded-xl shadow-md border-2 border-[#20477E] hover:bg-[#F0F4FA] transition-colors duration-200 cursor-pointer text-center flex flex-col gap-4 justify-center items-center"
         type="button"
         data-bs-toggle="offcanvas"
         data-bs-target="#disenoreportedata"
         aria-controls="offcanvasRight"
-        (click)="ObtenerDetalleInventariosPDF(3, 0)"
+        (click)="ObtenerDetalleInventariosPDF(0, 2, 2)"
+      >
+        <p class="text-[#20477E] font-semibold">Total de registros</p>
+        <p class="text-[3rem] font-bold text-[#20477E]">{{ TotalRegistros }}</p>
+      </button>
+
+      <!-- ================================================================================================== -->
+      <!-- REGISTROS CON FALTANTES -->
+      <!-- ================================================================================================== -->
+      <button
+        class="bg-white p-6 rounded-xl shadow-md border-2 border-[#00D1AE] hover:bg-[#F0F4FA] transition-colors duration-200 cursor-pointer text-center flex flex-col gap-4 justify-center items-center"
+        type="button"
+        data-bs-toggle="offcanvas"
+        data-bs-target="#disenoreportedata"
+        aria-controls="offcanvasRight"
+        (click)="ObtenerDetalleInventariosPDF(3, 0, 2)"
       >
         <p class="text-[#00D1AE] font-semibold text-center">
           Registros con faltantes
         </p>
-        <p class="text-[3rem] font-bold text-[#00D1AE]">{{ RegistrosFaltantes }}</p>
+        <p class="text-[3rem] font-bold text-[#00D1AE]">
+          {{ RegistrosFaltantes }}
+        </p>
       </button>
 
+      <!-- ================================================================================================== -->
+      <!-- REGISTROS SOBRANTES -->
+      <!-- ================================================================================================== -->
       <button
-      class="bg-white p-6 rounded-xl shadow-md border-2 border-[#0158DD]
-      hover:bg-[#F0F4FA] transition-colors duration-200 cursor-pointer
-      text-center flex flex-col gap-4 justify-center items-center"
+        class="bg-white p-6 rounded-xl shadow-md border-2 border-[#0158DD] hover:bg-[#F0F4FA] transition-colors duration-200 cursor-pointer text-center flex flex-col gap-4 justify-center items-center"
         type="button"
         data-bs-toggle="offcanvas"
         data-bs-target="#disenoreportedata"
         aria-controls="offcanvasRight"
-        (click)="ObtenerDetalleInventariosPDF(2, 0)"
+        (click)="ObtenerDetalleInventariosPDF(2, 0, 2)"
       >
         <p class="text-[#0158DD] font-semibold text-center">
-          Registros  sobrantes
+          Registros sobrantes
         </p>
         <p class="text-[3rem] font-bold text-[#0158DD]">
           {{ RegistrosNoFaltantes }}
         </p>
       </button>
 
+      <!-- ================================================================================================== -->
+      <!-- NUEVOS REGISTROS -->
+      <!-- ================================================================================================== -->
       <button
-      class="bg-white p-6 rounded-xl shadow-md border-2 border-[#0158DD]
-      hover:bg-[#F0F4FA] transition-colors duration-200 cursor-pointer
-      text-center flex flex-col gap-4 justify-center items-center"
+        class="bg-white p-6 rounded-xl shadow-md border-2 border-[#0158DD] hover:bg-[#F0F4FA] transition-colors duration-200 cursor-pointer text-center flex flex-col gap-4 justify-center items-center"
         data-bs-toggle="offcanvas"
         data-bs-target="#disenoreportedata"
         aria-controls="offcanvasRight"
-        (click)="ObtenerDetalleInventariosPDF(0, 1)"
+        (click)="ObtenerDetalleInventariosPDF(0, 1, 2)"
       >
-        <p class="text-[#0158DD] font-semibold text-center">
-          Nuevos registros
+        <p class="text-[#0158DD] font-semibold text-center">Nuevos registros</p>
+        <p class="text-[3rem] font-bold text-[#0158DD]">
+          {{ NuevosRegistros }}
         </p>
-        <p  class="text-[3rem] font-bold text-[#0158DD]">{{ NuevosRegistros }}</p>
       </button>
 
+      <!-- ================================================================================================== -->
+      <!-- CONTEOS EXACTOS -->
+      <!-- ================================================================================================== -->
       <button
-      class="bg-white p-6 rounded-xl shadow-md border-2 border-[#20477E]
-      hover:bg-[#F0F4FA] transition-colors duration-200 cursor-pointer
-      text-center flex flex-col gap-4 justify-center items-center"
+        class="bg-white p-6 rounded-xl shadow-md border-2 border-[#20477E] hover:bg-[#F0F4FA] transition-colors duration-200 cursor-pointer text-center flex flex-col gap-4 justify-center items-center"
         data-bs-toggle="offcanvas"
         data-bs-target="#disenoreportedata"
         aria-controls="offcanvasRight"
-        (click)="ObtenerDetalleInventariosPDF(1, 2)"
+        (click)="ObtenerDetalleInventariosPDF(1, 2, 2)"
       >
         <p class="text-[#20477E] font-semibold text-center">Conteos exactos</p>
         <p class="text-[3rem] font-bold text-[#20477E]">{{ ConteosExactos }}</p>
       </button>
 
+      <!-- ================================================================================================== -->
+      <!-- ITEMS AJUSTADOS -->
+      <!-- ================================================================================================== -->
       <button
-      class="bg-white p-6 rounded-xl shadow-md border-2 border-[#20477E]
-      hover:bg-[#F0F4FA] transition-colors duration-200 cursor-pointer
-      text-center flex flex-col gap-4 justify-center items-center"
+        class="bg-white p-6 rounded-xl shadow-md border-2 border-[#20477E] hover:bg-[#F0F4FA] transition-colors duration-200 cursor-pointer text-center flex flex-col gap-4 justify-center items-center"
         data-bs-toggle="offcanvas"
         data-bs-target="#disenoreportedataAjuste"
         aria-controls="offcanvasRight"
@@ -114,6 +120,19 @@
         <p class="text-[3rem] font-bold text-[#20477E]">{{ ItemsAjustados }}</p>
       </button>
 
+      <!-- ================================================================================================== -->
+      <!-- ITEMS CANTIDAD EDITADOS -->
+      <!-- ================================================================================================== -->
+      <button
+        class="bg-white p-6 rounded-xl shadow-md border-2 border-[#00D1AE] hover:bg-[#F0F4FA] transition-colors duration-200 cursor-pointer text-center flex flex-col gap-4 justify-center items-center"
+        data-bs-toggle="offcanvas"
+        data-bs-target="#disenoreportedataAjuste"
+        aria-controls="offcanvasRight"
+        (click)="ObtenerDetalleInventariosPDF(0, 2, 1)"
+      >
+        <p class="text-[#20477E] font-semibold text-center">Cantidades ingresados manualmente</p>
+        <p class="text-[3rem] font-bold text-[#20477E]">{{ EditadosManual }}</p>
+      </button>
       <!-- <button
       class="bg-gray-100 p-6 rounded-xl shadow-md border-2 border-gray-300
      transition duration-200 cursor-not-allowed
@@ -153,16 +172,16 @@
             >
               <div class="flex justify-between w-full">
                 <div class="flex items-center justify-center gap-4">
-                  <button
-                  class="text-gray-800 hover:text-gray-600 "
-                  data-bs-toggle="offcanvas"
-                  data-bs-target="#disenoreporte"
-                  aria-controls="offcanvasRight"
-                >
-                  <mat-icon>chevron_left</mat-icon>
 
-                </button>
-                <h1 class="mb-2">{{titulosOpciones}}</h1>
+                  <button
+                    class="text-gray-800 hover:text-gray-600"
+                    data-bs-toggle="offcanvas"
+                    data-bs-target="#disenoreporte"
+                    aria-controls="offcanvasRight"
+                  >
+                    <mat-icon>chevron_left</mat-icon>
+                  </button>
+                  <h1 class="mb-2">{{ titulosOpciones }}</h1>
                 </div>
 
                 <div class="container-datos">
@@ -177,6 +196,11 @@
                           src="../../../../../../../assets/svg/icon_excel.svg"
                           alt="Excel"
                         />
+                        <!-- <img
+                        class="icon-pdf"
+                        src="/db-inventory-gestor/browser/assets/svg/icon_excel.svg"
+                        alt="PDF"
+                      /> -->
                         <span
                           class="text-xs uppercase text-slate-500 font-semibold"
                         >
@@ -194,6 +218,11 @@
                           src="../../../../../../../assets/svg/icon-pdf.svg"
                           alt="PDF"
                         />
+                        <!-- <img
+                        class="icon-pdf"
+                        src="/db-inventory-gestor/browser/assets/svg/icon-pdf.svg"
+                        alt="PDF"
+                      /> -->
                         <span
                           class="text-xs uppercase text-slate-500 font-semibold"
                         >
@@ -248,8 +277,6 @@
   </div>
 </div>
 
-
-
 <!-- Componente 2: Configuración y exportación -->
 
 <div
@@ -274,15 +301,14 @@
               <div class="flex justify-between w-full">
                 <div class="flex items-center justify-center gap-4">
                   <button
-                  class="text-gray-800 hover:text-gray-600 "
-                  data-bs-toggle="offcanvas"
-                  data-bs-target="#disenoreporte"
-                  aria-controls="offcanvasRight"
-                >
-                  <mat-icon>chevron_left</mat-icon>
-
-                </button>
-                <h1 class="mb-2">{{titulosOpciones}}</h1>
+                    class="text-gray-800 hover:text-gray-600"
+                    data-bs-toggle="offcanvas"
+                    data-bs-target="#disenoreporte"
+                    aria-controls="offcanvasRight"
+                  >
+                    <mat-icon>chevron_left</mat-icon>
+                  </button>
+                  <h1 class="mb-2">{{ titulosOpciones }}</h1>
                 </div>
 
                 <div class="container-datos">
@@ -297,6 +323,11 @@
                           src="../../../../../../../assets/svg/icon_excel.svg"
                           alt="Excel"
                         />
+                        <!-- <img
+                        class="icon-pdf"
+                        src="/db-inventory-gestor/browser/assets/svg/icon_excel.svg"
+                        alt="PDF"
+                      /> -->
                         <span
                           class="text-xs uppercase text-slate-500 font-semibold"
                         >
@@ -314,6 +345,12 @@
                           src="../../../../../../../assets/svg/icon-pdf.svg"
                           alt="PDF"
                         />
+                        <!-- <img
+                          class="icon-pdf"
+                          src="/db-inventory-gestor/browser/assets/svg/icon-pdf.svg"
+                          alt="PDF"
+                        /> -->
+
                         <span
                           class="text-xs uppercase text-slate-500 font-semibold"
                         >

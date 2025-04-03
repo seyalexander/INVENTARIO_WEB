@@ -17,4 +17,5 @@ export class inventariosModel {
   usuarioAsignado: string = ""
 	usuariocreacion: string = ""
   usuariomodificacion: string = ""
+  edEditado: number = 0
 }

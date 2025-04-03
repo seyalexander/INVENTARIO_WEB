@@ -126,7 +126,7 @@ export class ReporteInventarioComponent {
         this.ObtenerDetalleInventariosCantidadConteosExactos(response.rucempresa, response.idcarga)
         this.ObtenerDetalleInventariosCantidadTotal(response.rucempresa, response.idcarga)
         this.ObtenerDetalleInventariosAjustados(response.rucempresa,response.idcarga )
-        this.ObtenerDetalleInventariosCantidadTotal(response.rucempresa, response.idcarga)
+        this.ObtenerDetalleInventariosEditadosManual(response.rucempresa, response.idcarga)
       }
     );
   }
@@ -149,12 +149,12 @@ export class ReporteInventarioComponent {
   ObtenerDetalleInventariosCantidadTotal(rucempresa: string, idcarga: number) {
     const diferencias: number = 0
     const esnuevo: number = 2
-    const reqDatos: RequestObtenerDetalleFiltros = { rucempresa, idcarga, diferencias, esnuevo };
+    const esEditado: number = 2
+    const reqDatos: RequestObtenerDetalleFiltros = { rucempresa, idcarga, diferencias, esnuevo, esEditado };
     this.listDetalleByFiltros
       .getDetalleInventarioByFiltros(reqDatos)
       .subscribe((response: detalleCarga[]) => {
         this.TotalRegistros = response.length;
-        console.log("Cantidad para cantidad total: ",this.cantidadItemsAjustados );
       });
   }
 
@@ -163,12 +163,12 @@ export class ReporteInventarioComponent {
   ObtenerDetalleInventariosCantidadRegistrosFaltantes(rucempresa: string, idcarga: number) {
     const diferencias: number = 3
     const esnuevo: number = 0
-    const reqDatos: RequestObtenerDetalleFiltros = { rucempresa, idcarga, diferencias, esnuevo };
+    const esEditado: number = 2
+    const reqDatos: RequestObtenerDetalleFiltros = { rucempresa, idcarga, diferencias, esnuevo, esEditado };
     this.TotalCantidadSubscription = this.listDetalleByFiltros
       .getDetalleInventarioByFiltros(reqDatos)
       .subscribe((response: detalleCarga[]) => {
         this.RegistrosFaltantes = response.length;
-        console.log("Cantidad para faltantes: ",this.cantidadItemsAjustados );
       });
   }
 
@@ -176,12 +176,12 @@ export class ReporteInventarioComponent {
   ObtenerDetalleInventariosCantidadRegistrosNoFaltantes(rucempresa: string, idcarga: number) {
     const diferencias: number = 2
     const esnuevo: number = 0
-    const reqDatos: RequestObtenerDetalleFiltros = { rucempresa, idcarga, diferencias, esnuevo };
+    const esEditado: number = 2
+    const reqDatos: RequestObtenerDetalleFiltros = { rucempresa, idcarga, diferencias, esnuevo, esEditado  };
     this.listDetalleByFiltros
       .getDetalleInventarioByFiltros(reqDatos)
       .subscribe((response: detalleCarga[]) => {
         this.RegistrosNoFaltantes = response.length;
-        console.log("Cantidad para no faltantes: ",this.cantidadItemsAjustados );
       });
   }
 
@@ -189,7 +189,8 @@ export class ReporteInventarioComponent {
   ObtenerDetalleInventariosCantidadNuevosRegistros(rucempresa: string, idcarga: number) {
     const diferencias: number = 0
     const esnuevo: number = 1
-    const reqDatos: RequestObtenerDetalleFiltros = { rucempresa, idcarga, diferencias, esnuevo };
+    const esEditado: number = 2
+    const reqDatos: RequestObtenerDetalleFiltros = { rucempresa, idcarga, diferencias, esnuevo, esEditado  };
     this.listDetalleByFiltros
       .getDetalleInventarioByFiltros(reqDatos)
       .subscribe((response: detalleCarga[]) => {
@@ -201,11 +202,30 @@ export class ReporteInventarioComponent {
   ObtenerDetalleInventariosCantidadConteosExactos(rucempresa: string, idcarga: number) {
     const diferencias: number = 1
     const esnuevo: number = 2
-    const reqDatos: RequestObtenerDetalleFiltros = { rucempresa, idcarga, diferencias, esnuevo };
+    const esEditado: number = 2
+    const reqDatos: RequestObtenerDetalleFiltros = { rucempresa, idcarga, diferencias, esnuevo, esEditado  };
     this.listDetalleByFiltros
       .getDetalleInventarioByFiltros(reqDatos)
       .subscribe((response: detalleCarga[]) => {
         this.ConteosExactos = response.length;
+      });
+  }
+
+  EditadosManual: number = 0
+  ObtenerDetalleInventariosEditadosManual(rucempresa: string, idcarga: number) {
+    const diferencias: number = 0
+    const esnuevo: number = 2
+    const esEditado: number = 1
+    const reqDatos: RequestObtenerDetalleFiltros = { rucempresa, idcarga, diferencias, esnuevo, esEditado  };
+    this.listDetalleByFiltros
+      .getDetalleInventarioByFiltros(reqDatos)
+      .subscribe((response: detalleCarga[]) => {
+        this.EditadosManual = response.length;
+        console.log("=======================================================");
+        console.log("DATOS ENVIADOS: ", reqDatos);
+        console.log("CANTIDAD EDITADOS: ", this.EditadosManual);
+        console.log("=======================================================");
+
       });
   }
 

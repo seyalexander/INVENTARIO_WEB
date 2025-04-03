@@ -67,10 +67,10 @@ export class TablaAjustesInventarioDatosComponent {
   private readonly inventariosService = inject(InventariosService)
   guardarAjustes() {
     const ajustes = this.listaProductos
-  .filter(p => (p.ajuste !== undefined && p.ajuste > 0) && (p.descripcionajuste && p.descripcionajuste.trim() !== ''));
-
+  .filter(p => (p.ajuste !== undefined ) && (p.descripcionajuste && p.descripcionajuste.trim() !== ''));
+  // && p.ajuste > 0
     if (ajustes.length === 0) {
-      console.warn('No hay ajustes para guardar.');
+      // console.warn('No hay ajustes para guardar.');
       return;
     }
 
@@ -78,8 +78,6 @@ export class TablaAjustesInventarioDatosComponent {
     const totalRegistros = ajustes.length;
     let registrosProcesados = 0;
     const totalBatches = Math.ceil(totalRegistros / batchSize);
-    console.log(ajustes.length);
-
 
     Swal.fire({
       title: 'Guardando ajustes...',
@@ -93,7 +91,7 @@ export class TablaAjustesInventarioDatosComponent {
     const enviarLote = (loteIndex: number) => {
       if (loteIndex >= totalBatches) {
         Swal.close();
-        console.log("✅ Todos los lotes enviados correctamente.");
+        // console.log("✅ Todos los lotes enviados correctamente.");
         return;
       }
 
@@ -107,6 +105,8 @@ export class TablaAjustesInventarioDatosComponent {
         detalle: lote
       };
 
+      console.log("GUARDADO AJUSTES: ",cabeceraAjuste);
+
       this.inventariosService.newAjusteInventario(cabeceraAjuste).subscribe({
         next: (response) => {
           registrosProcesados += lote.length;
@@ -116,7 +116,10 @@ export class TablaAjustesInventarioDatosComponent {
           });
 
           setTimeout(() => enviarLote(loteIndex + 1), 100);
+
         },
+
+
         error: (err) => {
           Swal.close();
         },

@@ -129,31 +129,34 @@ export class DesignReportInventarioComponent {
   @Input() NuevosRegistros: number = 0;
   @Input() ConteosExactos: number = 0;
   @Input() ItemsAjustados: number = 0;
+  @Input() EditadosManual: number = 0;
 
   private readonly listDetalleByFiltros = inject(InventarioDetallesByFiltrosUseCases);
   private _inventarios = inject(InventariosService)
 
   listaProductos: Array<detalleCarga> = [];
   titulosOpciones: string = ''
-  ObtenerDetalleInventariosPDF(diferencias: number, esnuevo: number) {
+  ObtenerDetalleInventariosPDF(diferencias: number, esnuevo: number, esEditado: number ) {
     const rucempresa: string = this.citaSeleccionada.rucempresa
     const idcarga: number = this.citaSeleccionada.idcarga
-    const reqDatos: RequestObtenerDetalleFiltros = { rucempresa, idcarga, diferencias, esnuevo };
+    const reqDatos: RequestObtenerDetalleFiltros = { rucempresa, idcarga, diferencias, esnuevo, esEditado };
     this.listDetalleByFiltros
       .getDetalleInventarioByFiltros(reqDatos)
       .subscribe((response: detalleCarga[]) => {
         this.listaProductos = response;
 
-        if (diferencias == 0 && esnuevo == 2) {
+        if (diferencias == 0 && esnuevo == 2 && esEditado == 2 ) {
           this.titulosOpciones = 'Total de registros';
-        } else if (diferencias == 3 && esnuevo == 0) {
+        } else if (diferencias == 3 && esnuevo == 0 && esEditado == 2 ) {
           this.titulosOpciones = 'Registros con faltantes';
-        } else if (diferencias == 2 && esnuevo == 0) {
+        } else if (diferencias == 2 && esnuevo == 0 && esEditado == 2 ) {
           this.titulosOpciones = 'Registros sin faltantes';
-        } else if (diferencias == 0 && esnuevo == 1) {
+        } else if (diferencias == 0 && esnuevo == 1 && esEditado == 2 ) {
           this.titulosOpciones = 'Nuevos registros';
-        } else if (diferencias == 1 && esnuevo == 2) {
+        } else if (diferencias == 1 && esnuevo == 2 && esEditado == 2 ) {
           this.titulosOpciones = 'Conteos exactos';
+        } else if (diferencias == 0 && esnuevo == 2 && esEditado == 1 ) {
+          this.titulosOpciones = 'Editados manualmente';
         } else {
           this.titulosOpciones = 'Sin datos';
         }
