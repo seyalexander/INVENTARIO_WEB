@@ -285,87 +285,277 @@ export class DesignReportInventarioComponent {
   }
 
 
-
-
   exportToPDF() {
     const doc = new jsPDF({ orientation: 'landscape' });
+    const pageWidth = doc.internal.pageSize.getWidth();
 
-    doc.setFontSize(18);
+    //  PARTE 1 HEADER DISEÑO
+    // ===================================================================================================
+    // Dibuja la mitad izquierda del rectángulo (rojo)
+    doc.setFillColor(220, 53, 69); // Rojo
+    doc.rect(0, 0, pageWidth / 2, 10, 'F');
+
+    // Dibuja el polígono inclinado para la mitad derecha (gris oscuro)
+    doc.setFillColor(50, 50, 50); // Gris oscuro
+
+    // Empieza el polígono en el punto de la parte superior izquierda
+    doc.moveTo(pageWidth / 2 - 5, 0);
+
+    // Dibuja la línea hacia el borde superior derecho
+    doc.lineTo(pageWidth , 0);
+
+    // Baja hasta la esquina inferior derecha
+    doc.lineTo(pageWidth, 10);
+
+    // Cambia la posición de la línea a la parte inferior de la mitad roja, pero ligeramente desplazada hacia la derecha
+    doc.lineTo(pageWidth / 2 , 10);  // Este valor ajusta la inclinación a la derecha
+
+    // Vuelve al punto de la base de la mitad roja, pero ligeramente hacia la derecha
+    doc.lineTo(pageWidth / 2 - 15, 10);
+
+    // Cierra el polígono conectando con el punto de inicio de la mitad roja
+    doc.lineTo(pageWidth/2 - 15, 10);
+
+    // Rellena el polígono con el color gris oscuro
+    doc.fill();
+
+    //  PARTE 2 HEADER DISEÑO
+    // ===================================================================================================
+    // Dibuja completo el rectángulo (gris)
+    doc.fill();
+    doc.rect(0, 10, pageWidth / 2 , 5 , 'F');
+
+    doc.setFillColor(85,85,85);
+    doc.rect(0, 15, pageWidth / 2 , 5, 'F');
+
+    doc.setFillColor(50, 50, 50); // Gris oscuro
+    doc.rect(0, 20, pageWidth / 2 , 5, 'F');
+
+    doc.rect(pageWidth / 2, 10, pageWidth / 2, 15, 'F');
+    // Empieza el polígono en el punto de la parte superior izquierda
+    doc.moveTo(pageWidth / 2, 0);
+
+    // Dibuja la línea hacia el borde superior derecho
+    doc.lineTo(pageWidth, 0);
+
+    // Baja hasta la esquina inferior derecha
+    doc.lineTo(pageWidth, 20);
+
+    // Cambia la posición de la línea a la parte inferior de la mitad roja, pero ligeramente desplazada hacia la derecha
+    doc.lineTo(pageWidth / 2 , 20);  // Este valor ajusta la inclinación a la derecha
+
+    // Vuelve al punto de la base de la mitad roja, pero ligeramente hacia la derecha
+    doc.lineTo(pageWidth / 2 - 15, 20);
+
+    // Cierra el polígono conectando con el punto de inicio de la mitad roja
+    doc.lineTo(pageWidth/2 - 15, 20);
+
+    // Rellena el polígono con el color gris oscuro
+    doc.fill();
+
+    //  PARTE 2 HEADER DISEÑO
+    // ===================================================================================================
+
+    // Dibuja el polígono inclinado para la mitad derecha (gris oscuro)
+    doc.setFillColor(50, 50, 50); // Gris oscuro
+
+    // Empieza el polígono en el punto de la parte superior izquierda
+    doc.moveTo(pageWidth / 2 - 15, 24);
+
+    // Dibuja la línea hacia el borde superior derecho
+    doc.lineTo(pageWidth, 24);
+
+    // Baja hasta la esquina inferior derecha
+    doc.lineTo(pageWidth, 40);
+
+    // Cambia la posición de la línea a la parte inferior de la mitad roja, pero ligeramente desplazada hacia la derecha
+    doc.lineTo(pageWidth / 2 , 40);  // Este valor ajusta la inclinación a la derecha
+
+    // Vuelve al punto de la base de la mitad roja, pero ligeramente hacia la derecha
+    doc.lineTo(pageWidth / 2 , 40);
+
+    // Cierra el polígono conectando con el punto de inicio de la mitad roja
+    doc.lineTo(pageWidth/2 , 40);
+
+    // Rellena el polígono con el color gris oscuro
+    doc.fill();
+
+
+    // Texto del encabezado
     doc.setFont('helvetica', 'bold');
-    doc.text('Reporte de INVENTARIO', 105, 15);
+    doc.setFontSize(16);
+    doc.setTextColor(255, 255, 255);
+    doc.text('REPORTE DE INVENTARIO', pageWidth - 100, 20);
 
-    doc.setFontSize(14);
-    doc.setFont('helvetica', 'normal');
-    doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 14, 25);
+    doc.setFontSize(10);
+    doc.setTextColor(50,50,50);
+    doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 14, 30);
 
-    let finalY = 35;
-
-    doc.setFontSize(14);
-    doc.setFont('helvetica', 'bold');
-    doc.text('Inventarios', 14, finalY);
-    finalY += 6;
-
-    // Filtrar columnas de acuerdo con las seleccionadas
-    const columnasSeleccionadas = this.columnasSeleccionadas;
-
-    // Definir las columnas que se mostrarán
-    const employeeColumns = [
-      { title: 'almacen', dataKey: 'almacen' },
-      { title: 'sucursal', dataKey: 'sucursal' },
-      { title: 'zona', dataKey: 'zona' },
-      { title: 'pasillo', dataKey: 'pasillo' },
-      { title: 'rack', dataKey: 'rack' },
-      { title: 'ubicacion', dataKey: 'ubicacion' },
-      { title: 'esagrupado', dataKey: 'esagrupado' },
-      { title: 'codigogrupo', dataKey: 'codigogrupo' },
-      { title: 'codigoproducto', dataKey: 'codigoproducto' },
-      { title: 'codigobarra', dataKey: 'codigobarra' },
-      { title: 'descripcionProducto', dataKey: 'descripcionProducto' },
-      { title: 'unidad', dataKey: 'unidad' },
-      { title: 'stockL', dataKey: 'stockL' },
-      { title: 'stockF', dataKey: 'stockF' },
-      { title: 'stockresultante', dataKey: 'stockresultante' },
-    ];
-
-    const filteredColumns = employeeColumns.filter((col) =>
-      columnasSeleccionadas.includes(col.dataKey)
-    );
-
+    // Validar datos
     if (!this.listaProductos || !Array.isArray(this.listaProductos)) {
-      console.error('Error: Detalle producto o su detalle es undefined o no es un array');
+      console.error('Error: listaProductos es inválida.');
       return;
     }
 
-    const employeeBody = this.listaProductos.map((det) => {
-      return filteredColumns.map((col) => {
-        return det[col.dataKey];
-      });
-    });
+    const columnasSeleccionadas = this.columnasSeleccionadas;
 
+    const allColumns = [
+      { title: 'Almacén', dataKey: 'almacen' },
+      { title: 'Sucursal', dataKey: 'sucursal' },
+      { title: 'Zona', dataKey: 'zona' },
+      { title: 'Pasillo', dataKey: 'pasillo' },
+      { title: 'Rack', dataKey: 'rack' },
+      { title: 'Ubicación', dataKey: 'ubicacion' },
+      { title: 'Agrupado', dataKey: 'esagrupado' },
+      { title: 'Grupo', dataKey: 'codigogrupo' },
+      { title: 'Producto', dataKey: 'codigoproducto' },
+      { title: 'Código Barra', dataKey: 'codigobarra' },
+      { title: 'Descripción', dataKey: 'descripcionProducto' },
+      { title: 'Unidad', dataKey: 'unidad' },
+      { title: 'Stock L.', dataKey: 'stockL' },
+      { title: 'Stock F.', dataKey: 'stockF' },
+      { title: 'Resultante', dataKey: 'stockresultante' },
+    ];
+
+    const filteredColumns = allColumns.filter(col =>
+      columnasSeleccionadas.includes(col.dataKey)
+    );
+
+    // Tabla
+    const startY = 50;
     (doc as any).autoTable({
-      head: [filteredColumns.map((col) => col.title)],
-      body: employeeBody,
-      startY: finalY,
+      startY,
+      head: [filteredColumns.map(col => col.title)],
+      body: this.listaProductos.map(det =>
+        filteredColumns.map(col => String(det[col.dataKey] ?? ''))
+      ),
       styles: {
         font: 'helvetica',
-        fontSize: 8,
-        cellPadding: 1,
-        textColor: [34, 34, 34],
-        fillColor: [255, 255, 255],
-        lineColor: [44, 62, 80],
-        lineWidth: 0.2,
+        fontSize: 9,
+        cellPadding: 1.5,
+        textColor: 30,
       },
       headStyles: {
-        fillColor: [52, 152, 219],
+        fillColor: [52, 58, 64], // gris oscuro
         textColor: [255, 255, 255],
-        fontSize: 10,
         fontStyle: 'bold',
-        halign: 'center',
       },
+      alternateRowStyles: { fillColor: [248, 249, 250] }, // gris claro
+      theme: 'grid',
     });
 
-    doc.save(`${this.InventarioSeleccionado.descripcion}.pdf`);
+    // Totales
+    const totalStockL = this.listaProductos.reduce((acc, item) => acc + (Number(item.stockL) || 0), 0);
+    const totalStockF = this.listaProductos.reduce((acc, item) => acc + (Number(item.stockF) || 0), 0);
+    const totalRes = this.listaProductos.reduce((acc, item) => acc + (Number(item.stockresultante) || 0), 0);
+
+    const resumenY = (doc as any).lastAutoTable.finalY + 10;
+
+    doc.setFontSize(11);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(0);
+    doc.setFillColor(230, 230, 230);
+    doc.rect(pageWidth - 70, resumenY - 6, 60, 28, 'F');
+    doc.text('TOTALES', pageWidth - 65, resumenY);
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10);
+    doc.text(`Stock L.: ${String(totalStockL)}`, pageWidth - 65, resumenY + 10);
+    doc.text(`Stock F.: ${String(totalStockF)}`, pageWidth - 65, resumenY + 18);
+    doc.text(`Resultante: ${String(totalRes)}`, pageWidth - 65, resumenY + 26);
+
+    // Firma y mensaje
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'italic');
+    doc.text('Gracias por usar el sistema de inventario', pageWidth / 2, resumenY + 50, { align: 'center' });
+
+    // Guardar
+    const nombreArchivo = `${this.InventarioSeleccionado?.descripcion || 'inventario'}.pdf`;
+    doc.save(nombreArchivo);
   }
+
+
+
+
+  // exportToPDF() {
+  //   const doc = new jsPDF({ orientation: 'landscape' });
+
+  //   doc.setFontSize(18);
+  //   doc.setFont('helvetica', 'bold');
+  //   doc.text('Reporte de INVENTARIO', 105, 15);
+
+  //   doc.setFontSize(14);
+  //   doc.setFont('helvetica', 'normal');
+  //   doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 14, 25);
+
+  //   let finalY = 35;
+
+  //   doc.setFontSize(14);
+  //   doc.setFont('helvetica', 'bold');
+  //   doc.text('Inventarios', 14, finalY);
+  //   finalY += 6;
+
+  //   // Filtrar columnas de acuerdo con las seleccionadas
+  //   const columnasSeleccionadas = this.columnasSeleccionadas;
+
+  //   // Definir las columnas que se mostrarán
+  //   const employeeColumns = [
+  //     { title: 'almacen', dataKey: 'almacen' },
+  //     { title: 'sucursal', dataKey: 'sucursal' },
+  //     { title: 'zona', dataKey: 'zona' },
+  //     { title: 'pasillo', dataKey: 'pasillo' },
+  //     { title: 'rack', dataKey: 'rack' },
+  //     { title: 'ubicacion', dataKey: 'ubicacion' },
+  //     { title: 'esagrupado', dataKey: 'esagrupado' },
+  //     { title: 'codigogrupo', dataKey: 'codigogrupo' },
+  //     { title: 'codigoproducto', dataKey: 'codigoproducto' },
+  //     { title: 'codigobarra', dataKey: 'codigobarra' },
+  //     { title: 'descripcionProducto', dataKey: 'descripcionProducto' },
+  //     { title: 'unidad', dataKey: 'unidad' },
+  //     { title: 'stockL', dataKey: 'stockL' },
+  //     { title: 'stockF', dataKey: 'stockF' },
+  //     { title: 'stockresultante', dataKey: 'stockresultante' },
+  //   ];
+
+  //   const filteredColumns = employeeColumns.filter((col) =>
+  //     columnasSeleccionadas.includes(col.dataKey)
+  //   );
+
+  //   if (!this.listaProductos || !Array.isArray(this.listaProductos)) {
+  //     console.error('Error: Detalle producto o su detalle es undefined o no es un array');
+  //     return;
+  //   }
+
+  //   const employeeBody = this.listaProductos.map((det) => {
+  //     return filteredColumns.map((col) => {
+  //       return det[col.dataKey];
+  //     });
+  //   });
+
+  //   (doc as any).autoTable({
+  //     head: [filteredColumns.map((col) => col.title)],
+  //     body: employeeBody,
+  //     startY: finalY,
+  //     styles: {
+  //       font: 'helvetica',
+  //       fontSize: 8,
+  //       cellPadding: 1,
+  //       textColor: [34, 34, 34],
+  //       fillColor: [255, 255, 255],
+  //       lineColor: [44, 62, 80],
+  //       lineWidth: 0.2,
+  //     },
+  //     headStyles: {
+  //       fillColor: [52, 152, 219],
+  //       textColor: [255, 255, 255],
+  //       fontSize: 10,
+  //       fontStyle: 'bold',
+  //       halign: 'center',
+  //     },
+  //   });
+
+  //   doc.save(`${this.InventarioSeleccionado.descripcion}.pdf`);
+  // }
 
 
   exportToPDFAjustado() {

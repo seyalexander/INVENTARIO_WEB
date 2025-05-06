@@ -59,8 +59,6 @@ export class TablaAjustesInventarioDatosComponent {
   ngOnChanges(changes: SimpleChanges) {
     if (changes['listaProductos']) {
       this.dataSource.data = this.listaProductos || [];
-      console.log("INFORMACINO TABLA: ",this.dataSource.data );
-
     }
   }
 

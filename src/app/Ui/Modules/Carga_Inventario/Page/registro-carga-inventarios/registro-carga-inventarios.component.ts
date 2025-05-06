@@ -29,6 +29,7 @@ import { ColumnMatcherComponent } from '@modules/Carga_Inventario/Components/col
 import { RequestInsertarMapeo } from 'src/app/Domain/models/mapeoColumnas/mapeoColumnas.model';
 import { MapeoCamposService } from 'src/app/Infraestructure/driven-adapter/mapeoCampos/mapeo-campos.service';
 import { MapeoObtenerMapeoById } from 'src/app/Domain/models/mapeoColumnas/mapeoObtenerMapeoById.mode';
+import { MensajesRegistroInventarioService } from 'src/app/Infraestructure/core/SeetAlert/cargaInventario/mensajes-registro-inventario.service';
 
 @Component({
   selector: 'registro-carga-inventarios',
@@ -83,7 +84,8 @@ export class RegistroCargaInventariosComponent {
     private readonly _empresas: EmpresasService,
     private readonly _postCabecera: InventariosService,
     private readonly router: Router,
-    private readonly _mapeo: MapeoCamposService
+    private readonly _mapeo: MapeoCamposService,
+    private alertService_CargaInventario: MensajesRegistroInventarioService
   ) {}
 
   private readonly listaUsuarios = inject(GetUsuariosUseCases);
@@ -132,21 +134,11 @@ export class RegistroCargaInventariosComponent {
   // GUARDAR CABECERA
   // ================================================================================
   guardarCabecera(): void {
-    if (this.formularioRegistro.value.usuarioasignado.trim() == '') {
-      Swal.fire({
-        title: `No se asignó un usuario al inventario`,
-        text: '¿Estás seguro de registrar sin asignar?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#00D1AE',
-        cancelButtonColor: '#888888',
-        confirmButtonText: 'Continuar',
-        cancelButtonText: 'Cancelar',
-      }).then((result) => {
+    const usuario = this.formularioRegistro.value.usuarioasignado?.trim();
+    if (usuario === '') {
+      this.alertService_CargaInventario.confirmarSinUsuarioAsignado().then((result) => {
         if (result.isConfirmed) {
           this.validacionGuardarFinal();
-        } else {
-          Swal.close();
         }
       });
     } else {
@@ -188,6 +180,7 @@ export class RegistroCargaInventariosComponent {
   private readonly injector = Inject(Injector)
   private readonly appRef = inject(ApplicationRef)
   private readonly viewContainerRef= inject(ViewContainerRef)
+
 
   validacionGuardarFinal() {
     const idUsuario = sessionStorage.getItem('user');
@@ -282,7 +275,7 @@ export class RegistroCargaInventariosComponent {
     idUsuario: string | null
   ) {
     const totalRegistros = jsonData.length;
-    const loteSize = 500;
+    const loteSize = 250;
     let registrosProcesados = 0;
 
     Swal.fire({
@@ -338,6 +331,8 @@ export class RegistroCargaInventariosComponent {
           Swal.update({
             html: `<b>Guardando registros ${registrosProcesados} de ${totalRegistros}</b>`,
           });
+          console.log("Guardado: ", response);
+
           setTimeout(() => procesarLote(fin), 100);
         },
         error: (err) => {
@@ -354,6 +349,60 @@ export class RegistroCargaInventariosComponent {
     procesarLote(0);
   }
 
+
+
+  // previewDatos(
+  //   jsonData: any[],
+  //   columnasMapeadas: Record<string, string>,
+  //   idUsuario: string | null
+  // ) {
+  //   const columnasSeleccionadas = Object.keys(columnasMapeadas);
+
+  //   const previewData = jsonData.slice(0, 5).map((item: any) => {
+  //     return columnasSeleccionadas.reduce((acc, key) => {
+  //       acc[key] = item[columnasMapeadas[key]] || '';
+  //       return acc;
+  //     }, {} as Record<string, any>);
+  //   });
+
+  //   const previewHtml = `<table style="width:100%; border-collapse: collapse; text-align:left;">
+  //         <thead>
+  //             <tr>${columnasSeleccionadas
+  //               .map(
+  //                 (key) =>
+  //                   `<th style="border: 1px solid #ddd; padding: 8px; background: #f3f3f3;">${columnasMapeadas[key]}</th>`
+  //               )
+  //               .join('')}</tr>
+  //         </thead>
+  //         <tbody>
+  //             ${previewData
+  //               .map(
+  //                 (row) =>
+  //                   `<tr>${columnasSeleccionadas
+  //                     .map(
+  //                       (key) =>
+  //                         `<td style="border: 1px solid #ddd; padding: 8px;">${row[key]}</td>`
+  //                     )
+  //                     .join('')}</tr>`
+  //               )
+  //               .join('')}
+  //         </tbody>
+  //     </table>`;
+
+  //   Swal.fire({
+  //     title: 'Vista previa reducida de los datos a guardar',
+  //     html: previewHtml,
+  //     width: '80%',
+  //     showCancelButton: true,
+  //     confirmButtonText: 'Guardar',
+  //     cancelButtonText: 'Cancelar',
+  //   }).then((result) => {
+  //     if (result.isConfirmed) {
+  //       this.guardarMapeo(idUsuario, columnasMapeadas, jsonData);
+  //     }
+  //   });
+  // }
+
   previewDatos(
     jsonData: any[],
     columnasMapeadas: Record<string, string>,
@@ -361,6 +410,53 @@ export class RegistroCargaInventariosComponent {
   ) {
     const columnasSeleccionadas = Object.keys(columnasMapeadas);
 
+    // Detectar duplicados
+    const vistos = new Set<string>();
+    const duplicados: any[] = [];
+
+    jsonData.forEach((row, index) => {
+      const codigoBarra = row[columnasMapeadas['codigobarra']]?.trim();
+      const codigoProducto = row[columnasMapeadas['codigoproducto']]?.trim();
+      const clave = `${codigoBarra}-${codigoProducto}`;
+
+      if (vistos.has(clave)) {
+        duplicados.push({ fila: index + 2, codigoBarra, codigoProducto }); // index + 2 porque header es fila 1
+      } else {
+        vistos.add(clave);
+      }
+    });
+
+    if (duplicados.length > 0) {
+      const tablaDuplicados = `<table style="width:100%; border-collapse: collapse; text-align:left;">
+        <thead>
+          <tr>
+            <th style="border: 1px solid #ddd; padding: 8px; background: #f3f3f3;">Fila</th>
+            <th style="border: 1px solid #ddd; padding: 8px; background: #f3f3f3;">Código Barra</th>
+            <th style="border: 1px solid #ddd; padding: 8px; background: #f3f3f3;">Código Producto</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${duplicados.map(
+            (dup) =>
+              `<tr>
+                <td style="border: 1px solid #ddd; padding: 8px;">${dup.fila}</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">${dup.codigoBarra}</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">${dup.codigoProducto}</td>
+              </tr>`
+          ).join('')}
+        </tbody>
+      </table>`;
+
+      Swal.fire({
+        icon: 'error',
+        title: 'Se encontraron códigos duplicados',
+        html: `<p>Existen registros duplicados en tu archivo. Revisa los siguientes duplicados:</p>${tablaDuplicados}`,
+        width: '70%',
+      });
+      return;
+    }
+
+    // Mostrar preview si no hay duplicados
     const previewData = jsonData.slice(0, 5).map((item: any) => {
       return columnasSeleccionadas.reduce((acc, key) => {
         acc[key] = item[columnasMapeadas[key]] || '';
@@ -369,28 +465,28 @@ export class RegistroCargaInventariosComponent {
     });
 
     const previewHtml = `<table style="width:100%; border-collapse: collapse; text-align:left;">
-          <thead>
-              <tr>${columnasSeleccionadas
+      <thead>
+        <tr>${columnasSeleccionadas
+          .map(
+            (key) =>
+              `<th style="border: 1px solid #ddd; padding: 8px; background: #f3f3f3;">${columnasMapeadas[key]}</th>`
+          )
+          .join('')}</tr>
+      </thead>
+      <tbody>
+        ${previewData
+          .map(
+            (row) =>
+              `<tr>${columnasSeleccionadas
                 .map(
                   (key) =>
-                    `<th style="border: 1px solid #ddd; padding: 8px; background: #f3f3f3;">${columnasMapeadas[key]}</th>`
+                    `<td style="border: 1px solid #ddd; padding: 8px;">${row[key]}</td>`
                 )
-                .join('')}</tr>
-          </thead>
-          <tbody>
-              ${previewData
-                .map(
-                  (row) =>
-                    `<tr>${columnasSeleccionadas
-                      .map(
-                        (key) =>
-                          `<td style="border: 1px solid #ddd; padding: 8px;">${row[key]}</td>`
-                      )
-                      .join('')}</tr>`
-                )
-                .join('')}
-          </tbody>
-      </table>`;
+                .join('')}</tr>`
+          )
+          .join('')}
+      </tbody>
+    </table>`;
 
     Swal.fire({
       title: 'Vista previa reducida de los datos a guardar',
@@ -592,7 +688,6 @@ export class RegistroCargaInventariosComponent {
       icon: 'error',
       title: 'Oops...',
       text: `${mensaje} ${error}`,
-      // footer: '<a href="#">Why do I have this issue?</a>'
     });
   }
 

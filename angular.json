@@ -33,7 +33,7 @@
             "scripts": [
               "node_modules/datamaps/dist/datamaps.world.min.js",
               "node_modules/preline/preline.js",
-               "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
             ]
           },
           "configurations": {

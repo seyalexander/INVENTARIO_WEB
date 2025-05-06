@@ -221,11 +221,6 @@ export class ReporteInventarioComponent {
       .getDetalleInventarioByFiltros(reqDatos)
       .subscribe((response: detalleCarga[]) => {
         this.EditadosManual = response.length;
-        console.log("=======================================================");
-        console.log("DATOS ENVIADOS: ", reqDatos);
-        console.log("CANTIDAD EDITADOS: ", this.EditadosManual);
-        console.log("=======================================================");
-
       });
   }
 

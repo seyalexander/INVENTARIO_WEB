@@ -4,7 +4,153 @@
   tabindex="-1"
   id="disenoreporte"
 >
-  <div
+  <div class="flex p-4 h-full fondo">
+    <div class="w-[40%] h-full grid place-content-center">
+      <h2 class="text-xs mb-0 font-semibold text-gray-700">
+        Seleccione un reporte para el inventario:
+      </h2>
+      <h2 class="text-base font-bold text-[#20477E]">
+        {{ citaSeleccionada.descripcion }}
+      </h2>
+      <div
+        data-bs-dismiss="offcanvas"
+        class="border border-[#0158DD] w-[6rem] h-[2rem] rounded-lg text-white grid place-content-center hover:cursor-pointer"
+      >
+        <button
+          type="button"
+          class="btn-close text-white"
+          aria-label="Close"
+        ></button>
+      </div>
+    </div>
+    <div class="w-[60%] grid place-content-center">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 w-full  gap-[1px]">
+        <button
+          class="button-opcion"
+          type="button"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#disenoreportedata"
+          aria-controls="offcanvasRight"
+          (click)="ObtenerDetalleInventariosPDF(0, 2, 2)"
+        >
+          <p class="font-semibold text-[#20477E] group-hover:text-white">
+            Total de registros
+          </p>
+          <p
+            class="text-[3rem] font-bold text-[#20477E] group-hover:text-white"
+          >
+            {{ TotalRegistros }}
+          </p>
+        </button>
+
+        <button
+        class="button-opcion"
+          type="button"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#disenoreportedata"
+          aria-controls="offcanvasRight"
+          (click)="ObtenerDetalleInventariosPDF(3, 0, 2)"
+        >
+          <p class="text-[#00D1AE] font-semibold text-center">
+            Registros con faltantes
+          </p>
+          <p class="text-[3rem] font-bold text-[#00D1AE]">
+            {{ RegistrosFaltantes }}
+          </p>
+        </button>
+
+        <button
+        class="button-opcion"
+          type="button"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#disenoreportedata"
+          aria-controls="offcanvasRight"
+          (click)="ObtenerDetalleInventariosPDF(2, 0, 2)"
+        >
+          <p class="text-[#0158DD] font-semibold text-center">
+            Registros sobrantes
+          </p>
+          <p class="text-[3rem] font-bold text-[#0158DD]">
+            {{ RegistrosNoFaltantes }}
+          </p>
+        </button>
+
+        <button
+        class="button-opcion"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#disenoreportedata"
+          aria-controls="offcanvasRight"
+          (click)="ObtenerDetalleInventariosPDF(0, 1, 2)"
+        >
+          <p class="text-[#0158DD] font-semibold text-center">
+            Nuevos registros
+          </p>
+          <p class="text-[3rem] font-bold text-[#0158DD]">
+            {{ NuevosRegistros }}
+          </p>
+        </button>
+
+        <button
+        class="button-opcion"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#disenoreportedata"
+          aria-controls="offcanvasRight"
+          (click)="ObtenerDetalleInventariosPDF(1, 2, 2)"
+        >
+          <p class="text-[#20477E] font-semibold text-center">
+            Conteos exactos
+          </p>
+          <p class="text-[3rem] font-bold text-[#20477E]">
+            {{ ConteosExactos }}
+          </p>
+        </button>
+
+        <button
+        class="button-opcion"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#disenoreportedataAjuste"
+          aria-controls="offcanvasRight"
+          (click)="ObtenerDetalleInventariosAjustados()"
+        >
+          <p class="text-[#20477E] font-semibold text-center">
+            Items Ajustados
+          </p>
+          <p class="text-[3rem] font-bold text-[#20477E]">
+            {{ ItemsAjustados }}
+          </p>
+        </button>
+
+        <button
+        class="button-opcion"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#disenoreportedataAjuste"
+          aria-controls="offcanvasRight"
+          (click)="ObtenerDetalleInventariosPDF(0, 2, 1)"
+        >
+          <p class="text-[#20477E] font-semibold text-center">
+            Cantidades ingresados manualmente
+          </p>
+          <p class="text-[3rem] font-bold text-[#20477E]">
+            {{ EditadosManual }}
+          </p>
+        </button>
+
+        <button
+          disabled
+          class="button-opcion_vacias"
+        >
+
+        </button>
+        <button
+          disabled
+          class="button-opcion_vacias"
+        >
+
+        </button>
+      </div>
+    </div>
+  </div>
+  <!-- <div
     class="offcanvas-header bg-[#f1f3f5] pb-1 flex justify-between items-center"
   >
     <h2 class="text-base font-semibold text-gray-800">
@@ -23,9 +169,6 @@
     class="offcanvas-body py-8 px-6 h-full flex flex-col items-center justify-center"
   >
     <div class="grid grid-cols-3 gap-8 w-full max-w-3xl mx-auto">
-      <!-- ================================================================================================== -->
-      <!-- TOTAL REGISTROS -->
-      <!-- ================================================================================================== -->
       <button
         class="bg-white p-6 rounded-xl shadow-md border-2 border-[#20477E] hover:bg-[#F0F4FA] transition-colors duration-200 cursor-pointer text-center flex flex-col gap-4 justify-center items-center"
         type="button"
@@ -38,9 +181,6 @@
         <p class="text-[3rem] font-bold text-[#20477E]">{{ TotalRegistros }}</p>
       </button>
 
-      <!-- ================================================================================================== -->
-      <!-- REGISTROS CON FALTANTES -->
-      <!-- ================================================================================================== -->
       <button
         class="bg-white p-6 rounded-xl shadow-md border-2 border-[#00D1AE] hover:bg-[#F0F4FA] transition-colors duration-200 cursor-pointer text-center flex flex-col gap-4 justify-center items-center"
         type="button"
@@ -57,9 +197,6 @@
         </p>
       </button>
 
-      <!-- ================================================================================================== -->
-      <!-- REGISTROS SOBRANTES -->
-      <!-- ================================================================================================== -->
       <button
         class="bg-white p-6 rounded-xl shadow-md border-2 border-[#0158DD] hover:bg-[#F0F4FA] transition-colors duration-200 cursor-pointer text-center flex flex-col gap-4 justify-center items-center"
         type="button"
@@ -76,9 +213,6 @@
         </p>
       </button>
 
-      <!-- ================================================================================================== -->
-      <!-- NUEVOS REGISTROS -->
-      <!-- ================================================================================================== -->
       <button
         class="bg-white p-6 rounded-xl shadow-md border-2 border-[#0158DD] hover:bg-[#F0F4FA] transition-colors duration-200 cursor-pointer text-center flex flex-col gap-4 justify-center items-center"
         data-bs-toggle="offcanvas"
@@ -92,9 +226,6 @@
         </p>
       </button>
 
-      <!-- ================================================================================================== -->
-      <!-- CONTEOS EXACTOS -->
-      <!-- ================================================================================================== -->
       <button
         class="bg-white p-6 rounded-xl shadow-md border-2 border-[#20477E] hover:bg-[#F0F4FA] transition-colors duration-200 cursor-pointer text-center flex flex-col gap-4 justify-center items-center"
         data-bs-toggle="offcanvas"
@@ -106,9 +237,6 @@
         <p class="text-[3rem] font-bold text-[#20477E]">{{ ConteosExactos }}</p>
       </button>
 
-      <!-- ================================================================================================== -->
-      <!-- ITEMS AJUSTADOS -->
-      <!-- ================================================================================================== -->
       <button
         class="bg-white p-6 rounded-xl shadow-md border-2 border-[#20477E] hover:bg-[#F0F4FA] transition-colors duration-200 cursor-pointer text-center flex flex-col gap-4 justify-center items-center"
         data-bs-toggle="offcanvas"
@@ -120,9 +248,6 @@
         <p class="text-[3rem] font-bold text-[#20477E]">{{ ItemsAjustados }}</p>
       </button>
 
-      <!-- ================================================================================================== -->
-      <!-- ITEMS CANTIDAD EDITADOS -->
-      <!-- ================================================================================================== -->
       <button
         class="bg-white p-6 rounded-xl shadow-md border-2 border-[#00D1AE] hover:bg-[#F0F4FA] transition-colors duration-200 cursor-pointer text-center flex flex-col gap-4 justify-center items-center"
         data-bs-toggle="offcanvas"
@@ -130,23 +255,13 @@
         aria-controls="offcanvasRight"
         (click)="ObtenerDetalleInventariosPDF(0, 2, 1)"
       >
-        <p class="text-[#20477E] font-semibold text-center">Cantidades ingresados manualmente</p>
+        <p class="text-[#20477E] font-semibold text-center">
+          Cantidades ingresados manualmente
+        </p>
         <p class="text-[3rem] font-bold text-[#20477E]">{{ EditadosManual }}</p>
       </button>
-      <!-- <button
-      class="bg-gray-100 p-6 rounded-xl shadow-md border-2 border-gray-300
-     transition duration-200 cursor-not-allowed
-      text-center flex flex-col gap-4 justify-center items-center"
-
-        disabled
-      >
-        <p class="text-gray-600 font-semibold text-center">
-          Registros sin leer
-        </p>
-        <p class="text-sm text-gray-500">(FALTA IMPLEMENTAR)</p>
-      </button> -->
     </div>
-  </div>
+  </div> -->
 </div>
 
 <!-- Componente 2: Configuración y exportación -->
@@ -172,7 +287,6 @@
             >
               <div class="flex justify-between w-full">
                 <div class="flex items-center justify-center gap-4">
-
                   <button
                     class="text-gray-800 hover:text-gray-600"
                     data-bs-toggle="offcanvas"

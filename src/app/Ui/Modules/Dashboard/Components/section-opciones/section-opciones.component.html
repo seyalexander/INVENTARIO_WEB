@@ -1,4 +1,4 @@
-<div class="w-full h-auto grid place-content-center bg-white py-4">
+<div class="opciones w-full grid place-content-start justify-center bg-white py-4">
   <ul class="m-0">
     @for (item of mainMenu.accessLink; track $index) {
       <target-opcion [imagen]="item.imagen" [name]="item.name" [route]="item.route"  />

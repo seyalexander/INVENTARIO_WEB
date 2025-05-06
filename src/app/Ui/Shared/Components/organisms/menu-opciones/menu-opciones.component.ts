@@ -27,7 +27,7 @@ export class MenuOpcionesGeneralComponent {
     this.mainMenu.accessLink = [
       {
         name: 'Cargar Inventario',
-        icon: 'uil uil-estate',
+        icon: 'uil uil-cloud-upload',
         route: ['/dashboard', 'modulos', 'CargarInventario'],
         subMenu: false,
       },
@@ -39,13 +39,13 @@ export class MenuOpcionesGeneralComponent {
       // },
       {
         name: 'Reportes',
-        icon: 'uil uil-estate',
+        icon: 'uil uil-chart-line',
         route: ['/dashboard', 'modulos', 'reportes'],
         subMenu: false,
       },
       {
         name: 'Ajustes Inventario',
-        icon: 'uil uil-estate',
+        icon: 'uil uil-sliders-v-alt',
         route: ['/dashboard', 'modulos', 'ajustesInventario'],
         subMenu: false,
       },
@@ -56,17 +56,17 @@ export class MenuOpcionesGeneralComponent {
         listaSubMenu: [
           {
             name: 'Empresas',
-            icon: 'uil uil-estate',
+            icon: 'uil uil-building',
             route: ['/dashboard', 'modulos', 'empresas'],
           },
           {
             name: 'Usuarios',
-            icon: 'uil uil-estate',
+            icon: 'uil uil-user',
             route: ['/dashboard', 'modulos', 'usuario'],
           },
           {
             name: 'Tipo Usuario',
-            icon: 'uil uil-estate',
+            icon: 'uil uil-users-alt',
             route: ['/dashboard', 'modulos', 'tipoUsuario'],
           },
         ],

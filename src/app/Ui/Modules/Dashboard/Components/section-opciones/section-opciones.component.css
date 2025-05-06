@@ -1,3 +1,8 @@
+.opciones {
+  height: calc(100vh - 14.47rem);
+}
+
+
 ul {
   display: flex;
   gap: 1rem;
