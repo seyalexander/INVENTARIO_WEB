@@ -33,9 +33,17 @@ export class MensajeAnulacionesInventarioService {
             <button id="cancel-btn" class="bg-gray-500 hover:bg-gray-600 text-white font-semibold px-4 py-2 rounded w-36">
               Cancelar
             </button>
-            <button id="confirm-btn" class="bg-red-600 text-white font-semibold px-4 py-2 rounded w-36" disabled>
-              Sí, Anular (${countdown})
-            </button>
+
+            <button id="confirm-btn" style="
+              background-color: #DC2626;
+              color: white;
+              font-weight: 600;
+              padding: 0.5rem 1rem;
+              border-radius: 0.375rem;
+              width: 9rem;
+          " disabled>
+            Sí, Anular (${countdown})
+          </button>
           </div>
         `,
         icon: 'warning',
@@ -108,7 +116,7 @@ export class MensajeAnulacionesInventarioService {
 
   Alert_InventarioAnulado_Error() {
     Swal.fire({
-      icon: "error",
+      icon: 'error',
       title: `
         <div class="text-red-600 text-2xl font-bold flex items-center justify-center">
           Error al Anular
@@ -124,7 +132,7 @@ export class MensajeAnulacionesInventarioService {
           </p>
         </div>
       `,
-      background: "#ffffff",
+      background: '#ffffff',
       customClass: {
         popup: 'swal-custom-popup',
         title: 'text-red-600 font-bold text-xl',
