@@ -20,7 +20,6 @@ import { MatInputModule } from '@angular/material/input';
 import { RequestInventarioByFiltros } from 'src/app/Domain/models/inventarios/requestInventariosByFiltros.model';
 import { InventariosByFiltrosUseCases } from 'src/app/Domain/use-case/inventarios/get-inventariosByFiltros-use-case';
 import { CommonModule } from '@angular/common';
-import { DashboardDetalleReporteinventarioComponent } from '@modules/reportes/components/dashboard-detalle-reporteinventario/dashboard-detalle-reporteinventario.component';
 import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { InventarioDetallesByFiltrosUseCases } from 'src/app/Domain/use-case/inventarios/get-inventarioDetalleByFiltros-use-case';
@@ -43,8 +42,7 @@ import { InventariosService } from 'src/app/Infraestructure/driven-adapter/inven
     DesignReportInventarioComponent,
     DetalleCargaInventariosComponent,
     CommonModule,
-    MatSortModule,
-    DashboardDetalleReporteinventarioComponent
+    MatSortModule
   ],
   templateUrl: './reporte-inventario.component.html',
   styleUrl: './reporte-inventario.component.css',

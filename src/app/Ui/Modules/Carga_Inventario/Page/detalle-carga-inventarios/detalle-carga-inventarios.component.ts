@@ -1,6 +1,5 @@
 import { CommonModule, NgClass } from '@angular/common';
 import { Component, Input, SimpleChanges, ViewChild } from '@angular/core';
-import { MatIcon } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -18,7 +17,6 @@ import { inventariosModel } from 'src/app/Domain/models/inventarios/inventarios.
     MatPaginatorModule,
     MatTabsModule,
     NgClass,
-    MatIcon,
     CommonModule,
     MatInputModule
   ],
@@ -76,11 +74,10 @@ export class DetalleCargaInventariosComponent {
     this.updatePaginator();
   }
 
-  // Método para actualizar el paginador
   updatePaginator() {
     if (this.paginator) {
-      this.paginator.pageIndex = 0; // Volver a la primera página
-      this.paginator._changePageSize(this.itemsPerPage); // Cambiar el tamaño de la página
+      this.paginator.pageIndex = 0;
+      this.paginator._changePageSize(this.itemsPerPage);
     }
   }
 
