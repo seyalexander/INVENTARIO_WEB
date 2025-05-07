@@ -11,7 +11,6 @@ import {
 import { NgxPaginationModule } from 'ngx-pagination';
 import { DetalleCargaInventariosComponent } from '@modules/Carga_Inventario/Page/detalle-carga-inventarios/detalle-carga-inventarios.component';
 import { SeguridadModel } from 'src/app/Domain/models/seguridad/seguridad.model';
-import Swal from 'sweetalert2';
 import { inventariosModel } from 'src/app/Domain/models/inventarios/inventarios.models';
 import { Subscription } from 'rxjs';
 import { InventariosByIdUseCases } from 'src/app/Domain/use-case/inventarios/get-inventarioById-useCase';
@@ -49,6 +48,7 @@ import { GetUsuariosUseCases } from 'src/app/Domain/use-case/seguridad/get-usuar
 import { CommonModule } from '@angular/common';
 import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { MensajeAnulacionesInventarioService } from 'src/app/Infraestructure/core/SeetAlert/cargaInventario/mensaje-anulaciones-inventario.service';
 interface Estados {
   value: string;
   viewValue: string;
@@ -134,6 +134,8 @@ export class ListaInventariosCargadosComponent implements AfterViewInit {
   private readonly ObjectInventario = inject(InventariosByIdUseCases);
   private readonly ListDetalleInventario = inject(InventarioDetallesUseCases);
   private readonly listaUsuarios = inject(GetUsuariosUseCases);
+  private readonly ObjectInventarioAnular = inject(AnularInventarioUseCase);
+  private mensajeAlert = inject(MensajeAnulacionesInventarioService)
   private _liveAnnouncer = inject(LiveAnnouncer);
 
   private EmpresasSubscription: Subscription | undefined;
@@ -251,9 +253,6 @@ export class ListaInventariosCargadosComponent implements AfterViewInit {
   // ================================================================================
   // ANULAR INVENTARIO
   // ================================================================================
-
-  private readonly ObjectInventarioAnular = inject(AnularInventarioUseCase);
-
   ObtenerDatosAnularInventario(rucempresa: string, idcarga: number): void {
     const reqDatos: requestDatosasignar = { rucempresa, idcarga };
     this.ObjectInventario.getInventarioById(reqDatos).subscribe(
@@ -265,74 +264,13 @@ export class ListaInventariosCargadosComponent implements AfterViewInit {
   }
 
   Alert_AnularInventario(response: inventariosModel) {
-    let countdown = 3; // Cuenta regresiva inicial
 
-    Swal.fire({
-      title: `<div class="text-red-600 text-2xl font-bold flex items-center justify-center">
-                <span>Anular Inventario</span>
-              </div>`,
-      html: `
-        <div class="border-b border-gray-300 pb-4">
-          <p class="text-gray-700 text-lg text-center">
-            ¿Seguro que deseas anular <span class="font-bold text-red-500">${response.descripcion}</span>?
-          </p>
-        </div>
-
-        <div class="mt-4 text-left space-y-3">
-          <p class="text-gray-600 text-sm text-center">Esta acción no se puede deshacer.</p>
-          <p class="text-gray-600 text-sm text-center">Asegúrate de revisar antes de continuar.</p>
-        </div>
-
-        <!-- Contenedor de botones para asegurar su visibilidad -->
-        <div id="swal-buttons" class="flex justify-center gap-4 mt-5">
-          <button id="cancel-btn" class="bg-gray-500 hover:bg-gray-500 text-white font-semibold px-4 py-2 rounded w-36">
-            Cancelar
-          </button>
-          <button id="confirm-btn" class="bg-red-600  text-white font-semibold px-4 py-2 rounded w-36" disabled>
-            Sí, Anular (3)
-          </button>
-        </div>
-      `,
-      icon: "warning",
-      showConfirmButton: false, // Ocultamos botones nativos de SweetAlert
-      showCancelButton: false,
-      didOpen: () => {
-        const cancelBtn = document.getElementById("cancel-btn") as HTMLButtonElement;
-        const confirmBtn = document.getElementById("confirm-btn") as HTMLButtonElement;
-
-        if (cancelBtn) {
-          cancelBtn.onclick = () => Swal.close(); // Cierra la alerta
-        }
-
-        // Iniciar cuenta regresiva
-        const interval = setInterval(() => {
-          countdown--;
-          confirmBtn.textContent = `Sí, Anular (${countdown})`;
-
-          if (countdown === 0) {
-            clearInterval(interval);
-            confirmBtn.textContent = "Sí, Anular";
-            confirmBtn.disabled = false;
-            confirmBtn.classList.add("hover:bg-red-700"); // Activa el hover
-          }
-        }, 1000);
-
-        if (confirmBtn) {
-          confirmBtn.onclick = () => {
-            Swal.close();
-            this.ResponseAnularInventarioInventarioSeleccionado();
-          };
-        }
-      },
+    this.mensajeAlert.Alert_AnularInventario(response).then((confirmado) => {
+      if (confirmado) {
+        this.ResponseAnularInventarioInventarioSeleccionado();
+      }
     });
   }
-
-
-
-
-
-
-
 
   ResponseAnularInventarioInventarioSeleccionado(): void {
     const rucempresa = this.datosInventario.rucempresa
@@ -353,21 +291,13 @@ export class ListaInventariosCargadosComponent implements AfterViewInit {
   }
 
   Alert_InventarioAnulado_Correctamente() {
-    Swal.fire({
-      title: "Anulado!",
-      text: "El inventario se anuló de manera correcta",
-      icon: "success",
-    }).then(() => {
+    this.mensajeAlert.Alert_InventarioAnulado_Correctamente().then(() => {
       window.location.reload();
     });
   }
 
   Alert_InventarioAnulado_Error() {
-    Swal.fire({
-      icon: "error",
-      title: "Oops...",
-      text: "No se pudo anular el inventario, intente nuevamente",
-    });
+    this.mensajeAlert.Alert_InventarioAnulado_Error()
   }
 
   // ================================================================================
@@ -388,10 +318,7 @@ export class ListaInventariosCargadosComponent implements AfterViewInit {
   // DESTRUCCION DE PETICIONES
   // ================================================================================
   ngOnDestroy(): void {
-    if (this.EmpresasSubscription) {
-      this.EmpresasSubscription.unsubscribe();
-    }
-
+    this.EmpresasSubscription?.unsubscribe();
     this.UsuariosSubscription?.unsubscribe()
   }
 }

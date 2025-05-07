@@ -11,19 +11,27 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5 mb-0 text-blue-900" id="staticBackdropLabel">REGISTRO INVENTARIO</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <h1
+          class="modal-title fs-5 mb-0 text-blue-900"
+          id="staticBackdropLabel"
+        >
+          REGISTRO INVENTARIO
+        </h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="modal-body">
-
-
         <form (ngSubmit)="guardarCabecera()" [formGroup]="formularioRegistro">
           <div class="px-4 py-0 gap-0 text-center overflow-y-auto">
-
             <div class="flex-1 mt-0">
               <div class="mb-1">
-
-                <label for="empresas" class="w-full text-left form-label">Empresas</label>
+                <label for="empresas" class="w-full text-left form-label"
+                  >Empresas</label
+                >
                 <select
                   id="empresas"
                   formControlName="rucempresa"
@@ -43,11 +51,11 @@
               </div>
             </div>
 
-
             <div class="flex-1">
               <div class="mb-1">
-
-                <label for="empresas" class="w-full text-left form-label">Asignar usuario</label>
+                <label for="empresas" class="w-full text-left form-label"
+                  >Asignar usuario</label
+                >
                 <select
                   id="usuarioAsignar"
                   formControlName="usuarioasignado"
@@ -55,9 +63,9 @@
                   class="form-select"
                   aria-label="Default select example"
                 >
-                <option value="" disabled selected>
-                  Seleccione una Usuario
-                </option>
+                  <option value="" disabled selected>
+                    Seleccione una Usuario
+                  </option>
                   @for (item of getUsuarios_All; track $index) { @if
                   (item.estado == '1') {
                   <option [value]="item.idusuario">
@@ -66,20 +74,13 @@
                   </option>
                   } }
                 </select>
-
               </div>
             </div>
 
-
-
             <div class="flex-1 mt-1">
               <div class="">
-
                 <div class="container-space-y-2">
-                  <label
-                    for="af-submit-app-upload-images"
-                    class="upload-label"
-                  >
+                  <label for="af-submit-app-upload-images" class="upload-label">
                     <input
                       #fileInput
                       (change)="onFileSelected($event)"
@@ -108,14 +109,14 @@
                     </svg>
 
                     @if (selectedFileName) {
-                    <span class="upload-text ">
+                    <span class="upload-text">
                       Archivo seleccionado:
                       <span class="upload-highlight">{{
                         selectedFileName
                       }}</span>
                     </span>
                     }@else {
-                    <span class="upload-text ">
+                    <span class="upload-text">
                       Haz clic aquí
                       <span class="upload-highlight"
                         >para seleccionar su archivo</span
@@ -130,40 +131,17 @@
                       >Tamaño de archivo: {{ fileDetails.size }} bytes</span
                     >
                     }@else {
-                    <span class="upload-help "
-                      >Máximo un archivo de 10 Mb</span
-                    >
+                    <span class="upload-help">Máximo un archivo de 10 Mb</span>
                     }
                   </label>
                 </div>
-
-
-
               </div>
 
-
-
-              <!-- <div class="containar_ver_detalle">
-                <h4 class="mb-0">
-                  Items cargados: <span> {{ cantidadDatosExcel }}</span>
-                </h4>
-
-                <button
-                  class="btn btn-primary ver_detalle"
-                  [disabled]="!HayArchivo"
-                  type="button"
-                  data-bs-toggle="offcanvas"
-                  data-bs-target="#hs-detalle-excel_preview"
-                  aria-controls="hs-detalle-excel_preview"
-                >
-                  <img src="../../../../../../assets/svg/icon_ver.svg" alt="" />
-                </button>
-              </div> -->
 
               <div class="Nombre_Inventario">
                 <label
                   for="af-submit-project-url"
-                  class="inline-block text-sm font-medium text-gray-800 mt-2.5 "
+                  class="inline-block text-sm font-medium text-gray-800 mt-2.5"
                 >
                   Nombre
                 </label>
@@ -174,7 +152,7 @@
                   id="af-submit-project-url"
                   type="text"
                   [value]="selectedFileName"
-                  class="py-2 px-3 pe-11 block w-full border-gray-200 shadow-sm text-sm rounded-lg focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none "
+                  class="py-2 px-3 pe-11 block w-full border-gray-200 shadow-sm text-sm rounded-lg focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
                   placeholder="Ingresar nombre"
                 />
                 }@else {
@@ -184,7 +162,7 @@
                   id="af-submit-project-url"
                   type="text"
                   [value]="selectedFileName"
-                  class="py-2 px-3 pe-11 block w-full border-gray-200 shadow-sm text-sm rounded-lg focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none "
+                  class="py-2 px-3 pe-11 block w-full border-gray-200 shadow-sm text-sm rounded-lg focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
                   placeholder="Ingresar nombre"
                 />
                 }
@@ -192,7 +170,7 @@
               <div class="modal-footer">
                 <div class="Buttons_eventos">
                   <button
-                  (click)="limpiarDatosPreview()"
+                    (click)="limpiarDatosPreview()"
                     type="button"
                     data-bs-dismiss="modal"
                   >
@@ -215,7 +193,6 @@
             </div>
           </div>
         </form>
-
       </div>
     </div>
   </div>

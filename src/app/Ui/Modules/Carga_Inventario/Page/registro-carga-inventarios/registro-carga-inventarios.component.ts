@@ -152,7 +152,6 @@ export class RegistroCargaInventariosComponent {
     });
   }
 
-
   listarUsuarios(): void {
     try {
       this.UsuariosSubscription = this.listaUsuarios
@@ -200,6 +199,7 @@ export class RegistroCargaInventariosComponent {
           this.validacionService_CargaInventario.procesarArchivoExcel(
             reader.result as ArrayBuffer
           );
+
         const columnasExcel =
           this.validacionService_CargaInventario.validarYExtraerColumnas(
             jsonData
