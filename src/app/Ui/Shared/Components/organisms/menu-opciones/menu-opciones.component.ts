@@ -28,7 +28,7 @@ export class MenuOpcionesGeneralComponent {
       {
         name: 'Cargar Inventario',
         icon: 'uil uil-cloud-upload',
-        route: ['/dashboard', 'modulos', 'CargarInventario'],
+        route: ['/dashboard'],
         subMenu: false,
       },
       // {
@@ -40,13 +40,13 @@ export class MenuOpcionesGeneralComponent {
       {
         name: 'Reportes',
         icon: 'uil uil-chart-line',
-        route: ['/dashboard', 'modulos', 'reportes'],
+        route: ['/dashboard', 'reportes'],
         subMenu: false,
       },
       {
         name: 'Ajustes Inventario',
         icon: 'uil uil-sliders-v-alt',
-        route: ['/dashboard', 'modulos', 'ajustesInventario'],
+        route: ['/dashboard', 'ajustesInventario'],
         subMenu: false,
       },
       {
@@ -57,26 +57,26 @@ export class MenuOpcionesGeneralComponent {
           {
             name: 'Empresas',
             icon: 'uil uil-building',
-            route: ['/dashboard', 'modulos', 'empresas'],
+            route: ['/dashboard', 'empresas'],
           },
           {
             name: 'Usuarios',
             icon: 'uil uil-user',
-            route: ['/dashboard', 'modulos', 'usuario'],
+            route: ['/dashboard', 'usuario'],
           },
           {
             name: 'Tipo Usuario',
             icon: 'uil uil-users-alt',
-            route: ['/dashboard', 'modulos', 'tipoUsuario'],
+            route: ['/dashboard', 'tipoUsuario'],
           },
         ],
       },
-      {
-        name: 'Inicio',
-        icon: 'uil uil-estate',
-        route: ['/dashboard'],
-        subMenu: false,
-      },
+      // {
+      //   name: 'Inicio',
+      //   icon: 'uil uil-estate',
+      //   route: ['/dashboard'],
+      //   subMenu: false,
+      // },
 
     ];
   }
