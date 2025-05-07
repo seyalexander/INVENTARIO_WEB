@@ -2,17 +2,17 @@
 <!-- Apartado filtros -->
 <!-- =================================================================================== -->
 <div class="max-w-[100rem] py-2 lg:py-0 mx-auto">
-  <mat-form-field class="w-[100rem] sm:w-[20rem] lg:w-[20rem]">
-    <mat-label>Buscar Empresa</mat-label>
-    <span matTextPrefix> <mat-icon>search</mat-icon> &nbsp;</span>
+  <div
+    class="bg-gray-100 border overflow-hidden w-full h-14 rounded-md flex items-center"
+  >
     <input
-      type="text"
       matInput
-      (keyup)="applyFilter($event)"
-      placeholder="Ingresar descripción"
       #input
+      (keyup)="applyFilter($event)"
+      placeholder="Buscar empresa"
+      class="text-gray-800 w-full bg-transparent px-4 placeholder-gray-400 focus:outline-none"
     />
-  </mat-form-field>
+  </div>
 </div>
 
 <section>
@@ -24,17 +24,27 @@
             class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden"
           >
             <div class="mat-elevation-z8 h-auto">
-              <table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)">
-                               <!-- =================================================================================== -->
+              <table
+                mat-table
+                [dataSource]="dataSource"
+                matSort
+                (matSortChange)="announceSortChange($event)"
+              >
+                <!-- =================================================================================== -->
                 <!-- Apartado fecha registro -->
                 <!-- =================================================================================== -->
                 <ng-container matColumnDef="fechacreacion">
-                  <th mat-header-cell *matHeaderCellDef class="mat-primary" mat-sort-header>
+                  <th
+                    mat-header-cell
+                    *matHeaderCellDef
+                    class="mat-primary"
+                    mat-sort-header
+                  >
                     F. Registro
                   </th>
                   <td class="rol" mat-cell *matCellDef="let element">
                     <button class="px-6 py-1 flex gap-2 align-center">
-                      <span class="text-sm text-gray-600 ">
+                      <span class="text-sm text-gray-600">
                         {{
                           element.fechacreacion
                             ? (element.fechacreacion | date : "dd/MM/yyyy")
@@ -49,12 +59,17 @@
                 <!-- Apartado documento -->
                 <!-- =================================================================================== -->
                 <ng-container matColumnDef="rucempresa">
-                  <th mat-header-cell *matHeaderCellDef class="mat-primary" mat-sort-header>
+                  <th
+                    mat-header-cell
+                    *matHeaderCellDef
+                    class="mat-primary"
+                    mat-sort-header
+                  >
                     RUC
                   </th>
                   <td class="rol" mat-cell *matCellDef="let element">
                     <button class="px-6 py-1 flex gap-2 align-center">
-                      <span class="text-sm text-gray-600 ">
+                      <span class="text-sm text-gray-600">
                         {{ element.rucempresa || "-" }}
                       </span>
                     </button>
@@ -65,12 +80,17 @@
                 <!-- Apartado razon social -->
                 <!-- =================================================================================== -->
                 <ng-container matColumnDef="razonsocial">
-                  <th mat-header-cell *matHeaderCellDef class="mat-primary" mat-sort-header>
+                  <th
+                    mat-header-cell
+                    *matHeaderCellDef
+                    class="mat-primary"
+                    mat-sort-header
+                  >
                     Razon Social
                   </th>
                   <td class="rol" mat-cell *matCellDef="let element">
                     <button class="px-6 py-1 flex gap-2 align-center">
-                      <span class="text-sm text-gray-600 ">
+                      <span class="text-sm text-gray-600">
                         {{ element.razonsocial || "-" }}
                       </span>
                     </button>
@@ -81,7 +101,12 @@
                 <!-- Apartado estado -->
                 <!-- =================================================================================== -->
                 <ng-container matColumnDef="estado">
-                  <th mat-header-cell *matHeaderCellDef class="mat-accent" mat-sort-header>
+                  <th
+                    mat-header-cell
+                    *matHeaderCellDef
+                    class="mat-accent"
+                    mat-sort-header
+                  >
                     Estado
                   </th>
                   <td mat-cell *matCellDef="let element">

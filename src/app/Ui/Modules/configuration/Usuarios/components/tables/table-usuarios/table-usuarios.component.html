@@ -2,17 +2,18 @@
 <!-- Apartado filtros -->
 <!-- =================================================================================== -->
 <div class="max-w-[100rem] py-2 lg:py-0 mx-auto">
-  <mat-form-field class="w-[100rem] sm:w-[20rem] lg:w-[20rem]">
-    <mat-label>Buscar Usuario</mat-label>
-    <span matTextPrefix> <mat-icon>search</mat-icon> &nbsp;</span>
+  <div
+    class="bg-gray-100 border overflow-hidden w-full h-14 rounded-md flex items-center"
+  >
     <input
-      type="text"
       matInput
-      (keyup)="applyFilter($event)"
-      placeholder="Ingresar descripción"
       #input
+      (keyup)="applyFilter($event)"
+      placeholder="Buscar Usuario"
+      class="text-gray-800 w-full bg-transparent px-4 placeholder-gray-400 focus:outline-none"
     />
-  </mat-form-field>
+  </div>
+
 </div>
 
 <section>

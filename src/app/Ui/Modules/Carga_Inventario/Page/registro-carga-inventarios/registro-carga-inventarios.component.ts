@@ -1,5 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { ApplicationRef, Component, ComponentRef, Inject, inject, Injector, ViewChild, ViewContainerRef } from '@angular/core';
+import {
+  ApplicationRef,
+  Component,
+  ComponentRef,
+  Inject,
+  inject,
+  Injector,
+  ViewChild,
+  ViewContainerRef,
+} from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -30,6 +39,8 @@ import { RequestInsertarMapeo } from 'src/app/Domain/models/mapeoColumnas/mapeoC
 import { MapeoCamposService } from 'src/app/Infraestructure/driven-adapter/mapeoCampos/mapeo-campos.service';
 import { MapeoObtenerMapeoById } from 'src/app/Domain/models/mapeoColumnas/mapeoObtenerMapeoById.mode';
 import { MensajesRegistroInventarioService } from 'src/app/Infraestructure/core/SeetAlert/cargaInventario/mensajes-registro-inventario.service';
+import { ValidacionesRegistroInventarioService } from 'src/app/Infraestructure/core/Validaciones/cargaInventario/validaciones-registro-inventario.service';
+import { ExcelRow } from 'src/app/Infraestructure/core/Interfaces/ExcelRow.model,';
 
 @Component({
   selector: 'registro-carga-inventarios',
@@ -42,14 +53,12 @@ import { MensajesRegistroInventarioService } from 'src/app/Infraestructure/core/
     MatFormFieldModule,
     MatSelectModule,
     MatInputModule,
-    FormsModule
+    FormsModule,
   ],
   templateUrl: './registro-carga-inventarios.component.html',
   styleUrl: './registro-carga-inventarios.component.css',
 })
 export class RegistroCargaInventariosComponent {
-
-
   // ================================================================================
   // DECLARACION VARIABLES
   // ================================================================================
@@ -76,6 +85,24 @@ export class RegistroCargaInventariosComponent {
   activarGuardar: boolean = false;
   activarButton: boolean = false;
 
+  columnasEsperadas: Record<string, string> = {
+    almacen: 'Almacén',
+    sucursal: 'Sucursal',
+    zona: 'Zona',
+    pasillo: 'Pasillo',
+    rack: 'Rack',
+    ubicacion: 'Ubicación',
+    esagrupado: 'Es Agrupado',
+    codigogrupo: 'Código Grupo',
+    codigoproducto: 'Código Producto',
+    codigobarra: 'Código Barra',
+    descripcionProducto: 'Descripción Producto',
+    Unidad: 'Unidad',
+    stockL: 'Stock Lógico',
+  };
+  columnasExcel: string[] = [];
+  columnasMapeadas: Record<string, string> = {};
+
   // ================================================================================
   // INYECCIÓN DE SERVICIOS
   // ================================================================================
@@ -85,10 +112,15 @@ export class RegistroCargaInventariosComponent {
     private readonly _postCabecera: InventariosService,
     private readonly router: Router,
     private readonly _mapeo: MapeoCamposService,
-    private alertService_CargaInventario: MensajesRegistroInventarioService
+    private alertService_CargaInventario: MensajesRegistroInventarioService,
+    private validacionService_CargaInventario: ValidacionesRegistroInventarioService
   ) {}
 
+  private readonly injector = Inject(Injector);
+  private readonly appRef = inject(ApplicationRef);
+  private readonly viewContainerRef = inject(ViewContainerRef);
   private readonly listaUsuarios = inject(GetUsuariosUseCases);
+  private readonly mapeoCamposService = inject(MapeoCamposService);
 
   // ================================================================================
   // FUNCIÓN PRINCIPAL
@@ -120,6 +152,7 @@ export class RegistroCargaInventariosComponent {
     });
   }
 
+
   listarUsuarios(): void {
     try {
       this.UsuariosSubscription = this.listaUsuarios
@@ -130,145 +163,98 @@ export class RegistroCargaInventariosComponent {
     } catch (err) {}
   }
 
-  // ================================================================================
-  // GUARDAR CABECERA
-  // ================================================================================
   guardarCabecera(): void {
     const usuario = this.formularioRegistro.value.usuarioasignado?.trim();
     if (usuario === '') {
-      this.alertService_CargaInventario.confirmarSinUsuarioAsignado().then((result) => {
-        if (result.isConfirmed) {
-          this.validacionGuardarFinal();
-        }
-      });
+      this.alertService_CargaInventario
+        .confirmarSinUsuarioAsignado()
+        .then((result) => {
+          if (result.isConfirmed) {
+            this.validacionGuardarFinal();
+          }
+        });
     } else {
       this.validacionGuardarFinal();
     }
   }
 
-
   // ================================================================================
-  // VALIDACIÓN PREVIEW
+  // GUARDAR COLUMNAS MAPEADAS
   // ================================================================================
-
-  columnasEsperadas: Record<string, string> = {
-    almacen: 'Almacén',
-    sucursal: 'Sucursal',
-    zona: 'Zona',
-    pasillo: 'Pasillo',
-    rack: 'Rack',
-    ubicacion: 'Ubicación',
-    esagrupado: 'Es Agrupado',
-    codigogrupo: 'Código Grupo',
-    codigoproducto: 'Código Producto',
-    codigobarra: 'Código Barra',
-    descripcionProducto: 'Descripción Producto',
-    Unidad: 'Unidad',
-    stockL: 'Stock Lógico',
-  };
-  columnasExcel: string[] = [];
-  columnasMapeadas: Record<string, string> = {};
-
-  confirmarSeleccion() {
-    this.validacionGuardarFinal();
-  }
-
   guardarColumnasMapeadas(mapeo: Record<string, string>) {
     this.columnasMapeadas = mapeo;
   }
 
-  private readonly injector = Inject(Injector)
-  private readonly appRef = inject(ApplicationRef)
-  private readonly viewContainerRef= inject(ViewContainerRef)
-
-
+  // ================================================================================
+  // VALIDACION GUARDADO FINAL
+  // ================================================================================
   validacionGuardarFinal() {
     const idUsuario = sessionStorage.getItem('user');
 
     if (this.selectedFile) {
-        const reader = new FileReader();
-        reader.readAsArrayBuffer(this.selectedFile);
+      const reader = new FileReader();
+      reader.readAsArrayBuffer(this.selectedFile);
 
-        reader.onload = async () => {
-            const data = new Uint8Array(reader.result as ArrayBuffer);
-            const workbook = XLSX.read(data, { type: 'array' });
-            const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-            const jsonData: any[] = XLSX.utils.sheet_to_json(worksheet, { raw: false });
+      reader.onload = async () => {
+        const jsonData =
+          this.validacionService_CargaInventario.procesarArchivoExcel(
+            reader.result as ArrayBuffer
+          );
+        const columnasExcel =
+          this.validacionService_CargaInventario.validarYExtraerColumnas(
+            jsonData
+          );
+        if (!columnasExcel) return;
+        const columnasEsperadas =
+          this.validacionService_CargaInventario.getColumnasEsperadas();
 
-            if (jsonData.length === 0) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'El archivo no contiene datos.',
-                });
-                return;
-            }
+        try {
+          const reqMapeiById: MapeoObtenerMapeoById = { id: 1 };
+          const response = await this._mapeo
+            .getMapeoById(reqMapeiById)
+            .toPromise();
 
-            const columnasExcel = Object.keys(jsonData[0] || {});
-            console.log("Columnas detectadas en el Excel:", columnasExcel);
-
-            const columnasEsperadas = {
-                codigobarra: 'Código Barra',
-                codigoproducto: 'Código Producto',
-                stockL: 'Stock Lógico',
-                descripcionProducto: 'Descripción Producto',
-                Unidad: 'Unidad',
-                almacen: 'Almacén',
-                sucursal: 'Sucursal',
-                zona: 'Zona',
-                pasillo: 'Pasillo',
-                rack: 'Rack',
-                ubicacion: 'Ubicación',
-                codigogrupo: 'Código Grupo'
-            };
-
-            try {
-              const reqMapeiById: MapeoObtenerMapeoById = { id: 1 };
-              const response = await this._mapeo.getMapeoById(reqMapeiById).toPromise();
-
-              if (!response || !response.mapeo) {
-                  console.warn("El backend no devolvió un mapeo válido.");
-              }
-
-              // Aquí convertimos la cadena JSON en un objeto real
-              const mapeoGuardado = response?.mapeo ? JSON.parse(response.mapeo) : {};
-
-              const componentRef = this.viewContainerRef.createComponent(ColumnMatcherComponent);
-              componentRef.instance.columnasEsperadas = columnasEsperadas;
-              componentRef.instance.columnasExcel = columnasExcel;
-              componentRef.instance.mapeoGuardado = mapeoGuardado; // Ahora sí es un objeto válido
-
-              componentRef.instance.columnasMapeadas.subscribe((mapeo: Record<string, string> | null) => {
-                  if (mapeo) {
-                      Swal.close();
-                      this.previewDatos(jsonData, mapeo, idUsuario);
-                  } else {
-                      Swal.close();
-                  }
-              });
-
-              const componentElement = componentRef.location.nativeElement;
-
-              Swal.fire({
-                  html: '',
-                  width: '40%',
-                  showConfirmButton: false,
-                  showCancelButton: false,
-                  didOpen: () => {
-                      Swal.getHtmlContainer()?.appendChild(componentElement);
-                  },
-              }).then(() => {
-                  componentRef.destroy();
-              });
-          } catch (error) {
-              console.error("Error al obtener el mapeo guardado", error);
+          if (!this.validacionService_CargaInventario.validarMapeo(response)) {
+            return;
           }
 
-        };
+          const mapeoGuardado = response?.mapeo
+            ? JSON.parse(response.mapeo)
+            : {};
+
+          const componentRef = this.viewContainerRef.createComponent(
+            ColumnMatcherComponent
+          );
+
+          componentRef.instance.columnasEsperadas = columnasEsperadas;
+          componentRef.instance.columnasExcel = columnasExcel;
+          componentRef.instance.mapeoGuardado = mapeoGuardado;
+
+          componentRef.instance.columnasMapeadas.subscribe(
+            (mapeo: Record<string, string> | null) => {
+              if (mapeo) {
+                Swal.close();
+                this.previewDatos(jsonData, mapeo, idUsuario);
+              } else {
+                Swal.close();
+              }
+            }
+          );
+          const componentElement = componentRef.location.nativeElement;
+          this.alertService_CargaInventario.mostrarComponenteEnModal(
+            componentElement,
+            componentRef
+          );
+        } catch (error) {
+          this.alertService_CargaInventario.Error_ObtenerMapeo(error);
+        }
+      };
     }
-}
+  }
 
-
+  // ================================================================================
+  // PROCESAR DATOS
+  // ================================================================================
   procesarDatos(
     jsonData: any[],
     columnasMapeadas: Record<string, string>,
@@ -278,19 +264,16 @@ export class RegistroCargaInventariosComponent {
     const loteSize = 250;
     let registrosProcesados = 0;
 
-    Swal.fire({
-      title: 'Guardando registros...',
-      html: '<b>Iniciando carga de datos...</b>',
-      allowOutsideClick: false,
-      didOpen: () => {
-        Swal.showLoading();
-      },
-    });
+    this.alertService_CargaInventario.Save_GuardadoRegistros();
 
     const procesarLote = (inicio: number) => {
       if (inicio >= totalRegistros) {
         Swal.close();
-        this.mensajeCargaExcelCorrecta('Carga completada');
+        this.alertService_CargaInventario
+          .Info_MensajeCargaCompleta()
+          .then(() => {
+            window.location.reload();
+          });
         return;
       }
 
@@ -328,80 +311,21 @@ export class RegistroCargaInventariosComponent {
       this._postCabecera.newCabecera(cabecera).subscribe({
         next: (response) => {
           registrosProcesados += detalleData.length;
-          Swal.update({
-            html: `<b>Guardando registros ${registrosProcesados} de ${totalRegistros}</b>`,
-          });
-          console.log("Guardado: ", response);
-
+          this.alertService_CargaInventario.Update_ProcesoGuardadoDatos(
+            registrosProcesados,
+            totalRegistros
+          );
           setTimeout(() => procesarLote(fin), 100);
         },
         error: (err) => {
-          console.error('Error al registrar:', err);
           Swal.close();
-          this.mensajeCargaExcelError(
-            'Error al registrar la cabecera y detalle',
-            err
-          );
+          this.alertService_CargaInventario.Error_mensajeCargaExcelError(err);
         },
       });
     };
 
     procesarLote(0);
   }
-
-
-
-  // previewDatos(
-  //   jsonData: any[],
-  //   columnasMapeadas: Record<string, string>,
-  //   idUsuario: string | null
-  // ) {
-  //   const columnasSeleccionadas = Object.keys(columnasMapeadas);
-
-  //   const previewData = jsonData.slice(0, 5).map((item: any) => {
-  //     return columnasSeleccionadas.reduce((acc, key) => {
-  //       acc[key] = item[columnasMapeadas[key]] || '';
-  //       return acc;
-  //     }, {} as Record<string, any>);
-  //   });
-
-  //   const previewHtml = `<table style="width:100%; border-collapse: collapse; text-align:left;">
-  //         <thead>
-  //             <tr>${columnasSeleccionadas
-  //               .map(
-  //                 (key) =>
-  //                   `<th style="border: 1px solid #ddd; padding: 8px; background: #f3f3f3;">${columnasMapeadas[key]}</th>`
-  //               )
-  //               .join('')}</tr>
-  //         </thead>
-  //         <tbody>
-  //             ${previewData
-  //               .map(
-  //                 (row) =>
-  //                   `<tr>${columnasSeleccionadas
-  //                     .map(
-  //                       (key) =>
-  //                         `<td style="border: 1px solid #ddd; padding: 8px;">${row[key]}</td>`
-  //                     )
-  //                     .join('')}</tr>`
-  //               )
-  //               .join('')}
-  //         </tbody>
-  //     </table>`;
-
-  //   Swal.fire({
-  //     title: 'Vista previa reducida de los datos a guardar',
-  //     html: previewHtml,
-  //     width: '80%',
-  //     showCancelButton: true,
-  //     confirmButtonText: 'Guardar',
-  //     cancelButtonText: 'Cancelar',
-  //   }).then((result) => {
-  //     if (result.isConfirmed) {
-  //       this.guardarMapeo(idUsuario, columnasMapeadas, jsonData);
-  //     }
-  //   });
-  // }
 
   previewDatos(
     jsonData: any[],
@@ -410,7 +334,6 @@ export class RegistroCargaInventariosComponent {
   ) {
     const columnasSeleccionadas = Object.keys(columnasMapeadas);
 
-    // Detectar duplicados
     const vistos = new Set<string>();
     const duplicados: any[] = [];
 
@@ -420,43 +343,23 @@ export class RegistroCargaInventariosComponent {
       const clave = `${codigoBarra}-${codigoProducto}`;
 
       if (vistos.has(clave)) {
-        duplicados.push({ fila: index + 2, codigoBarra, codigoProducto }); // index + 2 porque header es fila 1
+        duplicados.push({ fila: index + 2, codigoBarra, codigoProducto });
       } else {
         vistos.add(clave);
       }
     });
 
     if (duplicados.length > 0) {
-      const tablaDuplicados = `<table style="width:100%; border-collapse: collapse; text-align:left;">
-        <thead>
-          <tr>
-            <th style="border: 1px solid #ddd; padding: 8px; background: #f3f3f3;">Fila</th>
-            <th style="border: 1px solid #ddd; padding: 8px; background: #f3f3f3;">Código Barra</th>
-            <th style="border: 1px solid #ddd; padding: 8px; background: #f3f3f3;">Código Producto</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${duplicados.map(
-            (dup) =>
-              `<tr>
-                <td style="border: 1px solid #ddd; padding: 8px;">${dup.fila}</td>
-                <td style="border: 1px solid #ddd; padding: 8px;">${dup.codigoBarra}</td>
-                <td style="border: 1px solid #ddd; padding: 8px;">${dup.codigoProducto}</td>
-              </tr>`
-          ).join('')}
-        </tbody>
-      </table>`;
-
-      Swal.fire({
-        icon: 'error',
-        title: 'Se encontraron códigos duplicados',
-        html: `<p>Existen registros duplicados en tu archivo. Revisa los siguientes duplicados:</p>${tablaDuplicados}`,
-        width: '70%',
-      });
+      const tablaDuplicados =
+        this.validacionService_CargaInventario.generarTablaHTMLDuplicados(
+          duplicados
+        );
+      this.alertService_CargaInventario.Alert_MensajeDuplicados(
+        tablaDuplicados
+      );
       return;
     }
 
-    // Mostrar preview si no hay duplicados
     const previewData = jsonData.slice(0, 5).map((item: any) => {
       return columnasSeleccionadas.reduce((acc, key) => {
         acc[key] = item[columnasMapeadas[key]] || '';
@@ -464,82 +367,57 @@ export class RegistroCargaInventariosComponent {
       }, {} as Record<string, any>);
     });
 
-    const previewHtml = `<table style="width:100%; border-collapse: collapse; text-align:left;">
-      <thead>
-        <tr>${columnasSeleccionadas
-          .map(
-            (key) =>
-              `<th style="border: 1px solid #ddd; padding: 8px; background: #f3f3f3;">${columnasMapeadas[key]}</th>`
-          )
-          .join('')}</tr>
-      </thead>
-      <tbody>
-        ${previewData
-          .map(
-            (row) =>
-              `<tr>${columnasSeleccionadas
-                .map(
-                  (key) =>
-                    `<td style="border: 1px solid #ddd; padding: 8px;">${row[key]}</td>`
-                )
-                .join('')}</tr>`
-          )
-          .join('')}
-      </tbody>
-    </table>`;
+    const previewHtml =
+      this.validacionService_CargaInventario.generarTablaPreviewHtmlDatosCorrectos(
+        columnasSeleccionadas,
+        columnasMapeadas,
+        previewData
+      );
 
-    Swal.fire({
-      title: 'Vista previa reducida de los datos a guardar',
-      html: previewHtml,
-      width: '80%',
-      showCancelButton: true,
-      confirmButtonText: 'Guardar',
-      cancelButtonText: 'Cancelar',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.guardarMapeo(idUsuario, columnasMapeadas, jsonData);
-      }
-    });
+    this.alertService_CargaInventario
+      .Info_VistaPreviaHtml_DatosGuardar(previewHtml)
+      .then((result) => {
+        if (result.isConfirmed) {
+          this.guardarMapeo(idUsuario, columnasMapeadas, jsonData);
+        }
+      });
   }
 
-  private readonly mapeoCamposService = inject(MapeoCamposService)
-
-  guardarMapeo(idUsuario: string | null, columnasMapeadas: Record<string, string>, jsonData: any[]) {
+  guardarMapeo(
+    idUsuario: string | null,
+    columnasMapeadas: Record<string, string>,
+    jsonData: any[]
+  ) {
     if (!idUsuario) {
-      Swal.fire('Error', 'Usuario no identificado', 'error');
+      this.alertService_CargaInventario.Info_UsuarioNoIdentificado();
       return;
     }
 
     const nuevoMapeo: RequestInsertarMapeo = {
       usuarioId: parseInt(idUsuario, 10),
-      nombreConfiguracion: sessionStorage.getItem('user') ?? 'system' ,
+      nombreConfiguracion: sessionStorage.getItem('user') ?? 'system',
       mapeo: JSON.stringify(columnasMapeadas),
     };
 
-
     this.mapeoCamposService.newMapeo(nuevoMapeo).subscribe({
       next: (response) => {
-        Swal.fire('Éxito', response.mensaje, 'success');
+        this.alertService_CargaInventario.Save_GuardadoMapeoColumnas(response);
         this.procesarDatos(jsonData, columnasMapeadas, idUsuario);
       },
       error: (err) => {
-        console.error('Error al guardar el mapeo:', err);
-        Swal.fire('Error', 'No se pudo guardar el mapeo', 'error');
-      }
+        this.alertService_CargaInventario.Error_GuardadoMapeoColumnas();
+      },
     });
   }
 
   validarExistenciaDeMapeoGuardado(): void {
-    const req: MapeoObtenerMapeoById = {id: 1}
+    const req: MapeoObtenerMapeoById = { id: 1 };
     this.mapeoCamposService.UpdateMapeoById(req).subscribe({
-      next: (response) => {
-
-      },
+      next: (response) => {},
       error: (err) => {
-        console.error('Error al obtener el mapeo:', err);
-        Swal.fire('Error', 'No se pudo obtener el mapeo', 'error');
-      }
-    })
+        this.alertService_CargaInventario.info_ObtenerMapeoColumnas();
+      },
+    });
   }
 
   validandoArchivoPreview() {
@@ -551,7 +429,7 @@ export class RegistroCargaInventariosComponent {
   }
 
   // ================================================================================
-  // SELECIÓN ARCHIVOS
+  // SELECIÓN ARCHIVOS EN EL HTML
   // ================================================================================
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -561,11 +439,7 @@ export class RegistroCargaInventariosComponent {
       const fileExtension = file.name.split('.').pop()?.toLowerCase();
 
       if (!fileExtension || !allowedExtensions.includes(fileExtension)) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Archivo no permitido',
-          text: 'Por favor, seleccione un archivo Excel (.xlsx o .xls).',
-        });
+        this.alertService_CargaInventario.Error_ArchivoIncorrecto();
         return;
       }
 
@@ -624,74 +498,6 @@ export class RegistroCargaInventariosComponent {
   }
 
   // ================================================================================
-  // CARGA ARCHIVO
-  // ================================================================================
-  uploadFile(rucEmpresa: string, idCarga: number): void {
-    if (this.selectedFile) {
-      const reader = new FileReader();
-      reader.readAsArrayBuffer(this.selectedFile);
-
-      reader.onload = () => {
-        const data = new Uint8Array(reader.result as ArrayBuffer);
-        const workbook = XLSX.read(data, { type: 'array' });
-        const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-        const jsonData = XLSX.utils.sheet_to_json(worksheet) as detalleCarga[];
-
-        // Guardar el detalle en `this.detalle`
-        this.detalle = jsonData.map((item) => ({
-          almacen: item.almacen || '',
-          sucursal: item.sucursal || '',
-          zona: item.zona || '',
-          pasillo: item.pasillo || '',
-          rack: item.rack || '',
-          ubicacion: item.ubicacion || '',
-          esagrupado: item.esagrupado || '',
-          codigogrupo: item.codigogrupo || '',
-          codigoproducto: item.codigoproducto || '',
-          Codigobarra: item.Codigobarra || '',
-          descripcionProducto: item.descripcionProducto || '',
-          Unidad: item.Unidad || '',
-          stockL: item.stockL || 0,
-          stockF: item.stockF || 0,
-          stockresultante: 0.0,
-          esnuevo: 0,
-          ajuste: 0.0,
-          descripcionajuste: '',
-          nroitem: 0
-        }));
-      };
-    }
-  }
-
-  // ================================================================================
-  // MENSAJE CORRECTO DE CARGA - SWEET ALERT
-  // ================================================================================
-  mensajeCargaExcelCorrecta(mensaje: any): void {
-    this.mensajeCompleto = mensaje.count + ' ' + mensaje.message;
-
-    Swal.fire({
-      position: 'center',
-      icon: 'success',
-      title: 'REGISTRO CORRECTO',
-      showConfirmButton: true,
-      // timer: 1500
-    }).then(() => {
-      window.location.reload();
-    });
-  }
-
-  // ================================================================================
-  // MENSAJE ERROR CARGA - SWEET ALERT
-  // ================================================================================
-  mensajeCargaExcelError(mensaje: string, error: any): void {
-    Swal.fire({
-      icon: 'error',
-      title: 'Oops...',
-      text: `${mensaje} ${error}`,
-    });
-  }
-
-  // ================================================================================
   // LISTA EMPRESAS
   // ================================================================================
   listaEmpresas() {
@@ -700,42 +506,6 @@ export class RegistroCargaInventariosComponent {
       .subscribe((response: MensajeResponseEmpresas) => {
         this.DatosEmpresas = response.empresas;
       });
-  }
-
-  // ================================================================================
-  // MENSAJE REGISTRO CORRECTO - SWEET ALERT
-  // ================================================================================
-  mensajeValidacionRegistroCorrecto(response: any) {
-    const message =
-      response && response.msgerror
-        ? response.msgerror
-        : 'Inventario creado correctamente.';
-    Swal.fire(`${this.tituloSwalCorrecto}`, message, 'success').then(() => {
-      window.location.reload();
-    });
-  }
-
-  // ================================================================================
-  // MAPEO DE CELDAS
-  // ================================================================================
-  mapExcelRow(row: any[]): ExcelRow {
-    return {
-      almacen: row[0] || '',
-      sucursal: row[1] || '',
-      zona: row[2] || '',
-      pasillo: row[3] || '',
-      rack: row[4] || '',
-      ubicacion: row[5] || '',
-      esagrupado: row[6] || '',
-      codigogrupo: row[7] || '',
-      codigoproducto: row[8] || '',
-      codigobarra: row[9] || '',
-      descripcionproducto: row[10] || '',
-      unidad: row[11] || '',
-      stockL: row[12] || 0,
-      stockF: row[13] || 0,
-      stockresultante: row[14] || 0,
-    };
   }
 
   // ================================================================================
@@ -752,35 +522,4 @@ export class RegistroCargaInventariosComponent {
     this.empresasSubscription?.unsubscribe();
     this.UsuariosSubscription?.unsubscribe();
   }
-}
-
-// ================================================================================
-// TIPADO DETALLES
-// ================================================================================
-interface FileDetails {
-  name: string;
-  size: number;
-  type: string;
-  lastModified: number;
-}
-
-// ================================================================================
-// TIPADO CELDAS
-// ================================================================================
-interface ExcelRow {
-  almacen: string;
-  sucursal: string;
-  zona: string;
-  pasillo: string;
-  rack: string;
-  ubicacion: string;
-  esagrupado: string;
-  codigogrupo: string;
-  codigoproducto: string;
-  codigobarra: string;
-  descripcionproducto: string;
-  unidad: string;
-  stockL: number;
-  stockF: number;
-  stockresultante: number;
 }
