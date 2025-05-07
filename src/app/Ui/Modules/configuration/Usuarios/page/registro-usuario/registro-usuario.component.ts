@@ -62,10 +62,6 @@ export class RegistroUsuarioComponent {
       rolUsuario: new FormControl('', [Validators.required]),
     });
 
-    // this.formularioRegistro.patchValue({
-    //   descripcion: this.Cabecera.descripcion || '',
-    // });
-
     this.formularioRegistro.patchValue({
       rucempresa: this.ObjtEmpresa.rucempresa || '',
     });

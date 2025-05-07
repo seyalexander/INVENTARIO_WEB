@@ -37,10 +37,10 @@ import { RequestObtenerDetalleAjusteFiltros } from 'src/app/Domain/models/invent
     MatButtonModule,
     CommonModule,
     MatSortModule,
-    DetalleInventarioAjustesPageComponent
+    DetalleInventarioAjustesPageComponent,
   ],
   templateUrl: './lista-inventarios-ajuste-page.component.html',
-  styleUrl: './lista-inventarios-ajuste-page.component.css'
+  styleUrl: './lista-inventarios-ajuste-page.component.css',
 })
 export class ListaInventariosAjustePageComponent {
   // ---------------------------------------------------------------------------------------
@@ -65,7 +65,9 @@ export class ListaInventariosAjustePageComponent {
   private inventarioSubscription: Subscription | undefined;
   private readonly ObjectInventario = inject(InventariosByIdUseCases);
   private readonly listDetalle = inject(InventarioDetallesUseCases);
-  private readonly listDetalleByFiltros = inject(InventarioDetallesByFiltrosUseCases);
+  private readonly listDetalleByFiltros = inject(
+    InventarioDetallesByFiltrosUseCases
+  );
   private _liveAnnouncer = inject(LiveAnnouncer);
 
   // ---------------------------------------------------------------------------------------
@@ -75,23 +77,22 @@ export class ListaInventariosAjustePageComponent {
     this.listarInventarios();
   }
 
-  private _inventarios = inject(InventariosService)
+  private _inventarios = inject(InventariosService);
 
+  cantidadItemsAjustados: number = 0;
 
-
-    cantidadItemsAjustados: number = 0
-
-    mostrarInvenvtarioDetalleAjuste(rucempresa: string, idcarga: number) {
-      const req: RequestObtenerDetalleAjusteFiltros = {
-        rucempresa,
-        idcarga,
-        ajustes: 2
-      }
-      this._inventarios.getInventariosAjustesByFiltros(req)
+  mostrarInvenvtarioDetalleAjuste(rucempresa: string, idcarga: number) {
+    const req: RequestObtenerDetalleAjusteFiltros = {
+      rucempresa,
+      idcarga,
+      ajustes: 2,
+    };
+    this._inventarios
+      .getInventariosAjustesByFiltros(req)
       .subscribe((Response: detalleCarga[]) => {
         this.cantidadItemsAjustados = Response.length;
       });
-    }
+  }
 
   announceSortChange(sortState: Sort) {
     if (sortState.direction) {
@@ -100,7 +101,6 @@ export class ListaInventariosAjustePageComponent {
       this._liveAnnouncer.announce('Sorting cleared');
     }
   }
-
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -129,11 +129,13 @@ export class ListaInventariosAjustePageComponent {
       (response: inventariosModel) => {
         this.InventarioSeleccionado = response;
         this.ObtenerDetalleInventarios(response.rucempresa, response.idcarga);
-        this.mostrarInvenvtarioDetalleAjuste(response.rucempresa, response.idcarga)
+        this.mostrarInvenvtarioDetalleAjuste(
+          response.rucempresa,
+          response.idcarga
+        );
       }
     );
   }
-
 
   // ---------------------------------------------------------------------------------------
   // OBTENCIÓN DATOS DEL INVENTARIO SELECCIOADO PARA MOSTRAR SU DETALLE
@@ -144,8 +146,7 @@ export class ListaInventariosAjustePageComponent {
       .getDetalleInventario(reqDatos)
       .subscribe((response: detalleCarga[]) => {
         this.listaProductos = response;
-        console.log("DATA LSITA PRODUCTOS: ",this.listaProductos);
-
+        console.log('DATA LSITA PRODUCTOS: ', this.listaProductos);
       });
   }
 
@@ -165,7 +166,7 @@ export class ListaInventariosAjustePageComponent {
     'descripcion',
     'totalregistros',
     'UsuarioAsignado',
-    'opciones'
+    'opciones',
   ];
 
   dataSource = new MatTableDataSource<inventariosModel>([]);
@@ -181,13 +182,15 @@ export class ListaInventariosAjustePageComponent {
   // ---------------------------------------------------------------------------------------
   // LISTA DE INVENTARIOS GENERALES
   // ---------------------------------------------------------------------------------------
-  private readonly listaInventariosbyfiltros = inject(InventariosByFiltrosUseCases);
+  private readonly listaInventariosbyfiltros = inject(
+    InventariosByFiltrosUseCases
+  );
   listarInventarios() {
-    const estado = '2'
-    const rucempresa = ''
+    const estado = '2';
+    const rucempresa = '';
     const reqDatos: RequestInventarioByFiltros = { rucempresa, estado };
-    reqDatos.estado = estado
-    reqDatos.rucempresa = rucempresa
+    reqDatos.estado = estado;
+    reqDatos.rucempresa = rucempresa;
     try {
       this.inventarioSubscription = this.listaInventariosbyfiltros
         .getInventariosByFiltros(reqDatos)
@@ -196,7 +199,6 @@ export class ListaInventariosAjustePageComponent {
             if (Array.isArray(response)) {
               this.datosInventarioslista = response;
               this.dataSource.data = response;
-
             } else {
               this.mostrarMensajeError('DATOS NO VÁLIDOS', `${response}`);
               this.datosInventarioslista = [];
@@ -244,7 +246,7 @@ export class ListaInventariosAjustePageComponent {
       icon: 'error',
       title: `${response}`,
       text: 'verifique que la conexión del api y recargue el listado',
-    }).then((respuesta) => { });
+    }).then((respuesta) => {});
   }
 
   respuestaInventariosErrorInesperado(response: any): void {

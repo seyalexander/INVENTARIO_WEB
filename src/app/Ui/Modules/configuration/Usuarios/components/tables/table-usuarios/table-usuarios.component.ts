@@ -218,7 +218,7 @@ private cdRef = inject(ChangeDetectorRef);
 ObtenerDetalleUsuario(usuario: SeguridadModel) {
   if (this.detalleUsuarioComponent) {
     this.detalleUsuarioComponent.datosUsuario = usuario;
-    this.cdRef.detectChanges(); // 🔹 Forzar la actualización del DOM
+    this.cdRef.detectChanges();
   }
 
   // 🔹 Abrimos el modal después de asignar los datos

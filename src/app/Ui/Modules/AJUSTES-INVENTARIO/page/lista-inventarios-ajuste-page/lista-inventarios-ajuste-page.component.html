@@ -1,6 +1,6 @@
 <!-- ========== START - HEADER ========== -->
 <header
-  class="sticky h-[4rem] top-0 inset-x-0 flex flex-wrap md:justify-start md:flex-nowrap z-[48] w-full bg-white border-b text-sm py-2.5 lg:ps-[260px] dark:bg-neutral-800 dark:border-neutral-700"
+  class="sticky h-[4rem] top-0 inset-x-0 flex flex-wrap md:justify-start md:flex-nowrap z-[48] w-full bg-white text-sm py-2.5 lg:ps-[260px] dark:bg-neutral-800 dark:border-neutral-700"
 >
   <nav class="px-4 sm:px-6 flex basis-full items-center w-full mx-auto">
     <div class="me-5 lg:me-0 lg:hidden">
@@ -39,15 +39,17 @@
       <!-- Apartado filtros -->
       <!-- =================================================================================== -->
       <div class="max-w-[100rem] py-2 lg:py-0 mx-auto">
-        <mat-form-field class="w-[20rem]">
-          <mat-label>Buscar inventario</mat-label>
+        <div
+          class="bg-gray-100 border overflow-hidden w-full h-14 rounded-md flex items-center"
+        >
           <input
             matInput
-            (keyup)="applyFilter($event)"
-            placeholder="Ingresar descripción"
             #input
+            (keyup)="applyFilter($event)"
+            placeholder="Buscar Inventario"
+            class="text-gray-800 w-full bg-transparent px-4 placeholder-gray-400 focus:outline-none"
           />
-        </mat-form-field>
+        </div>
       </div>
 
       <section>
@@ -97,9 +99,7 @@
                           <button
                             class="fecharegistro px-1 py-3 flex gap-2 align-center"
                           >
-                            <span
-                              class="text-sm text-gray-600"
-                            >
+                            <span class="text-sm text-gray-600">
                               {{
                                 row.fechacreacion
                                   ? (row.fechacreacion | date : "dd/MM/yyyy")
@@ -163,9 +163,7 @@
                             class="usuariocreador"
                             class="px-6 py-3 flex gap-2 align-center"
                           >
-                            <span
-                              class="text-sm text-gray-600 "
-                            >
+                            <span class="text-sm text-gray-600">
                               {{ row.UsuarioAsignado.toUpperCase() }}
                             </span>
                           </button>

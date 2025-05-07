@@ -79,6 +79,14 @@ export class ValidacionesRegistroInventarioService {
     }
     return true;
   }
+
+  /**
+   * Genera una tabla HTML con estilo que muestra una lista de registros duplicados.
+   *
+   * @param duplicados - Un arreglo de objetos que contienen los datos duplicados.
+   * Cada objeto debe tener las propiedades: fila, codigoBarra y codigoProducto.
+   * @returns Una cadena de texto con el HTML de la tabla generada.
+   */
   generarTablaHTMLDuplicados(duplicados: any[]): string {
     return `
       <div style="border: 1px solid #ccc; border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); font-family: 'Segoe UI', sans-serif; overflow: hidden;">

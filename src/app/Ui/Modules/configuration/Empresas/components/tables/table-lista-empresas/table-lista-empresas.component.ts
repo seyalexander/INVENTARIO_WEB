@@ -32,13 +32,12 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
     DetalleEmpresaPageComponent,
     MatFormFieldModule,
     MatInputModule,
-    MatSortModule
+    MatSortModule,
   ],
   templateUrl: './table-lista-empresas.component.html',
-  styleUrl: './table-lista-empresas.component.css'
+  styleUrl: './table-lista-empresas.component.css',
 })
 export class TableListaEmpresasComponent {
-
   displayedColumns: string[] = [
     'fechacreacion',
     'rucempresa',
@@ -56,20 +55,20 @@ export class TableListaEmpresasComponent {
     this.dataSource.sort = this.sort;
   }
 
-  private readonly _empresas = inject(EmpresasService)
+  private readonly _empresas = inject(EmpresasService);
   private _liveAnnouncer = inject(LiveAnnouncer);
 
   private empresasSubscription: Subscription | undefined;
   private empresaDetalleSubscription: Subscription | undefined;
 
-  detalleEmpresa: EmpresasModel = {} as EmpresasModel
-  sucursales: Array<Sucursales> = []
+  detalleEmpresa: EmpresasModel = {} as EmpresasModel;
+  sucursales: Array<Sucursales> = [];
   DatosEmpresas: Array<EmpresasModel> = [];
-  cantidadEmpresas: number = 0
-  cantidadSucursales: number = 0
+  cantidadEmpresas: number = 0;
+  cantidadSucursales: number = 0;
 
   ngOnInit(): void {
-    this.listaEmpresas()
+    this.listaEmpresas();
   }
 
   announceSortChange(sortState: Sort) {
@@ -83,7 +82,7 @@ export class TableListaEmpresasComponent {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
-    this.dataSource.paginator?.firstPage()
+    this.dataSource.paginator?.firstPage();
   }
 
   listaEmpresas(): void {
@@ -100,13 +99,12 @@ export class TableListaEmpresasComponent {
     this.empresaDetalleSubscription = this._empresas
       .DetalleEmpresa(reqDatos)
       .subscribe((response: EmpresasModel) => {
-        this.detalleEmpresa = response
+        this.detalleEmpresa = response;
       });
   }
 
   ngOnDestroy(): void {
     this.empresasSubscription?.unsubscribe();
-    this.empresaDetalleSubscription?.unsubscribe()
+    this.empresaDetalleSubscription?.unsubscribe();
   }
-
 }

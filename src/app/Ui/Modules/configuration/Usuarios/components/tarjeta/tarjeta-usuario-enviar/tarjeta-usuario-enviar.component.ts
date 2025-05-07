@@ -1,21 +1,31 @@
-import { ChangeDetectorRef, Component, ElementRef, Input, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  Input,
+  ViewChild,
+} from '@angular/core';
 import html2canvas from 'html2canvas';
 import { ToastrService } from 'ngx-toastr';
 import { SeguridadModel } from 'src/app/Domain/models/seguridad/seguridad.model';
-import Swal from 'sweetalert2';
+import { MensajesListaUsuariosService } from 'src/app/Infraestructure/core/SeetAlert/Usuarios/mensajes-lista-usuarios.service';
 
 @Component({
   selector: 'tarjeta-usuario-enviar',
   standalone: true,
   imports: [],
   templateUrl: './tarjeta-usuario-enviar.component.html',
-  styleUrl: './tarjeta-usuario-enviar.component.css'
+  styleUrl: './tarjeta-usuario-enviar.component.css',
 })
 export class TarjetaUsuarioEnviarComponent {
   @Input() usuario: SeguridadModel = {} as SeguridadModel;
   @ViewChild('tarjeta') tarjeta!: ElementRef;
 
-  constructor(private cdRef: ChangeDetectorRef, private toastr: ToastrService) {}
+  constructor(
+    private cdRef: ChangeDetectorRef,
+    private toastr: ToastrService,
+    private mensajesAlert: MensajesListaUsuariosService
+  ) {}
 
   copiarImagen() {
     if (!this.tarjeta) return;
@@ -31,29 +41,32 @@ export class TarjetaUsuarioEnviarComponent {
       html2canvas(this.tarjeta.nativeElement, {
         useCORS: true,
         backgroundColor: null,
-        scale: 3
+        scale: 3,
       }).then((canvas) => {
         canvas.toBlob((blob) => {
           if (blob) {
             const item = new ClipboardItem({ 'image/png': blob });
-            navigator.clipboard.write([item]).then(() => {
-              this.mensajeCopiCorrecto();
-              this.tarjeta.nativeElement.style.display = 'none';
-            }).catch(() => {
-              this.toastr.error('No se pudo copiar la imagen', 'Error');
-            });
+            navigator.clipboard
+              .write([item])
+              .then(() => {
+                this.mensajeCopiCorrecto();
+                this.tarjeta.nativeElement.style.display = 'none';
+              })
+              .catch(() => {
+                this.toastr.error('No se pudo copiar la imagen', 'Error');
+              });
           }
         });
       });
-
     }, 500);
   }
 
-   mensajeCopiCorrecto() {
-      const message = 'Datos copiados al portapales correctamente';
-      Swal.fire(`ID CARD`, message, 'success').then(() => {
-        window.location.reload();
-      });
-    }
+  mensajeCopiCorrecto() {
+    this.mensajesAlert.mensajeCopiCorrecto()
+    .then(() => {
+      // Si es necesario recargar, descomentar la línea siguiente:
+      // window.location.reload();
+    });
+  }
 
 }

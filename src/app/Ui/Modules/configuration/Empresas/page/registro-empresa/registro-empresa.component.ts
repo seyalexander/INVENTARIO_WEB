@@ -136,8 +136,6 @@ export class RegistroEmpresaComponent {
   }
 
 
-
-
   onCancel() {
     this.formularioRegistro.reset();
   }
