@@ -1,7 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { HeaderPageAsignarComponent } from '../header-page-asignar/header-page-asignar.component';
-import { FooterComponent } from 'src/app/Ui/Shared/Components/organisms/footer/footer.component';
 import { Subscription } from 'rxjs';
 import { SeguridadModel } from 'src/app/Domain/models/seguridad/seguridad.model';
 import { inventariosModel } from 'src/app/Domain/models/inventarios/inventarios.models';
@@ -37,7 +36,6 @@ type FiltroInventario = 'todos' | 'asignados' | 'noAsignados';
   imports: [
     NgxPaginationModule,
     HeaderPageAsignarComponent,
-    FooterComponent,
     RegistroAsignarPageComponent,
     CommonModule,
     ThTableAsignarComponent,
