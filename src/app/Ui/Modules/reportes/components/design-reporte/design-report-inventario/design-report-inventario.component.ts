@@ -1,3 +1,4 @@
+import { Subscription } from 'rxjs';
 import {
   ChangeDetectorRef,
   Component,
@@ -21,14 +22,14 @@ import { RequestObtenerDetalleFiltros } from 'src/app/Domain/models/inventarios/
 import { InventarioDetallesByFiltrosUseCases } from 'src/app/Domain/use-case/inventarios/get-inventarioDetalleByFiltros-use-case';
 import { RequestObtenerDetalleAjusteFiltros } from 'src/app/Domain/models/inventarios/reqyestObtenerDetalleAjustadosFiltros.model';
 import { InventariosService } from 'src/app/Infraestructure/driven-adapter/inventarios/inventarios.service';
-import { IconExcelComponent } from 'src/app/Ui/Shared/Components/icons/icon-excel/icon-excel.component';
-import { IconPdfComponent } from 'src/app/Ui/Shared/Components/icons/icon-pdf/icon-pdf.component';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { NgClass } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
+import { MensajeGenerarReportePdfService } from 'src/app/Infraestructure/core/SeetAlert/Reportes/mensaje-generar-reporte-pdf.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'design-report-inventario',
@@ -37,8 +38,6 @@ import { MatInputModule } from '@angular/material/input';
     FiltrosCheckboxTablaComponent,
     MatTabsModule,
     MatIcon,
-    IconExcelComponent,
-    IconPdfComponent,
     MatPaginatorModule,
     MatTableModule,
     MatInputModule,
@@ -69,6 +68,7 @@ export class DesignReportInventarioComponent {
   private readonly listDetalleByFiltros = inject(
     InventarioDetallesByFiltrosUseCases
   );
+  private readonly mensajeExportPdf = inject(MensajeGenerarReportePdfService);
 
   titulosOpciones: string = '';
   selectedOption: string = '';
@@ -94,13 +94,15 @@ export class DesignReportInventarioComponent {
     }
   }
 
-  exportarEXCEL() {
+  selectOptionEXCEL(option: string) {
+    this.selectedOption = option;
     if (this.selectedOption === 'excel') {
       this.inventarioSeleccionadoExcel();
     }
   }
 
-  exportarPDF() {
+  selectOptionPDF(option: string) {
+    this.selectedOption = option;
     if (this.selectedOption === 'pdf') {
       this.inventarioSeleccionado(
         this.citaSeleccionada.rucempresa,
@@ -109,14 +111,15 @@ export class DesignReportInventarioComponent {
     }
   }
 
-  selectOptionEXCEL(option: string) {
-    this.selectedOption = option;
-    this.exportarEXCEL();
-  }
+  inventarioSeleccionado(rucempresa: string, idcarga: number) {
+    const reqDatos: requestDatosasignar = { rucempresa, idcarga };
+    this.ObjectInventario.getInventarioById(reqDatos).subscribe(
+      (response: inventariosModel) => {
+        this.InventarioSeleccionado = response;
 
-  selectOptionPDF(option: string) {
-    this.selectedOption = option;
-    this.exportarPDF();
+        this.exportToPDF();
+      }
+    );
   }
 
   // ---------------------------------------------------------------------------------------
@@ -249,223 +252,244 @@ export class DesignReportInventarioComponent {
     );
   }
 
-  inventarioSeleccionado(rucempresa: string, idcarga: number) {
-    const reqDatos: requestDatosasignar = { rucempresa, idcarga };
-    this.ObjectInventario.getInventarioById(reqDatos).subscribe(
-      (response: inventariosModel) => {
-        this.InventarioSeleccionado = response;
+  isGeneratingPDF = false;
+  async exportToPDF() {
+    this.isGeneratingPDF = true;
 
-        this.exportToPDF();
+    try {
+      this.mensajeExportPdf.Alert_GenerandoReporte_PDF();
+
+      await new Promise(resolve => setTimeout(resolve, 100));
+
+      const doc = new jsPDF({ orientation: 'landscape' });
+      const pageWidth = doc.internal.pageSize.getWidth();
+
+      //  PARTE 1 HEADER DISEÑO
+      // ===================================================================================================
+      // Dibuja la mitad izquierda del rectángulo (rojo)
+      doc.setFillColor(220, 53, 69); // Rojo
+      doc.rect(0, 0, pageWidth / 2, 10, 'F');
+
+      // Dibuja el polígono inclinado para la mitad derecha (gris oscuro)
+      doc.setFillColor(50, 50, 50); // Gris oscuro
+
+      // Empieza el polígono en el punto de la parte superior izquierda
+      doc.moveTo(pageWidth / 2 - 5, 0);
+
+      // Dibuja la línea hacia el borde superior derecho
+      doc.lineTo(pageWidth, 0);
+
+      // Baja hasta la esquina inferior derecha
+      doc.lineTo(pageWidth, 10);
+
+      // Cambia la posición de la línea a la parte inferior de la mitad roja, pero ligeramente desplazada hacia la derecha
+      doc.lineTo(pageWidth / 2, 10); // Este valor ajusta la inclinación a la derecha
+
+      // Vuelve al punto de la base de la mitad roja, pero ligeramente hacia la derecha
+      doc.lineTo(pageWidth / 2 - 15, 10);
+
+      // Cierra el polígono conectando con el punto de inicio de la mitad roja
+      doc.lineTo(pageWidth / 2 - 15, 10);
+
+      // Rellena el polígono con el color gris oscuro
+      doc.fill();
+
+      //  PARTE 2 HEADER DISEÑO
+      // ===================================================================================================
+      // Dibuja completo el rectángulo (gris)
+      doc.fill();
+      doc.rect(0, 10, pageWidth / 2, 5, 'F');
+
+      doc.setFillColor(85, 85, 85);
+      doc.rect(0, 15, pageWidth / 2, 5, 'F');
+
+      doc.setFillColor(50, 50, 50); // Gris oscuro
+      doc.rect(0, 20, pageWidth / 2, 5, 'F');
+
+      doc.rect(pageWidth / 2, 10, pageWidth / 2, 15, 'F');
+      // Empieza el polígono en el punto de la parte superior izquierda
+      doc.moveTo(pageWidth / 2, 0);
+
+      // Dibuja la línea hacia el borde superior derecho
+      doc.lineTo(pageWidth, 0);
+
+      // Baja hasta la esquina inferior derecha
+      doc.lineTo(pageWidth, 20);
+
+      // Cambia la posición de la línea a la parte inferior de la mitad roja, pero ligeramente desplazada hacia la derecha
+      doc.lineTo(pageWidth / 2, 20); // Este valor ajusta la inclinación a la derecha
+
+      // Vuelve al punto de la base de la mitad roja, pero ligeramente hacia la derecha
+      doc.lineTo(pageWidth / 2 - 15, 20);
+
+      // Cierra el polígono conectando con el punto de inicio de la mitad roja
+      doc.lineTo(pageWidth / 2 - 15, 20);
+
+      // Rellena el polígono con el color gris oscuro
+      doc.fill();
+
+      //  PARTE 2 HEADER DISEÑO
+      // ===================================================================================================
+
+      // Dibuja el polígono inclinado para la mitad derecha (gris oscuro)
+      doc.setFillColor(50, 50, 50); // Gris oscuro
+
+      // Empieza el polígono en el punto de la parte superior izquierda
+      doc.moveTo(pageWidth / 2 - 15, 24);
+
+      // Dibuja la línea hacia el borde superior derecho
+      doc.lineTo(pageWidth, 24);
+
+      // Baja hasta la esquina inferior derecha
+      doc.lineTo(pageWidth, 40);
+
+      // Cambia la posición de la línea a la parte inferior de la mitad roja, pero ligeramente desplazada hacia la derecha
+      doc.lineTo(pageWidth / 2, 40); // Este valor ajusta la inclinación a la derecha
+
+      // Vuelve al punto de la base de la mitad roja, pero ligeramente hacia la derecha
+      doc.lineTo(pageWidth / 2, 40);
+
+      // Cierra el polígono conectando con el punto de inicio de la mitad roja
+      doc.lineTo(pageWidth / 2, 40);
+
+      // Rellena el polígono con el color gris oscuro
+      doc.fill();
+
+      // Texto del encabezado
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(16);
+      doc.setTextColor(255, 255, 255);
+      doc.text('REPORTE DE INVENTARIO', pageWidth - 100, 20);
+
+      doc.setFontSize(10);
+      doc.setTextColor(50, 50, 50);
+      doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 14, 30);
+
+      // Validar datos
+      if (!this.listaProductos || !Array.isArray(this.listaProductos)) {
+        console.error('Error: listaProductos es inválida.');
+        return;
       }
-    );
-  }
 
-  exportToPDF() {
-    const doc = new jsPDF({ orientation: 'landscape' });
-    const pageWidth = doc.internal.pageSize.getWidth();
+      const columnasSeleccionadas = this.columnasSeleccionadas;
 
-    //  PARTE 1 HEADER DISEÑO
-    // ===================================================================================================
-    // Dibuja la mitad izquierda del rectángulo (rojo)
-    doc.setFillColor(220, 53, 69); // Rojo
-    doc.rect(0, 0, pageWidth / 2, 10, 'F');
+      const allColumns = [
+        { title: 'Almacén', dataKey: 'almacen' },
+        { title: 'Sucursal', dataKey: 'sucursal' },
+        { title: 'Zona', dataKey: 'zona' },
+        { title: 'Pasillo', dataKey: 'pasillo' },
+        { title: 'Rack', dataKey: 'rack' },
+        { title: 'Ubicación', dataKey: 'ubicacion' },
+        { title: 'Agrupado', dataKey: 'esagrupado' },
+        { title: 'Grupo', dataKey: 'codigogrupo' },
+        { title: 'Producto', dataKey: 'codigoproducto' },
+        { title: 'Código Barra', dataKey: 'codigobarra' },
+        { title: 'Descripción', dataKey: 'descripcionProducto' },
+        { title: 'Unidad', dataKey: 'unidad' },
+        { title: 'Stock L.', dataKey: 'stockL' },
+        { title: 'Stock F.', dataKey: 'stockF' },
+        { title: 'Resultante', dataKey: 'stockresultante' },
+        { title: 'ajuste', dataKey: 'ajuste' },
+        { title: 'descripcionajuste', dataKey: 'descripcionajuste' },
+      ];
 
-    // Dibuja el polígono inclinado para la mitad derecha (gris oscuro)
-    doc.setFillColor(50, 50, 50); // Gris oscuro
+      const filteredColumns = allColumns.filter((col) =>
+        columnasSeleccionadas.includes(col.dataKey)
+      );
 
-    // Empieza el polígono en el punto de la parte superior izquierda
-    doc.moveTo(pageWidth / 2 - 5, 0);
+      // Tabla
+      const startY = 50;
+      (doc as any).autoTable({
+        startY,
+        head: [filteredColumns.map((col) => col.title)],
+        body: this.listaProductos.map((det) =>
+          filteredColumns.map((col) => String(det[col.dataKey] ?? ''))
+        ),
+        styles: {
+          font: 'helvetica',
+          fontSize: 9,
+          cellPadding: 1.5,
+          textColor: 30,
+        },
+        headStyles: {
+          fillColor: [52, 58, 64], // gris oscuro
+          textColor: [255, 255, 255],
+          fontStyle: 'bold',
+        },
+        alternateRowStyles: { fillColor: [248, 249, 250] }, // gris claro
+        theme: 'grid',
+      });
 
-    // Dibuja la línea hacia el borde superior derecho
-    doc.lineTo(pageWidth, 0);
+      // Totales
+      const totalStockL = this.listaProductos.reduce(
+        (acc, item) => acc + (Number(item.stockL) || 0),
+        0
+      );
+      const totalStockF = this.listaProductos.reduce(
+        (acc, item) => acc + (Number(item.stockF) || 0),
+        0
+      );
+      const totalRes = this.listaProductos.reduce(
+        (acc, item) => acc + (Number(item.stockresultante) || 0),
+        0
+      );
 
-    // Baja hasta la esquina inferior derecha
-    doc.lineTo(pageWidth, 10);
+      const resumenY = (doc as any).lastAutoTable.finalY + 10;
 
-    // Cambia la posición de la línea a la parte inferior de la mitad roja, pero ligeramente desplazada hacia la derecha
-    doc.lineTo(pageWidth / 2, 10); // Este valor ajusta la inclinación a la derecha
+      doc.setFontSize(11);
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(0);
+      doc.setFillColor(230, 230, 230);
+      doc.rect(pageWidth - 70, resumenY - 6, 60, 28, 'F');
+      doc.text('TOTALES', pageWidth - 65, resumenY);
 
-    // Vuelve al punto de la base de la mitad roja, pero ligeramente hacia la derecha
-    doc.lineTo(pageWidth / 2 - 15, 10);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(10);
+      doc.text(
+        `Stock L.: ${String(totalStockL)}`,
+        pageWidth - 65,
+        resumenY + 10
+      );
+      doc.text(
+        `Stock F.: ${String(totalStockF)}`,
+        pageWidth - 65,
+        resumenY + 18
+      );
+      doc.text(
+        `Resultante: ${String(totalRes)}`,
+        pageWidth - 65,
+        resumenY + 26
+      );
 
-    // Cierra el polígono conectando con el punto de inicio de la mitad roja
-    doc.lineTo(pageWidth / 2 - 15, 10);
+      // Firma y mensaje
+      doc.setFontSize(10);
+      doc.setFont('helvetica', 'italic');
+      doc.text(
+        'Gracias por usar el sistema de inventario',
+        pageWidth / 2,
+        resumenY + 50,
+        { align: 'center' }
+      );
 
-    // Rellena el polígono con el color gris oscuro
-    doc.fill();
+      // Guardar
+      const nombreArchivo = `${
+        this.InventarioSeleccionado?.descripcion || 'inventario'
+      }.pdf`;
+      doc.save(nombreArchivo);
 
-    //  PARTE 2 HEADER DISEÑO
-    // ===================================================================================================
-    // Dibuja completo el rectángulo (gris)
-    doc.fill();
-    doc.rect(0, 10, pageWidth / 2, 5, 'F');
+      this.mensajeExportPdf.cerrarAlerta();
 
-    doc.setFillColor(85, 85, 85);
-    doc.rect(0, 15, pageWidth / 2, 5, 'F');
-
-    doc.setFillColor(50, 50, 50); // Gris oscuro
-    doc.rect(0, 20, pageWidth / 2, 5, 'F');
-
-    doc.rect(pageWidth / 2, 10, pageWidth / 2, 15, 'F');
-    // Empieza el polígono en el punto de la parte superior izquierda
-    doc.moveTo(pageWidth / 2, 0);
-
-    // Dibuja la línea hacia el borde superior derecho
-    doc.lineTo(pageWidth, 0);
-
-    // Baja hasta la esquina inferior derecha
-    doc.lineTo(pageWidth, 20);
-
-    // Cambia la posición de la línea a la parte inferior de la mitad roja, pero ligeramente desplazada hacia la derecha
-    doc.lineTo(pageWidth / 2, 20); // Este valor ajusta la inclinación a la derecha
-
-    // Vuelve al punto de la base de la mitad roja, pero ligeramente hacia la derecha
-    doc.lineTo(pageWidth / 2 - 15, 20);
-
-    // Cierra el polígono conectando con el punto de inicio de la mitad roja
-    doc.lineTo(pageWidth / 2 - 15, 20);
-
-    // Rellena el polígono con el color gris oscuro
-    doc.fill();
-
-    //  PARTE 2 HEADER DISEÑO
-    // ===================================================================================================
-
-    // Dibuja el polígono inclinado para la mitad derecha (gris oscuro)
-    doc.setFillColor(50, 50, 50); // Gris oscuro
-
-    // Empieza el polígono en el punto de la parte superior izquierda
-    doc.moveTo(pageWidth / 2 - 15, 24);
-
-    // Dibuja la línea hacia el borde superior derecho
-    doc.lineTo(pageWidth, 24);
-
-    // Baja hasta la esquina inferior derecha
-    doc.lineTo(pageWidth, 40);
-
-    // Cambia la posición de la línea a la parte inferior de la mitad roja, pero ligeramente desplazada hacia la derecha
-    doc.lineTo(pageWidth / 2, 40); // Este valor ajusta la inclinación a la derecha
-
-    // Vuelve al punto de la base de la mitad roja, pero ligeramente hacia la derecha
-    doc.lineTo(pageWidth / 2, 40);
-
-    // Cierra el polígono conectando con el punto de inicio de la mitad roja
-    doc.lineTo(pageWidth / 2, 40);
-
-    // Rellena el polígono con el color gris oscuro
-    doc.fill();
-
-    // Texto del encabezado
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(16);
-    doc.setTextColor(255, 255, 255);
-    doc.text('REPORTE DE INVENTARIO', pageWidth - 100, 20);
-
-    doc.setFontSize(10);
-    doc.setTextColor(50, 50, 50);
-    doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 14, 30);
-
-    // Validar datos
-    if (!this.listaProductos || !Array.isArray(this.listaProductos)) {
-      console.error('Error: listaProductos es inválida.');
-      return;
+    } catch (error) {
+      console.error('Error al exportar a PDF:', error);
+      this.mensajeExportPdf.cerrarAlerta();
+      Swal.fire({
+        icon: 'error',
+        title: 'Error al generar PDF',
+        text: 'Ocurrió un problema, inténtalo nuevamente.',
+      });
+    } finally {
+      this.isGeneratingPDF = false;
     }
-
-    console.log('EXPORTAR AJUSTADO PDF: ', this.listaProductos);
-
-    const columnasSeleccionadas = this.columnasSeleccionadas;
-
-    const allColumns = [
-      { title: 'Almacén', dataKey: 'almacen' },
-      { title: 'Sucursal', dataKey: 'sucursal' },
-      { title: 'Zona', dataKey: 'zona' },
-      { title: 'Pasillo', dataKey: 'pasillo' },
-      { title: 'Rack', dataKey: 'rack' },
-      { title: 'Ubicación', dataKey: 'ubicacion' },
-      { title: 'Agrupado', dataKey: 'esagrupado' },
-      { title: 'Grupo', dataKey: 'codigogrupo' },
-      { title: 'Producto', dataKey: 'codigoproducto' },
-      { title: 'Código Barra', dataKey: 'codigobarra' },
-      { title: 'Descripción', dataKey: 'descripcionProducto' },
-      { title: 'Unidad', dataKey: 'unidad' },
-      { title: 'Stock L.', dataKey: 'stockL' },
-      { title: 'Stock F.', dataKey: 'stockF' },
-      { title: 'Resultante', dataKey: 'stockresultante' },
-      { title: 'ajuste', dataKey: 'ajuste' },
-      { title: 'descripcionajuste', dataKey: 'descripcionajuste' },
-    ];
-
-    const filteredColumns = allColumns.filter((col) =>
-      columnasSeleccionadas.includes(col.dataKey)
-    );
-
-    // Tabla
-    const startY = 50;
-    (doc as any).autoTable({
-      startY,
-      head: [filteredColumns.map((col) => col.title)],
-      body: this.listaProductos.map((det) =>
-        filteredColumns.map((col) => String(det[col.dataKey] ?? ''))
-      ),
-      styles: {
-        font: 'helvetica',
-        fontSize: 9,
-        cellPadding: 1.5,
-        textColor: 30,
-      },
-      headStyles: {
-        fillColor: [52, 58, 64], // gris oscuro
-        textColor: [255, 255, 255],
-        fontStyle: 'bold',
-      },
-      alternateRowStyles: { fillColor: [248, 249, 250] }, // gris claro
-      theme: 'grid',
-    });
-
-    // Totales
-    const totalStockL = this.listaProductos.reduce(
-      (acc, item) => acc + (Number(item.stockL) || 0),
-      0
-    );
-    const totalStockF = this.listaProductos.reduce(
-      (acc, item) => acc + (Number(item.stockF) || 0),
-      0
-    );
-    const totalRes = this.listaProductos.reduce(
-      (acc, item) => acc + (Number(item.stockresultante) || 0),
-      0
-    );
-
-    const resumenY = (doc as any).lastAutoTable.finalY + 10;
-
-    doc.setFontSize(11);
-    doc.setFont('helvetica', 'bold');
-    doc.setTextColor(0);
-    doc.setFillColor(230, 230, 230);
-    doc.rect(pageWidth - 70, resumenY - 6, 60, 28, 'F');
-    doc.text('TOTALES', pageWidth - 65, resumenY);
-
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(10);
-    doc.text(`Stock L.: ${String(totalStockL)}`, pageWidth - 65, resumenY + 10);
-    doc.text(`Stock F.: ${String(totalStockF)}`, pageWidth - 65, resumenY + 18);
-    doc.text(`Resultante: ${String(totalRes)}`, pageWidth - 65, resumenY + 26);
-
-    // Firma y mensaje
-    doc.setFontSize(10);
-    doc.setFont('helvetica', 'italic');
-    doc.text(
-      'Gracias por usar el sistema de inventario',
-      pageWidth / 2,
-      resumenY + 50,
-      { align: 'center' }
-    );
-
-    // Guardar
-    const nombreArchivo = `${
-      this.InventarioSeleccionado?.descripcion || 'inventario'
-    }.pdf`;
-    doc.save(nombreArchivo);
   }
 
   // ---------------------------------------------------------------------------------------
