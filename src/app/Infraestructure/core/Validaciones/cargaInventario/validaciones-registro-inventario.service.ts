@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MensajesRegistroInventarioService } from '../../SeetAlert/cargaInventario/mensajes-registro-inventario.service';
 import * as XLSX from 'xlsx';
+import Swal from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root',
@@ -168,5 +169,80 @@ export class ValidacionesRegistroInventarioService {
           </tbody>
         </table>
       </div>`;
+  }
+
+  /**
+   * Valida si el índice de inicio ha superado el total de registros y muestra una alerta de finalización.
+   * Si se completó la carga, cierra el modal de espera, muestra una alerta informativa y recarga la página.
+   *
+   * @param totalRegistros - Número total de registros esperados.
+   * @param inicio - Índice actual de registros procesados.
+   * @returns boolean - `true` si ya no hay más registros por procesar, `false` en caso contrario.
+   */
+  validarTieneRegistros(totalRegistros: any, inicio: number): boolean {
+    if (inicio >= totalRegistros) {
+      Swal.close();
+      this.alertService_CargaInventario.Info_MensajeCargaCompleta().then(() => {
+        window.location.reload();
+      });
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Extrae un lote de datos transformados desde el JSON original, aplicando el mapeo de columnas.
+   *
+   * @param jsonData - Datos originales del archivo cargado.
+   * @param columnasMapeadas - Objeto que relaciona las claves internas con los nombres de columna del Excel.
+   * @param inicio - Índice de inicio del lote actual.
+   * @param loteSize - Cantidad de registros a tomar por lote.
+   * @param totalRegistros - Total de registros en el archivo.
+   * @returns Arreglo de objetos transformados según el mapeo de columnas.
+   */
+  obtenerLoteTransformado(
+    jsonData: any[],
+    columnasMapeadas: Record<string, string>,
+    inicio: number,
+    loteSize: number,
+    totalRegistros: number
+  ): Record<string, any>[] {
+    const fin = Math.min(inicio + loteSize, totalRegistros);
+    return jsonData.slice(inicio, fin).map((item: any) => {
+      return Object.keys(columnasMapeadas).reduce((acc, key) => {
+        let valor = item[columnasMapeadas[key]] || '';
+
+        if (['stockL'].includes(key)) {
+          valor =
+            typeof valor === 'string' && valor.trim() === ''
+              ? 0.0
+              : parseFloat(valor) || 0.0;
+        }
+
+        acc[key] = valor;
+        return acc;
+      }, {} as Record<string, any>);
+    });
+  }
+
+  /**
+   * Valida si existen registros duplicados y muestra una alerta con una tabla de los mismos si es necesario.
+   *
+   * @param duplicados - Arreglo de objetos duplicados.
+   * @param generarTabla - Función que genera el HTML de la tabla con los duplicados.
+   * @param alertService - Servicio que muestra la alerta con los duplicados.
+   * @returns true si hay duplicados, false en caso contrario.
+   */
+  validarExisteDuplicados(
+    duplicados: any[],
+    generarTabla: (data: any[]) => string,
+    alertService: any
+  ): boolean {
+    if (duplicados.length > 0) {
+      const tablaDuplicados = generarTabla(duplicados);
+      alertService.Alert_MensajeDuplicados(tablaDuplicados);
+      return true;
+    }
+    return false;
   }
 }

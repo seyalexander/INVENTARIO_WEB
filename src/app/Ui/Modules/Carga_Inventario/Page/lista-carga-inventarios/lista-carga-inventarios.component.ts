@@ -19,6 +19,7 @@ import { InventariosByFiltrosUseCases } from 'src/app/Domain/use-case/inventario
 import { RequestInventarioByFiltros } from 'src/app/Domain/models/inventarios/requestInventariosByFiltros.model';
 import { MatIcon } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MensajesListaInventarioService } from 'src/app/Infraestructure/core/SeetAlert/cargaInventario/mensajes-lista-inventario.service';
 
 @Component({
   selector: 'app-lista-carga-inventarios',
@@ -31,7 +32,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     MatInputModule,
     MatTableModule,
     MatToolbarModule,
-    MatIcon
+    MatIcon,
   ],
   templateUrl: './lista-carga-inventarios.component.html',
   styleUrl: './lista-carga-inventarios.component.css',
@@ -42,7 +43,10 @@ export class ListaCargaInventariosComponent {
   // ================================================================================
   private readonly listaEmpresas = inject(EmpresasService);
   private readonly listaUsuarios = inject(GetUsuariosUseCases);
-  private readonly listaInventariosbyfiltros = inject(InventariosByFiltrosUseCases);
+  private readonly listaInventariosbyfiltros = inject(
+    InventariosByFiltrosUseCases
+  );
+  private readonly mensajeAlert = inject(MensajesListaInventarioService);
 
   private EmpresasSubscription: Subscription | undefined;
   private UsuariosSubscription: Subscription | undefined;
@@ -54,9 +58,6 @@ export class ListaCargaInventariosComponent {
   getUsuarios_All: Array<SeguridadModel> = [];
   datosPaginated: Array<inventariosModel> = [];
   cantidadDatosInventarioLista: number = 0;
-  p: number = 1; // Página actual
-  itemsPerPage: number = 10;
-  cantidadDatosFiltrados: number = 0;
 
   dataSource = new MatTableDataSource<inventariosModel>();
   paginator!: MatPaginator;
@@ -65,11 +66,10 @@ export class ListaCargaInventariosComponent {
   // FUNCIÓN PRINCIPAL
   // ================================================================================
   ngOnInit(): void {
-    this.listarInventarios('1', '')
+    this.listarInventarios('1', '');
     this.listarEmpresas();
     this.listarUsuarios();
   }
-
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value.toUpperCase();
@@ -77,21 +77,20 @@ export class ListaCargaInventariosComponent {
     this.dataSource.paginator?.firstPage();
   }
 
-
   // ================================================================================
   // LISTA INVENTARIOS
   // ================================================================================
-  selectedEmpresa: string = ''
-  selected: string = ''
+  selectedEmpresa: string = '';
+  selected: string = '';
 
-  aplicarFiltros(filtros: { estado: string, rucempresa: string }) {
+  aplicarFiltros(filtros: { estado: string; rucempresa: string }) {
     this.listarInventarios(filtros.estado, filtros.rucempresa);
   }
 
   listarInventarios(estado: string, rucempresa: string) {
     const reqDatos: RequestInventarioByFiltros = { rucempresa, estado };
-    reqDatos.estado = estado
-    reqDatos.rucempresa = rucempresa
+    reqDatos.estado = estado;
+    reqDatos.rucempresa = rucempresa;
     try {
       this.inventarioSubscription = this.listaInventariosbyfiltros
         .getInventariosByFiltros(reqDatos)
@@ -102,23 +101,23 @@ export class ListaCargaInventariosComponent {
               this.datosFiltrados = response;
               this.cantidadDatosInventarioLista = response.length;
             } else {
-              this.mostrarMensajeError('DATOS NO VÁLIDOS', `${response}`);
+              this.mensajeAlert.mostrarMensajeError(
+                'DATOS NO VÁLIDOS',
+                `${response}`
+              );
               this.datosInventarioslista = [];
               this.cantidadDatosInventarioLista = 0;
             }
           },
           error: (error) => {
-            this.mostrarMensajeError(
-              error.name,
-              'Verifique la conexión con el API y recargue el listado.'
-            );
+            this.mensajeAlert.Error_ConexionApi(error.name);
             this.datosInventarioslista = [];
             this.cantidadDatosInventarioLista = 0;
           },
         });
     } catch (err) {
-      this.mostrarMensajeError(
-        'Error inesperado',
+      this.mensajeAlert.mostrarMensajeError(
+        `Error inesperado`,
         `Error en listarInventarios: ${err}`
       );
     }
@@ -134,7 +133,7 @@ export class ListaCargaInventariosComponent {
         .subscribe((Response: MensajeResponseEmpresas) => {
           this.getEmpresas_All = Response.empresas;
         });
-    } catch (err) { }
+    } catch (err) {}
   }
 
   // ================================================================================
@@ -147,15 +146,7 @@ export class ListaCargaInventariosComponent {
         .subscribe((Response: MensajeSeguridadModel) => {
           this.getUsuarios_All = Response.usuarios;
         });
-    } catch (err) { }
-  }
-
-  mostrarMensajeError(titulo: string, mensaje: string): void {
-    Swal.fire({
-      icon: 'error',
-      title: titulo,
-      text: mensaje,
-    });
+    } catch (err) {}
   }
 
   // ================================================================================

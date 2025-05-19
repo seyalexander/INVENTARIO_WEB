@@ -1,34 +1,32 @@
-
 <div #tarjeta class="usuario-tarjeta hidden">
-  <div class="bg-white w-80 shadow-md rounded-md overflow-hidden">
-    <div class="flex flex-col p-4 items-center DEGRADADO">
-      <h1 class="font-bold text-center text-white">INVENTORY CARD</h1>
-      <!-- ACÁ COLOCAR UN QR -->
-      <h3 class="text-white text-center mb-0">
-        {{ usuario.nombreusuario }}
-      </h3>
-      <h2 class="font-bold text-white text-center text-xs mb-0">
-        <strong>{{ usuario.apellido }}</strong>
-      </h2>
+  <div class="bg-white w-80 shadow-xl rounded-2xl overflow-hidden border border-gray-200">
+    <!-- Encabezado con degradado -->
+    <div class="flex flex-col items-center p-6 bg-gradient-to-r from-blue-700 to-blue-500">
+      <h1 class="font-bold text-lg text-white mb-2">INVENTORY CARD</h1>
+
+      <!-- ESPACIO PARA QR -->
+      <div class="bg-white p-2 rounded-md shadow-md mb-4">
+        <!-- Reemplaza con componente de QR o imagen -->
+        <img src="ruta-del-qr.png" alt="QR" class="w-24 h-24 object-contain" />
+      </div>
+
+      <h3 class="text-white text-base font-semibold">{{ usuario.nombreusuario }}</h3>
+      <h2 class="text-white text-sm font-medium tracking-wide">{{ usuario.apellido }}</h2>
     </div>
-    <div class="p-4 bg-white flex flex-col">
-      <strong class="mb-4 text-[#20477E] text-center">{{
-        usuario.cargo
-      }}</strong>
-      <p class="bg-slate-100 h-10 p-2 rounded-md flex items-center gap-2">
-        <strong>Empresa:</strong> {{ usuario.rucempresa }}
-      </p>
-      <p class="bg-slate-100 h-10 p-2 rounded-md flex items-center gap-2">
-        <strong>Usuario:</strong> {{ usuario.idusuario }}
-      </p>
-      <p class="bg-slate-100 h-10 p-2 rounded-md flex items-center gap-2">
-        <strong>Contraseña:</strong> {{ usuario.contrasenia }}
-      </p>
-      <span
-        class="grid place-content-center text-center text-slate-600 text-xs mt-4"
-        >DBINVENTORY - DB PERÚ</span
-      >
+
+    <!-- Detalles del usuario -->
+    <div class="p-4 bg-white flex flex-col gap-3">
+      <strong class="text-center text-blue-700 text-sm mb-2">{{ usuario.cargo }}</strong>
+
+      <div class="bg-gray-100 p-2 rounded-md text-sm flex flex-col">
+        <span><strong>Empresa:</strong> {{ usuario.rucempresa }}</span>
+        <span><strong>Usuario:</strong> {{ usuario.idusuario }}</span>
+        <span><strong>Contraseña:</strong> {{ usuario.contrasenia }}</span>
+      </div>
+
+      <span class="text-center text-gray-500 text-xs mt-4 tracking-wide">
+        DBINVENTORY - DB PERÚ
+      </span>
     </div>
   </div>
 </div>
-

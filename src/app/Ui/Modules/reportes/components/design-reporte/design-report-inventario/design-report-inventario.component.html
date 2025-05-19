@@ -5,6 +5,9 @@
   id="disenoreporte"
 >
   <div class="flex p-4 h-full fondo">
+    <!-- ==================================================================================== -->
+    <!-- PARTE IZQUIERDA - MENU REPORTE -->
+    <!-- ==================================================================================== -->
     <div class="w-[40%] h-full grid place-content-center">
       <h2 class="text-xs mb-0 font-semibold text-gray-700">
         Seleccione un reporte para el inventario:
@@ -23,15 +26,21 @@
         ></button>
       </div>
     </div>
+
+    <!-- ==================================================================================== -->
+    <!-- PARTE DERECHA - MENU REPORTE -->
+    <!-- ==================================================================================== -->
     <div class="w-[60%] grid place-content-center">
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 w-full  gap-[1px]">
+      <div
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 w-full gap-[1px]"
+      >
         <button
           class="button-opcion"
           type="button"
           data-bs-toggle="offcanvas"
           data-bs-target="#disenoreportedata"
           aria-controls="offcanvasRight"
-          (click)="ObtenerDetalleInventariosPDF(0, 2, 2)"
+          (click)="ObtenerDetalleInventariosPDF(0, 2, 2, 0)"
         >
           <p class="font-semibold text-[#20477E] group-hover:text-white">
             Total de registros
@@ -44,12 +53,12 @@
         </button>
 
         <button
-        class="button-opcion"
+          class="button-opcion"
           type="button"
           data-bs-toggle="offcanvas"
           data-bs-target="#disenoreportedata"
           aria-controls="offcanvasRight"
-          (click)="ObtenerDetalleInventariosPDF(3, 0, 2)"
+          (click)="ObtenerDetalleInventariosPDF(3, 0, 2, 0)"
         >
           <p class="text-[#00D1AE] font-semibold text-center">
             Registros con faltantes
@@ -60,12 +69,12 @@
         </button>
 
         <button
-        class="button-opcion"
+          class="button-opcion"
           type="button"
           data-bs-toggle="offcanvas"
           data-bs-target="#disenoreportedata"
           aria-controls="offcanvasRight"
-          (click)="ObtenerDetalleInventariosPDF(2, 0, 2)"
+          (click)="ObtenerDetalleInventariosPDF(2, 0, 2, 0)"
         >
           <p class="text-[#0158DD] font-semibold text-center">
             Registros sobrantes
@@ -76,11 +85,11 @@
         </button>
 
         <button
-        class="button-opcion"
+          class="button-opcion"
           data-bs-toggle="offcanvas"
           data-bs-target="#disenoreportedata"
           aria-controls="offcanvasRight"
-          (click)="ObtenerDetalleInventariosPDF(0, 1, 2)"
+          (click)="ObtenerDetalleInventariosPDF(0, 1, 2, 0)"
         >
           <p class="text-[#0158DD] font-semibold text-center">
             Nuevos registros
@@ -91,11 +100,11 @@
         </button>
 
         <button
-        class="button-opcion"
+          class="button-opcion"
           data-bs-toggle="offcanvas"
           data-bs-target="#disenoreportedata"
           aria-controls="offcanvasRight"
-          (click)="ObtenerDetalleInventariosPDF(1, 2, 2)"
+          (click)="ObtenerDetalleInventariosPDF(1, 2, 2, 0)"
         >
           <p class="text-[#20477E] font-semibold text-center">
             Conteos exactos
@@ -106,11 +115,11 @@
         </button>
 
         <button
-        class="button-opcion"
+          class="button-opcion"
           data-bs-toggle="offcanvas"
-          data-bs-target="#disenoreportedataAjuste"
+          data-bs-target="#disenoreportedata"
           aria-controls="offcanvasRight"
-          (click)="ObtenerDetalleInventariosAjustados()"
+          (click)="ObtenerDetalleInventariosPDF(0, 0, 0, 1)"
         >
           <p class="text-[#20477E] font-semibold text-center">
             Items Ajustados
@@ -121,11 +130,11 @@
         </button>
 
         <button
-        class="button-opcion"
+          class="button-opcion"
           data-bs-toggle="offcanvas"
           data-bs-target="#disenoreportedataAjuste"
           aria-controls="offcanvasRight"
-          (click)="ObtenerDetalleInventariosPDF(0, 2, 1)"
+          (click)="ObtenerDetalleInventariosPDF(0, 2, 1, 0)"
         >
           <p class="text-[#20477E] font-semibold text-center">
             Cantidades ingresados manualmente
@@ -135,143 +144,22 @@
           </p>
         </button>
 
-        <button
-          disabled
-          class="button-opcion_vacias"
-        >
-
-        </button>
-        <button
-          disabled
-          class="button-opcion_vacias"
-        >
-
-        </button>
+        <button disabled class="button-opcion_vacias"></button>
+        <button disabled class="button-opcion_vacias"></button>
       </div>
     </div>
   </div>
-  <!-- <div
-    class="offcanvas-header bg-[#f1f3f5] pb-1 flex justify-between items-center"
-  >
-    <h2 class="text-base font-semibold text-gray-800">
-      Seleccione una opción para el inventario:
-      {{ citaSeleccionada.descripcion }}
-    </h2>
-    <button
-      type="button"
-      class="btn-close"
-      data-bs-dismiss="offcanvas"
-      aria-label="Close"
-    ></button>
-  </div>
-
-  <div
-    class="offcanvas-body py-8 px-6 h-full flex flex-col items-center justify-center"
-  >
-    <div class="grid grid-cols-3 gap-8 w-full max-w-3xl mx-auto">
-      <button
-        class="bg-white p-6 rounded-xl shadow-md border-2 border-[#20477E] hover:bg-[#F0F4FA] transition-colors duration-200 cursor-pointer text-center flex flex-col gap-4 justify-center items-center"
-        type="button"
-        data-bs-toggle="offcanvas"
-        data-bs-target="#disenoreportedata"
-        aria-controls="offcanvasRight"
-        (click)="ObtenerDetalleInventariosPDF(0, 2, 2)"
-      >
-        <p class="text-[#20477E] font-semibold">Total de registros</p>
-        <p class="text-[3rem] font-bold text-[#20477E]">{{ TotalRegistros }}</p>
-      </button>
-
-      <button
-        class="bg-white p-6 rounded-xl shadow-md border-2 border-[#00D1AE] hover:bg-[#F0F4FA] transition-colors duration-200 cursor-pointer text-center flex flex-col gap-4 justify-center items-center"
-        type="button"
-        data-bs-toggle="offcanvas"
-        data-bs-target="#disenoreportedata"
-        aria-controls="offcanvasRight"
-        (click)="ObtenerDetalleInventariosPDF(3, 0, 2)"
-      >
-        <p class="text-[#00D1AE] font-semibold text-center">
-          Registros con faltantes
-        </p>
-        <p class="text-[3rem] font-bold text-[#00D1AE]">
-          {{ RegistrosFaltantes }}
-        </p>
-      </button>
-
-      <button
-        class="bg-white p-6 rounded-xl shadow-md border-2 border-[#0158DD] hover:bg-[#F0F4FA] transition-colors duration-200 cursor-pointer text-center flex flex-col gap-4 justify-center items-center"
-        type="button"
-        data-bs-toggle="offcanvas"
-        data-bs-target="#disenoreportedata"
-        aria-controls="offcanvasRight"
-        (click)="ObtenerDetalleInventariosPDF(2, 0, 2)"
-      >
-        <p class="text-[#0158DD] font-semibold text-center">
-          Registros sobrantes
-        </p>
-        <p class="text-[3rem] font-bold text-[#0158DD]">
-          {{ RegistrosNoFaltantes }}
-        </p>
-      </button>
-
-      <button
-        class="bg-white p-6 rounded-xl shadow-md border-2 border-[#0158DD] hover:bg-[#F0F4FA] transition-colors duration-200 cursor-pointer text-center flex flex-col gap-4 justify-center items-center"
-        data-bs-toggle="offcanvas"
-        data-bs-target="#disenoreportedata"
-        aria-controls="offcanvasRight"
-        (click)="ObtenerDetalleInventariosPDF(0, 1, 2)"
-      >
-        <p class="text-[#0158DD] font-semibold text-center">Nuevos registros</p>
-        <p class="text-[3rem] font-bold text-[#0158DD]">
-          {{ NuevosRegistros }}
-        </p>
-      </button>
-
-      <button
-        class="bg-white p-6 rounded-xl shadow-md border-2 border-[#20477E] hover:bg-[#F0F4FA] transition-colors duration-200 cursor-pointer text-center flex flex-col gap-4 justify-center items-center"
-        data-bs-toggle="offcanvas"
-        data-bs-target="#disenoreportedata"
-        aria-controls="offcanvasRight"
-        (click)="ObtenerDetalleInventariosPDF(1, 2, 2)"
-      >
-        <p class="text-[#20477E] font-semibold text-center">Conteos exactos</p>
-        <p class="text-[3rem] font-bold text-[#20477E]">{{ ConteosExactos }}</p>
-      </button>
-
-      <button
-        class="bg-white p-6 rounded-xl shadow-md border-2 border-[#20477E] hover:bg-[#F0F4FA] transition-colors duration-200 cursor-pointer text-center flex flex-col gap-4 justify-center items-center"
-        data-bs-toggle="offcanvas"
-        data-bs-target="#disenoreportedataAjuste"
-        aria-controls="offcanvasRight"
-        (click)="ObtenerDetalleInventariosAjustados()"
-      >
-        <p class="text-[#20477E] font-semibold text-center">Items Ajustados</p>
-        <p class="text-[3rem] font-bold text-[#20477E]">{{ ItemsAjustados }}</p>
-      </button>
-
-      <button
-        class="bg-white p-6 rounded-xl shadow-md border-2 border-[#00D1AE] hover:bg-[#F0F4FA] transition-colors duration-200 cursor-pointer text-center flex flex-col gap-4 justify-center items-center"
-        data-bs-toggle="offcanvas"
-        data-bs-target="#disenoreportedataAjuste"
-        aria-controls="offcanvasRight"
-        (click)="ObtenerDetalleInventariosPDF(0, 2, 1)"
-      >
-        <p class="text-[#20477E] font-semibold text-center">
-          Cantidades ingresados manualmente
-        </p>
-        <p class="text-[3rem] font-bold text-[#20477E]">{{ EditadosManual }}</p>
-      </button>
-    </div>
-  </div> -->
 </div>
 
-<!-- Componente 2: Configuración y exportación -->
-
+<!-- ==================================================================================== -->
+<!-- PARTE DATA - TABLA DATOS -->
+<!-- ==================================================================================== -->
 <div
   class="offcanvas offcanvas-end ancho first-offcanvas"
   tabindex="-1"
   id="disenoreportedata"
 >
-  <div class="offcanvas-header bg-[#f1f3f5] pb-1">
+  <div class="offcanvas-header bg-[#fff] pb-1">
     <div
       id="hs-header-base"
       class="hs-collapse hidden overflow-hidden transition-all duration-300 basis-full grow md:block"
@@ -285,18 +173,27 @@
             <div
               class="flex flex-col md:justify-start md:items-center gap-0.5 md:gap-1"
             >
-              <div class="flex justify-between w-full">
-                <div class="flex items-center justify-center gap-4">
+              <div class="flex justify-between w-full align-center">
+                <div class="flex items-center justify-center gap-3">
                   <button
-                    class="text-gray-800 hover:text-gray-600"
+                    class="text-[#fff] hover:text-[#006554] bg-[#00CBA8] w-[2rem] h-[2rem] rounded-lg align-center"
                     data-bs-toggle="offcanvas"
                     data-bs-target="#disenoreporte"
                     aria-controls="offcanvasRight"
                   >
                     <mat-icon>chevron_left</mat-icon>
                   </button>
-                  <h1 class="mb-2">{{ titulosOpciones }}</h1>
+                  <h1 class="mb-0 text-[#0163D6] font-bold">
+                    {{ titulosOpciones }}
+                  </h1>
                 </div>
+                <input
+                  matInput
+                  (keyup)="applyFilter($event)"
+                  placeholder="Buscar producto"
+                  #input
+                  class="text-gray-800 w-[40rem] border h-12 rounded-lg bg-transparent px-4 placeholder-gray-400 focus:outline-none"
+                />
 
                 <div class="container-datos">
                   <div class="apartado-filtros">
@@ -306,15 +203,7 @@
                         [class.selected]="selectedOption === 'excel'"
                         (click)="selectOptionEXCEL('excel')"
                       >
-                        <img
-                          src="../../../../../../../assets/svg/icon_excel.svg"
-                          alt="Excel"
-                        />
-                        <!-- <img
-                        class="icon-pdf"
-                        src="/db-inventory-gestor/browser/assets/svg/icon_excel.svg"
-                        alt="PDF"
-                      /> -->
+                        <icon-excel />
                         <span
                           class="text-xs uppercase text-slate-500 font-semibold"
                         >
@@ -327,16 +216,7 @@
                         [class.selected]="selectedOption === 'pdf'"
                         (click)="selectOptionPDF('pdf')"
                       >
-                        <img
-                          class="icon-pdf"
-                          src="../../../../../../../assets/svg/icon-pdf.svg"
-                          alt="PDF"
-                        />
-                        <!-- <img
-                        class="icon-pdf"
-                        src="/db-inventory-gestor/browser/assets/svg/icon-pdf.svg"
-                        alt="PDF"
-                      /> -->
+                        <icon-pdf />
                         <span
                           class="text-xs uppercase text-slate-500 font-semibold"
                         >
@@ -346,12 +226,6 @@
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="w-full flex-wrap border-t-2">
-                <!-- <filtros-checkbox-tabla
-                  class="filtros"
-                  (columnasSeleccionadas)="recibirColumnasSeleccionadas($event)"
-                /> -->
               </div>
             </div>
           </div>
@@ -363,10 +237,12 @@
     <section class="h-full max-h-screen">
       <div class="max-w-[98vw] mx-auto h-full">
         <div class="flex flex-col h-full">
-          <div class="-m-1.5 overflow-x-auto scroll-table h-full">
+          <div
+            class="-m-1.5 overflow-x-auto scroll-table h-full container-datos-page"
+          >
             <div class="p-1.5 min-w-full inline-block align-middle h-full">
               <div
-                class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-auto max-h-[80vh]"
+                class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-auto"
               >
                 <div class="mat-elevation-z8 relative p-4">
                   <filtros-checkbox-tabla
@@ -376,139 +252,420 @@
                     "
                   />
                   <div class="">
-                    <design-page-tabla-datos
-                      [listaProductos]="listaProductos"
-                      [columnasSeleccionadas]="columnasSeleccionadas"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
-</div>
+                    <div class="">
+                      <table mat-table [dataSource]="dataSource" matSort>
+                        <!-- =================================================================================== -->
+                        <!-- codigoproducto -->
+                        <!-- =================================================================================== -->
+                        <ng-container matColumnDef="codigoproducto">
+                          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            codigoproducto
+                          </th>
+                          <td mat-cell *matCellDef="let row">
+                            <button
+                              class="px-6 py-3 flex gap-2 align-center"
+                              [ngClass]="{
+                                'bg-white text-white': row.esnuevo == 0,
+                                '': row.esnuevo == 1
+                              }"
+                            >
+                              <span class="text-sm text-gray-600">
+                                {{ row.codigoproducto }}
+                              </span>
+                            </button>
+                          </td>
+                        </ng-container>
 
-<!-- Componente 2: Configuración y exportación -->
+                        <!-- =================================================================================== -->
+                        <!-- codigobarra -->
+                        <!-- =================================================================================== -->
+                        <ng-container matColumnDef="codigobarra">
+                          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            codigobarra
+                          </th>
+                          <td mat-cell *matCellDef="let row">
+                            <button
+                              class="px-6 py-3 flex gap-2 align-center"
+                              [ngClass]="{
+                                'bg-white text-white': row.esnuevo == 0,
+                                '': row.esnuevo == 1
+                              }"
+                            >
+                              <span class="text-sm text-gray-600">
+                                {{ row.codigobarra }}
+                              </span>
+                            </button>
+                          </td>
+                        </ng-container>
 
-<div
-  class="offcanvas offcanvas-end ancho first-offcanvas"
-  tabindex="-1"
-  id="disenoreportedataAjuste"
->
-  <div class="offcanvas-header bg-[#f1f3f5] pb-1">
-    <div
-      id="hs-header-base"
-      class="hs-collapse hidden overflow-hidden transition-all duration-300 basis-full grow md:block"
-      aria-labelledby="hs-header-base-collapse"
-    >
-      <div class="overflow-hidden">
-        <div
-          class="py-0 md:py-0 flex flex-col md:flex-row md:items-center gap-0.5 md:gap-1"
-        >
-          <div class="grow">
-            <div
-              class="flex flex-col md:justify-start md:items-center gap-0.5 md:gap-1"
-            >
-              <div class="flex justify-between w-full">
-                <div class="flex items-center justify-center gap-4">
-                  <button
-                    class="text-gray-800 hover:text-gray-600"
-                    data-bs-toggle="offcanvas"
-                    data-bs-target="#disenoreporte"
-                    aria-controls="offcanvasRight"
-                  >
-                    <mat-icon>chevron_left</mat-icon>
-                  </button>
-                  <h1 class="mb-2">{{ titulosOpciones }}</h1>
-                </div>
+                        <!-- =================================================================================== -->
+                        <!-- descripcionProducto -->
+                        <!-- =================================================================================== -->
+                        <ng-container matColumnDef="descripcionProducto">
+                          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            descripcionProducto
+                          </th>
+                          <td mat-cell *matCellDef="let row">
+                            <button
+                              class="px-6 py-3 flex gap-2 align-center"
+                              [ngClass]="{
+                                'bg-white text-white': row.esnuevo == 0,
+                                '': row.esnuevo == 1
+                              }"
+                            >
+                              <span class="text-sm text-gray-600">
+                                {{ row.descripcionProducto }}
+                              </span>
+                            </button>
+                          </td>
+                        </ng-container>
 
-                <div class="container-datos">
-                  <div class="apartado-filtros">
-                    <div class="opciones">
-                      <div
-                        class="opcion flex-1 boder-target rounded-lg p-2 gap-2 active:bg-white flex justify-center items-center text-center transition-transform transform cursor-pointer"
-                        [class.selected]="selectedOption === 'excel'"
-                        (click)="selectOptionEXCELAjuste('excel')"
-                      >
-                        <img
-                          src="../../../../../../../assets/svg/icon_excel.svg"
-                          alt="Excel"
-                        />
-                        <!-- <img
-                        class="icon-pdf"
-                        src="/db-inventory-gestor/browser/assets/svg/icon_excel.svg"
-                        alt="PDF"
-                      /> -->
-                        <span
-                          class="text-xs uppercase text-slate-500 font-semibold"
-                        >
-                          EXCEL
-                        </span>
-                      </div>
+                        <!-- =================================================================================== -->
+                        <!-- unidad -->
+                        <!-- =================================================================================== -->
+                        <ng-container matColumnDef="unidad">
+                          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            unidad
+                          </th>
+                          <td mat-cell *matCellDef="let row">
+                            <button
+                              class="px-6 py-3 flex gap-2 align-center"
+                              [ngClass]="{
+                                'bg-white text-white': row.esnuevo == 0,
+                                'bg-slate-50e text-white': row.esnuevo == 1
+                              }"
+                            >
+                              <span class="text-sm text-gray-600">
+                                {{ row.unidad }}
+                              </span>
+                            </button>
+                          </td>
+                        </ng-container>
 
-                      <div
-                        class="opcion flex-1 boder-target rounded-lg p-2 gap-2 active:bg-white flex justify-center items-center text-center transition-transform transform cursor-pointer"
-                        [class.selected]="selectedOption === 'pdf'"
-                        (click)="selectOptionPDFAjustar('pdf')"
-                      >
-                        <img
-                          class="icon-pdf"
-                          src="../../../../../../../assets/svg/icon-pdf.svg"
-                          alt="PDF"
-                        />
-                        <!-- <img
-                          class="icon-pdf"
-                          src="/db-inventory-gestor/browser/assets/svg/icon-pdf.svg"
-                          alt="PDF"
-                        /> -->
+                        <!-- =================================================================================== -->
+                        <!-- stockL -->
+                        <!-- =================================================================================== -->
+                        <ng-container matColumnDef="stockL">
+                          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            stockL
+                          </th>
+                          <td mat-cell *matCellDef="let row">
+                            <button
+                              class="px-6 py-3 flex gap-2 align-center"
+                              [ngClass]="{
+                                'bg-white text-white': row.esnuevo == 0,
+                                '': row.esnuevo == 1
+                              }"
+                            >
+                              <span class="text-sm text-gray-600">
+                                {{ row.stockL }}
+                              </span>
+                            </button>
+                          </td>
+                        </ng-container>
 
-                        <span
-                          class="text-xs uppercase text-slate-500 font-semibold"
-                        >
-                          PDF
-                        </span>
-                      </div>
+                        <!-- =================================================================================== -->
+                        <!-- stockF -->
+                        <!-- =================================================================================== -->
+                        <ng-container matColumnDef="stockF">
+                          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            stockF
+                          </th>
+                          <td mat-cell *matCellDef="let row">
+                            <button
+                              class="px-6 py-3 flex gap-2 align-center"
+                              [ngClass]="{
+                                'bg-white text-white': row.esnuevo == 0,
+                                '': row.esnuevo == 1
+                              }"
+                            >
+                              <span class="text-sm text-gray-600">
+                                {{ row.stockF }}
+                              </span>
+                            </button>
+                          </td>
+                        </ng-container>
+
+                        <!-- =================================================================================== -->
+                        <!-- Rack -->
+                        <!-- =================================================================================== -->
+                        <ng-container matColumnDef="stockresultante">
+                          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            stockresultante
+                          </th>
+                          <td mat-cell *matCellDef="let row">
+                            <button
+                              class="px-6 py-3 flex gap-2 align-center"
+                              [ngClass]="{
+                                'bg-white text-white': row.esnuevo == 0,
+                                '': row.esnuevo == 1
+                              }"
+                            >
+                              <span
+                                class="text-sm text-gray-600"
+                                [ngClass]="{
+          ' text-red-600': row.stockresultante < 0,
+          ' text-blue-700': row.stockresultante > 0,
+          ' text-gray-600': row.stockresultante == 0,
+        }"
+                              >
+                                {{ row.stockF - row.stockL }}
+                              </span>
+                            </button>
+                          </td>
+                        </ng-container>
+
+                        <!-- =================================================================================== -->
+                        <!-- Ajuste -->
+                        <!-- =================================================================================== -->
+                        <ng-container matColumnDef="ajuste">
+                          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Ajuste
+                          </th>
+                          <td mat-cell *matCellDef="let row">
+                            <button
+                              class="px-6 py-3 flex gap-2 align-center"
+                              [ngClass]="{
+                                'bg-white text-white': row.esnuevo == 0,
+                                '': row.esnuevo == 1
+                              }"
+                            >
+                              <span
+                                class="text-sm text-gray-600"
+                                [ngClass]="{
+          ' text-red-600': row.ajuste < 0,
+          ' text-blue-700': row.ajuste > 0,
+          ' text-gray-600': row.ajuste == 0,
+        }"
+                              >
+                                {{ row.ajuste }}
+                              </span>
+                            </button>
+                          </td>
+                        </ng-container>
+
+                        <!-- =================================================================================== -->
+                        <!-- Almacén -->
+                        <!-- =================================================================================== -->
+                        <ng-container matColumnDef="almacen">
+                          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Almacén
+                          </th>
+                          <td mat-cell *matCellDef="let row">
+                            <button
+                              class="px-6 py-3 flex gap-2 align-center"
+                              [ngClass]="{
+                                'bg-white text-white': row.esnuevo == 0,
+                                '': row.esnuevo == 1
+                              }"
+                            >
+                              <span class="text-sm text-gray-600">
+                                {{ row.almacen }}
+                              </span>
+                            </button>
+                          </td>
+                        </ng-container>
+
+                        <!-- =================================================================================== -->
+                        <!-- Sucursal -->
+                        <!-- =================================================================================== -->
+                        <ng-container matColumnDef="sucursal">
+                          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Sucursal
+                          </th>
+                          <td mat-cell *matCellDef="let row">
+                            <button
+                              class="px-6 py-3 flex gap-2 align-center"
+                              [ngClass]="{
+                                'bg-white text-white': row.esnuevo == 0,
+                                '': row.esnuevo == 1
+                              }"
+                            >
+                              <span class="text-sm text-gray-600">
+                                {{ row.sucursal }}
+                              </span>
+                            </button>
+                          </td>
+                        </ng-container>
+
+                        <!-- =================================================================================== -->
+                        <!-- Zona -->
+                        <!-- =================================================================================== -->
+                        <ng-container matColumnDef="zona">
+                          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Zona
+                          </th>
+                          <td mat-cell *matCellDef="let row">
+                            <button
+                              class="px-6 py-3 flex gap-2 align-center"
+                              [ngClass]="{
+                                'bg-white text-white': row.esnuevo == 0,
+                                '': row.esnuevo == 1
+                              }"
+                            >
+                              <span class="text-sm text-gray-600">
+                                {{ row.zona }}
+                              </span>
+                            </button>
+                          </td>
+                        </ng-container>
+
+                        <!-- =================================================================================== -->
+                        <!-- Pasillo -->
+                        <!-- =================================================================================== -->
+                        <ng-container matColumnDef="pasillo">
+                          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Pasillo
+                          </th>
+                          <td mat-cell *matCellDef="let row">
+                            <button
+                              class="px-6 py-3 flex gap-2 align-center"
+                              [ngClass]="{
+                                'bg-white text-white': row.esnuevo == 0,
+                                '': row.esnuevo == 1
+                              }"
+                            >
+                              <span class="text-sm text-gray-600">
+                                {{ row.pasillo }}
+                              </span>
+                            </button>
+                          </td>
+                        </ng-container>
+
+                        <!-- =================================================================================== -->
+                        <!-- rack -->
+                        <!-- =================================================================================== -->
+                        <ng-container matColumnDef="rack">
+                          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Rack
+                          </th>
+                          <td mat-cell *matCellDef="let row">
+                            <button
+                              class="px-6 py-3 flex gap-2 align-center"
+                              [ngClass]="{
+                                'bg-white text-white': row.esnuevo == 0,
+                                '': row.esnuevo == 1
+                              }"
+                            >
+                              <span class="text-sm text-gray-600">
+                                {{ row.rack }}
+                              </span>
+                            </button>
+                          </td>
+                        </ng-container>
+
+                        <!-- =================================================================================== -->
+                        <!-- ubicacion -->
+                        <!-- =================================================================================== -->
+                        <ng-container matColumnDef="ubicacion">
+                          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Ubicación
+                          </th>
+                          <td mat-cell *matCellDef="let row">
+                            <button
+                              class="px-6 py-3 flex gap-2 align-center"
+                              [ngClass]="{
+                                'bg-white text-white': row.esnuevo == 0,
+                                '': row.esnuevo == 1
+                              }"
+                            >
+                              <span class="text-sm text-gray-600">
+                                {{ row.ubicacion }}
+                              </span>
+                            </button>
+                          </td>
+                        </ng-container>
+
+                        <!-- =================================================================================== -->
+                        <!-- esagrupado -->
+                        <!-- =================================================================================== -->
+                        <ng-container matColumnDef="esagrupado">
+                          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            esagrupado
+                          </th>
+                          <td mat-cell *matCellDef="let row">
+                            <button
+                              class="px-6 py-3 flex gap-2 align-center"
+                              [ngClass]="{
+                                'bg-white text-white': row.esnuevo == 0,
+                                '': row.esnuevo == 1
+                              }"
+                            >
+                              <span class="text-sm text-gray-600">
+                                {{ row.esagrupado }}
+                              </span>
+                            </button>
+                          </td>
+                        </ng-container>
+
+                        <!-- =================================================================================== -->
+                        <!-- codigogrupo -->
+                        <!-- =================================================================================== -->
+                        <ng-container matColumnDef="codigogrupo">
+                          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            codigogrupo
+                          </th>
+                          <td mat-cell *matCellDef="let row">
+                            <button
+                              class="px-6 py-3 flex gap-2 align-center"
+                              [ngClass]="{
+                                'bg-white text-white': row.esnuevo == 0,
+                                '': row.esnuevo == 1
+                              }"
+                            >
+                              <span class="text-sm text-gray-600">
+                                {{ row.codigogrupo }}
+                              </span>
+                            </button>
+                          </td>
+                        </ng-container>
+
+                        <!-- =================================================================================== -->
+                        <!-- DESCRIPCIÓN -->
+                        <!-- =================================================================================== -->
+                        <ng-container matColumnDef="descripcionajuste">
+                          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Descripción ajuste
+                          </th>
+                          <td mat-cell *matCellDef="let row">
+                            <button class="px-6 py-3 flex gap-2 align-center">
+                              <span
+                                class="text-sm text-gray-600 dark:text-neutral-400"
+                              >
+                                {{ row.descripcionajuste }}
+                              </span>
+                            </button>
+                          </td>
+                        </ng-container>
+
+                        <tr
+                          mat-header-row
+                          *matHeaderRowDef="displayedColumns"
+                        ></tr>
+                        <tr
+                          mat-row
+                          *matRowDef="let row; columns: displayedColumns"
+                        ></tr>
+                      </table>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="w-full flex-wrap border-t-2">
-                <!-- <filtros-checkbox-tabla
-                  class="filtros"
-                  (columnasSeleccionadas)="recibirColumnasSeleccionadas($event)"
-                /> -->
-              </div>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="offcanvas-body pt-1 h-full overflow-hidden flex flex-col">
-    <section class="h-full max-h-screen">
-      <div class="max-w-[98vw] mx-auto h-full">
-        <div class="flex flex-col h-full">
-          <div class="-m-1.5 overflow-x-auto scroll-table h-full">
-            <div class="p-1.5 min-w-full inline-block align-middle h-full">
-              <div
-                class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-auto max-h-[80vh]"
-              >
-                <div class="mat-elevation-z8 relative p-4">
-                  <div class="">
-                    <desing-page-tabla-ajustados
-                      [listaProductos]="listaProductos"
-                      [columnasSeleccionadas]="columnasSeleccionadas"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <!-- =================================================================================== -->
+          <!-- PAGINACIÓN INVENTARIO -->
+          <!-- =================================================================================== -->
+          <!-- <mat-paginator [pageSizeOptions]="[100]" aria-label="Select page of users" /> -->
+          <mat-paginator
+            [pageSizeOptions]="[100]"
+            showFirstLastButtons
+            class="mt-2"
+          >
+          </mat-paginator>
         </div>
       </div>
     </section>
   </div>
 </div>
+

@@ -5,221 +5,311 @@
   data-bs-backdrop="static"
   aria-labelledby="hs-detalles-inventario"
 >
-  <div class="offcanvas-header header-detalle">
-    <!-- Header con información clave -->
-    <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
-      <mat-form-field class="w-[20rem]">
-        <mat-label>Buscar producto</mat-label>
-        <input
-          matInput
-          (keyup)="applyFilter($event)"
-          placeholder="Ingresar descripción"
-          #input
-        />
-      </mat-form-field>
-      <!-- Inventario descripción y estado -->
-      <div class="px-3 py-3 rounded-lg flex items-center gap-3">
+  <div class="flex">
+    <div class="flex flex-col header-detalle w-[18rem] border">
+      <div class="px-3 py-3 bg-white flex w-full justify-between">
+        <span class="text-xs uppercase text-gray-500 font-semibold"
+          >Detalle</span
+        >
 
-        <div>
-          <div class="flex items-center gap-2">
-            <span class="text-xs uppercase text-gray-500 font-semibold"
-              >Detalle inv.</span
-            >
-            <span
-              class="py-1 px-1.5 inline-flex content-center items-center justify-center gap-x-1 text-xs font-medium rounded-full shadow-md"
-              [ngClass]="{
-                'bg-[var(--color-principal-3)] text-white':
-                  citaSeleccionada.estado == '1',
-                'bg-[var(--color-principal-6)] text-white':
-                  citaSeleccionada.estado == '0'
-              }"
-            >
-              {{ citaSeleccionada.estado == "1" ? "Activo" : "Inactivo" }}
-            </span>
-          </div>
-          <span class="text-sm font-medium text-gray-800 block">{{
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="offcanvas"
+          aria-label="Close"
+        ></button>
+      </div>
+
+      <!-- Header con información clave -->
+      <div
+        class="px-3 py-3 bg-white flex flex-col justify-between items-left gap-4"
+      >
+        <div class="flex flex-col mt-2 justify-center items-center">
+          <span class="text-sm text-center font-medium text-gray-800 block">{{
             citaSeleccionada.descripcion
           }}</span>
-        </div>
-      </div>
-
-      <!-- Usuario Creador -->
-      <div class="px-3 py-3 rounded-lg flex items-center gap-3">
-        <div>
-          <span class="text-xs uppercase text-gray-500 font-semibold"
-            >Usuario Creador</span
+          <span
+            class="py-1 px-1.5 w-14 inline-flex content-center items-center justify-center gap-x-1 text-xs font-medium rounded-full"
+            [ngClass]="{
+              'bg-[var(--color-principal-3)] text-white':
+                citaSeleccionada.estado == '1',
+              'bg-[var(--color-principal-6)] text-white':
+                citaSeleccionada.estado == '0'
+            }"
           >
-          <span class="text-sm font-medium text-gray-800 block">{{
-            citaSeleccionada.usuariocreacion
-          }}</span>
+            {{ citaSeleccionada.estado == "1" ? "Activo" : "Inactivo" }}
+          </span>
         </div>
       </div>
 
-      <!-- RUC -->
-      <div class="px-3 py-3 rounded-lg flex items-center gap-3">
-        <div>
-          <span class="text-xs uppercase text-gray-500 font-semibold">RUC</span>
-          <span class="text-sm font-medium text-gray-800 block">{{
-            citaSeleccionada.rucempresa
-          }}</span>
+      <div
+        class="mt-1 px-3 py-3 bg-white flex flex-col justify-between items-left gap-4"
+      >
+        <!-- Usuario Creador -->
+        <div class="flex items-left gap-3">
+          <div>
+            <span class="text-xs uppercase text-gray-500 font-semibold"
+              >U. Creador</span
+            >
+            <span class="text-sm font-medium text-gray-800 block">{{
+              citaSeleccionada.usuariocreacion
+            }}</span>
+          </div>
+        </div>
+
+        <!-- RUC -->
+        <div class="flex items-left gap-3">
+          <div>
+            <span class="text-xs uppercase text-gray-500 font-semibold"
+              >RUC</span
+            >
+            <span class="text-sm font-medium text-gray-800 block">{{
+              citaSeleccionada.rucempresa
+            }}</span>
+          </div>
+        </div>
+
+        <!-- Fecha Registro -->
+        <div class="flex items-left gap-3">
+          <div>
+            <span class="text-xs uppercase text-gray-500 font-semibold"
+              >Fecha Registro</span
+            >
+            <span class="text-sm font-medium text-gray-800 block">{{
+              citaSeleccionada.fechacreacion | date : "dd/MM/yyyy"
+            }}</span>
+          </div>
         </div>
       </div>
 
-      <!-- Fecha Registro -->
-      <div class="px-3 py-3 rounded-lg flex items-center gap-3">
-        <div>
-          <span class="text-xs uppercase text-gray-500 font-semibold"
-            >Fecha Registro</span
-          >
-          <span class="text-sm font-medium text-gray-800 block">{{
-            citaSeleccionada.fechacreacion | date : "dd/MM/yyyy"
-          }}</span>
-        </div>
-      </div>
+      <!-- <div
+        class="mt-1 px-3 py-3 bg-white flex flex-col justify-between items-left gap-4"
+      >
+        <button
+          class="bg-[var(--color-principal-3)] rounded-lg py-2 text-[#fff]"
+        >
+          Filtro
+        </button>
+      </div> -->
     </div>
 
-    <button
-      type="button"
-      class="btn-close"
-      data-bs-dismiss="offcanvas"
-      aria-label="Close"
-    ></button>
-  </div>
-  <div class="offcanvas-body">
-    <div class="max-w-[100rem] px-4 py-1 sm:px-6 lg:px-8 lg:py-14 mx-auto">
-      <div class="flex flex-col">
-        <div class="-m-1.5 overflow-x-auto">
-          <div class="p-1.5 min-w-full inline-block align-middle">
+    <div class="offcanvas-body pt-1 h-full overflow-hidden flex flex-col">
+      <section class="h-full max-h-screen">
+        <input
+          (keyup)="applyFilter($event)"
+          placeholder="Buscar producto"
+          #input
+          class="my-2 text-gray-800 w-[40rem] border h-12 rounded-lg bg-transparent px-4 placeholder-gray-400 focus:outline-none"
+        />
+
+        <div class="max-w-[98vw] mx-auto h-full">
+          <div class="flex flex-col h-full">
             <div
-              class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden"
+              class="-m-1.5 overflow-x-auto scroll-table h-full container-datos-page"
             >
-              <div class="mat-elevation-z8">
-                <table mat-table [dataSource]="dataSource">
-                  <ng-container matColumnDef="codigoproducto">
-                    <th mat-header-cell *matHeaderCellDef>Cod. Producto</th>
-                    <td mat-cell *matCellDef="let element">
-                      {{ element.codigoproducto }}
-                    </td>
-                  </ng-container>
+              <div class="p-1.5 min-w-full inline-block align-middle h-full">
+                <div
+                  class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-auto"
+                >
+                  <div class="mat-elevation-z8 relative p-4">
+                    <div class="">
+                      <div class="">
+                        <table mat-table [dataSource]="dataSource">
+                          <ng-container matColumnDef="codigoproducto">
+                            <th
+                              mat-header-cell
+                              *matHeaderCellDef
+                              class="min-w-[10rem]"
+                            >
+                              Cod. Producto
+                            </th>
+                            <td
+                              mat-cell
+                              *matCellDef="let element"
+                              class="min-w-[10rem]"
+                            >
+                              {{ element.codigoproducto }}
+                            </td>
+                          </ng-container>
 
-                  <ng-container matColumnDef="codigobarra">
-                    <th mat-header-cell *matHeaderCellDef>Cod. Barra</th>
-                    <td mat-cell *matCellDef="let element">
-                      {{ element.codigobarra }}
-                    </td>
-                  </ng-container>
+                          <ng-container
+                            matColumnDef="codigobarra"
+                            class="min-w-[10rem]"
+                          >
+                            <th mat-header-cell *matHeaderCellDef>
+                              Cod. Barra
+                            </th>
+                            <td
+                              mat-cell
+                              *matCellDef="let element"
+                              class="min-w-[10rem]"
+                            >
+                              {{ element.codigobarra }}
+                            </td>
+                          </ng-container>
 
-                  <ng-container matColumnDef="descripcionProducto">
-                    <th mat-header-cell *matHeaderCellDef>Descripción</th>
-                    <td mat-cell *matCellDef="let element">
-                      {{ element.descripcionProducto }}
-                    </td>
-                  </ng-container>
+                          <ng-container matColumnDef="descripcionProducto">
+                            <th
+                              mat-header-cell
+                              *matHeaderCellDef
+                              class="min-w-[20rem]"
+                            >
+                              Descripción
+                            </th>
+                            <td
+                              mat-cell
+                              *matCellDef="let element"
+                              class="min-w-[20rem]"
+                            >
+                              {{ element.descripcionProducto }}
+                            </td>
+                          </ng-container>
 
-                  <ng-container matColumnDef="unidad">
-                    <th mat-header-cell *matHeaderCellDef>Unidad</th>
-                    <td mat-cell *matCellDef="let element">
-                      {{ element.unidad }}
-                    </td>
-                  </ng-container>
+                          <ng-container matColumnDef="unidad">
+                            <th mat-header-cell *matHeaderCellDef>Unidad</th>
+                            <td mat-cell *matCellDef="let element">
+                              {{ element.unidad }}
+                            </td>
+                          </ng-container>
 
-                  <ng-container matColumnDef="stockL">
-                    <th mat-header-cell *matHeaderCellDef>stock L.</th>
-                    <td mat-cell *matCellDef="let element">
-                      {{ element.stockL }}
-                    </td>
-                  </ng-container>
+                          <ng-container matColumnDef="stockL">
+                            <th
+                              mat-header-cell
+                              *matHeaderCellDef
+                              class="min-w-[7rem]"
+                            >
+                              stock L.
+                            </th>
+                            <td
+                              mat-cell
+                              *matCellDef="let element"
+                              class="min-w-[7rem]"
+                            >
+                              {{ element.stockL }}
+                            </td>
+                          </ng-container>
 
-                  <ng-container matColumnDef="almacen">
-                    <th mat-header-cell *matHeaderCellDef>Almacen</th>
-                    <td mat-cell *matCellDef="let element">
-                      {{ element.almacen }}
-                    </td>
-                  </ng-container>
+                          <ng-container matColumnDef="almacen">
+                            <th mat-header-cell *matHeaderCellDef>Almacen</th>
+                            <td mat-cell *matCellDef="let element">
+                              {{ element.almacen }}
+                            </td>
+                          </ng-container>
 
-                  <ng-container matColumnDef="sucursal">
-                    <th mat-header-cell *matHeaderCellDef>Sucursal</th>
-                    <td mat-cell *matCellDef="let element">
-                      {{ element.sucursal }}
-                    </td>
-                  </ng-container>
+                          <ng-container matColumnDef="sucursal">
+                            <th mat-header-cell *matHeaderCellDef>Sucursal</th>
+                            <td mat-cell *matCellDef="let element">
+                              {{ element.sucursal }}
+                            </td>
+                          </ng-container>
 
-                  <ng-container matColumnDef="zona">
-                    <th mat-header-cell *matHeaderCellDef>Zona</th>
-                    <td mat-cell *matCellDef="let element">
-                      {{ element.zona }}
-                    </td>
-                  </ng-container>
+                          <ng-container matColumnDef="zona">
+                            <th mat-header-cell *matHeaderCellDef>Zona</th>
+                            <td mat-cell *matCellDef="let element">
+                              {{ element.zona }}
+                            </td>
+                          </ng-container>
 
-                  <ng-container matColumnDef="pasillo">
-                    <th mat-header-cell *matHeaderCellDef>Pasillos</th>
-                    <td mat-cell *matCellDef="let element">
-                      {{ element.pasillo }}
-                    </td>
-                  </ng-container>
+                          <ng-container matColumnDef="pasillo">
+                            <th mat-header-cell *matHeaderCellDef>Pasillos</th>
+                            <td mat-cell *matCellDef="let element">
+                              {{ element.pasillo }}
+                            </td>
+                          </ng-container>
 
-                  <ng-container matColumnDef="rack">
-                    <th mat-header-cell *matHeaderCellDef>Rack</th>
-                    <td mat-cell *matCellDef="let element">
-                      {{ element.rack }}
-                    </td>
-                  </ng-container>
+                          <ng-container matColumnDef="rack">
+                            <th mat-header-cell *matHeaderCellDef>Rack</th>
+                            <td mat-cell *matCellDef="let element">
+                              {{ element.rack }}
+                            </td>
+                          </ng-container>
 
-                  <ng-container matColumnDef="ubicacion">
-                    <th mat-header-cell *matHeaderCellDef>Ubicación</th>
-                    <td mat-cell *matCellDef="let element">
-                      {{ element.ubicacion }}
-                    </td>
-                  </ng-container>
+                          <ng-container matColumnDef="ubicacion">
+                            <th mat-header-cell *matHeaderCellDef>Ubicación</th>
+                            <td mat-cell *matCellDef="let element">
+                              {{ element.ubicacion }}
+                            </td>
+                          </ng-container>
 
-                  <ng-container matColumnDef="esagrupado">
-                    <th mat-header-cell *matHeaderCellDef>Es Agrupado</th>
-                    <td mat-cell *matCellDef="let element">
-                      {{ element.esagrupado }}
-                    </td>
-                  </ng-container>
+                          <ng-container matColumnDef="esagrupado">
+                            <th
+                              mat-header-cell
+                              *matHeaderCellDef
+                              class="min-w-[8rem]"
+                            >
+                              Es Agrupado
+                            </th>
+                            <td
+                              mat-cell
+                              *matCellDef="let element"
+                              class="min-w-[8rem]"
+                            >
+                              {{ element.esagrupado }}
+                            </td>
+                          </ng-container>
 
-                  <ng-container matColumnDef="codgrupo">
-                    <th mat-header-cell *matHeaderCellDef>Cod. Grupo</th>
-                    <td mat-cell *matCellDef="let element">
-                      {{ element.codigogrupo }}
-                    </td>
-                  </ng-container>
+                          <ng-container matColumnDef="codgrupo">
+                            <th
+                              mat-header-cell
+                              *matHeaderCellDef
+                              class="min-w-[8rem]"
+                            >
+                              Cod. Grupo
+                            </th>
+                            <td
+                              mat-cell
+                              *matCellDef="let element"
+                              class="min-w-[8rem]"
+                            >
+                              {{ element.codigogrupo }}
+                            </td>
+                          </ng-container>
 
-                  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                  <tr
-                    mat-row
-                    *matRowDef="let row; columns: displayedColumns"
-                  ></tr>
-                </table>
-                <div class="input-group mb-2 flex items-center ml-4">
-                  <div class="dropdown mr-4">
-                    <select
-                      class="form-select"
-                      (change)="onItemsPerPageChange($event)"
-                      aria-label="Default select example"
-                    >
-                      <option value="" disabled selected>Ítems</option>
-                      <option value="5">5</option>
-                      <option selected value="10">10</option>
-                      <option value="15">15</option>
-                      <option value="20">20</option>
-                    </select>
-                  </div>
-                  <div class="flex items-center justify-center">
-                    <mat-paginator
-                      [pageSize]="itemsPerPage"
-                      showFirstLastButtons
-                      aria-label="Select page of periodic elements"
-                    >
-                    </mat-paginator>
+                          <tr
+                            mat-header-row
+                            *matHeaderRowDef="displayedColumns"
+                          ></tr>
+                          <tr
+                            mat-row
+                            *matRowDef="let row; columns: displayedColumns"
+                          ></tr>
+                        </table>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
+            <!-- =================================================================================== -->
+            <!-- PAGINACIÓN INVENTARIO -->
+            <!-- =================================================================================== -->
+            <!-- <mat-paginator [pageSizeOptions]="[100]" aria-label="Select page of users" /> -->
+            <div class="input-group mb-2 mt-2 flex items-center ml-4">
+              <div class="dropdown mr-4">
+                <select
+                  class="form-select"
+                  (change)="onItemsPerPageChange($event)"
+                  aria-label="Default select example"
+                >
+                  <option value="" disabled selected>Ítems</option>
+                  <option value="5">5</option>
+                  <option selected value="10">10</option>
+                  <option value="15">15</option>
+                  <option value="20">20</option>
+                </select>
+              </div>
+              <div class="flex items-center justify-center">
+                <mat-paginator
+                  [pageSize]="itemsPerPage"
+                  showFirstLastButtons
+                  aria-label="Select page of periodic elements"
+                >
+                </mat-paginator>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      </section>
     </div>
   </div>
 </div>

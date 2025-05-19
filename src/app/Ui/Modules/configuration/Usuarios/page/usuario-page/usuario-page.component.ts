@@ -14,16 +14,27 @@ import { MensajeSeguridadModel } from 'src/app/Domain/models/seguridad/mensajeSe
   styleUrl: './usuario-page.component.css',
 })
 export class UsuarioPageComponent {
-
   private seguridadSubscription: Subscription | undefined;
   DatosUsuarios: Array<SeguridadModel> = [];
 
-  private readonly _usuario = inject(SeguridadService)
+  private readonly _usuario = inject(SeguridadService);
 
   ngOnInit(): void {
     this.listaUsuarios();
   }
 
+  /**
+   * Obtiene y carga la lista de usuarios desde el servicio de seguridad.
+   *
+   * Esta función realiza una llamada al servicio `ListarUsuarios` para obtener
+   * los usuarios registrados. Cuando se recibe la respuesta, los datos de los usuarios
+   * son almacenados en la propiedad `DatosUsuarios` del componente.
+   *
+   * La suscripción se guarda en la propiedad `seguridadSubscription` para poder
+   * gestionarla y evitar posibles fugas de memoria.
+   *
+   * @returns void
+   */
   listaUsuarios() {
     this.seguridadSubscription = this._usuario
       .ListarUsuarios()
@@ -32,9 +43,7 @@ export class UsuarioPageComponent {
       });
   }
 
-
   ngOnDestroy(): void {
     this.seguridadSubscription?.unsubscribe();
   }
-
 }

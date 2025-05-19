@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ButtonCerrarComponent } from './button-cerrar.component';
+import { IconPdfComponent } from './icon-pdf.component';
 
-describe('ButtonCerrarComponent', () => {
-  let component: ButtonCerrarComponent;
-  let fixture: ComponentFixture<ButtonCerrarComponent>;
+describe('IconPdfComponent', () => {
+  let component: IconPdfComponent;
+  let fixture: ComponentFixture<IconPdfComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ButtonCerrarComponent]
+      imports: [IconPdfComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(ButtonCerrarComponent);
+    fixture = TestBed.createComponent(IconPdfComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,4 +1,3 @@
-
 <div
   class="offcanvas offcanvas-end ancho first-offcanvas"
   tabindex="-1"
@@ -20,18 +19,16 @@
             >
               <div class="flex justify-between w-full">
                 <div class="flex items-center justify-center gap-4">
-
-                <h1 class="mb-2">Detalle ajustes</h1>
+                  <h1 class="mb-2">Detalle ajustes</h1>
                 </div>
                 <button
-                class="text-gray-800 hover:text-gray-600 "
-                data-bs-toggle="offcanvas"
-                data-bs-target="#disenoreporte"
-                aria-controls="offcanvasRight"
-              >
-                <mat-icon>close</mat-icon>
-
-              </button>
+                  class="text-gray-800 hover:text-gray-600"
+                  data-bs-toggle="offcanvas"
+                  data-bs-target="#disenoreporte"
+                  aria-controls="offcanvasRight"
+                >
+                  <mat-icon>close</mat-icon>
+                </button>
               </div>
             </div>
           </div>
@@ -40,9 +37,9 @@
     </div>
   </div>
   <div class="offcanvas-body pt-1 h-full overflow-hidden flex flex-col">
-
-
-    <tabla-ajustes-inventario-datos [listaProductos]="detalleProductos" [inventarioSeleccionado]="citaSeleccionada" />
-
+    <tabla-ajustes-inventario-datos
+      [listaProductos]="detalleProductos"
+      [inventarioSeleccionado]="citaSeleccionada"
+    />
   </div>
 </div>

@@ -78,15 +78,17 @@ interface Estados {
     FormsModule,
     MatListModule,
     CommonModule,
-    MatSortModule
+    MatSortModule,
   ],
   templateUrl: './lista-inventarios-cargados.component.html',
   styleUrl: './lista-inventarios-cargados.component.css',
 })
 export class ListaInventariosCargadosComponent implements AfterViewInit {
-
   @Input() dataListaInventarios: inventariosModel[] = [];
-  @Output() filtrosInventario = new EventEmitter<{ estado: string, rucempresa: string }>();
+  @Output() filtrosInventario = new EventEmitter<{
+    estado: string;
+    rucempresa: string;
+  }>();
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -133,13 +135,13 @@ export class ListaInventariosCargadosComponent implements AfterViewInit {
   private readonly ListDetalleInventario = inject(InventarioDetallesUseCases);
   private readonly listaUsuarios = inject(GetUsuariosUseCases);
   private readonly ObjectInventarioAnular = inject(AnularInventarioUseCase);
-  private mensajeAlert = inject(MensajeAnulacionesInventarioService)
+  private mensajeAlert = inject(MensajeAnulacionesInventarioService);
   private _liveAnnouncer = inject(LiveAnnouncer);
 
   private EmpresasSubscription: Subscription | undefined;
   private UsuariosSubscription: Subscription | undefined;
 
-  descripcionButtonAnular: string = ''
+  descripcionButtonAnular: string = '';
   cantidadDatosInventarioLista: number = 0;
   cantidadListaProductos: number = 0;
   currentPage: number = 1;
@@ -157,8 +159,8 @@ export class ListaInventariosCargadosComponent implements AfterViewInit {
   showListOpciones: boolean = false;
 
   ngOnInit(): void {
-    this.ObtenerEmpresas()
-    this.listarUsuarios()
+    this.ObtenerEmpresas();
+    this.listarUsuarios();
   }
 
   announceSortChange(sortState: Sort) {
@@ -184,23 +186,25 @@ export class ListaInventariosCargadosComponent implements AfterViewInit {
   ];
   selected = '1';
 
-  // ================================================================================
-  // LISTA ESTADOS PARA FILTROS - EMPRESAS
-  // ================================================================================
+  /**
+   * Obtiene la lista de empresas desde el servicio 'listaEmpresas'
+   * y la asigna al arreglo 'DatosEmpresas' al recibir una respuesta exitosa.
+   * La suscripción se almacena en 'EmpresasSubscription' para poder limpiarla luego y evitar fugas de memoria.
+   */
   ObtenerEmpresas(): void {
-    this.EmpresasSubscription = this.listaEmpresas.ListarEmpresas().subscribe(
-      (response: MensajeResponseEmpresas) => {
-        this.DatosEmpresas = response.empresas
-      }
-    )
+    this.EmpresasSubscription = this.listaEmpresas
+      .ListarEmpresas()
+      .subscribe((response: MensajeResponseEmpresas) => {
+        this.DatosEmpresas = response.empresas;
+      });
   }
 
   selectedEmpresa = '';
 
   emitirFiltros() {
     this.filtrosInventario.emit({
-      estado:  this.selected,
-      rucempresa: this.selectedEmpresa
+      estado: this.selected,
+      rucempresa: this.selectedEmpresa,
     });
   }
 
@@ -221,7 +225,7 @@ export class ListaInventariosCargadosComponent implements AfterViewInit {
         .subscribe((Response: MensajeSeguridadModel) => {
           this.getUsuarios_All = Response.usuarios;
         });
-    } catch (err) { }
+    } catch (err) {}
   }
 
   // ================================================================================
@@ -256,13 +260,12 @@ export class ListaInventariosCargadosComponent implements AfterViewInit {
     this.ObjectInventario.getInventarioById(reqDatos).subscribe(
       (response: inventariosModel) => {
         this.datosInventario = response;
-        response.estado == '1' ?  this.Alert_AnularInventario(response) : ''
+        response.estado == '1' ? this.Alert_AnularInventario(response) : '';
       }
     );
   }
 
   Alert_AnularInventario(response: inventariosModel) {
-
     this.mensajeAlert.Alert_AnularInventario(response).then((confirmado) => {
       if (confirmado) {
         this.ResponseAnularInventarioInventarioSeleccionado();
@@ -271,19 +274,26 @@ export class ListaInventariosCargadosComponent implements AfterViewInit {
   }
 
   ResponseAnularInventarioInventarioSeleccionado(): void {
-    const rucempresa = this.datosInventario.rucempresa
-    const usuarioAnulador: string = sessionStorage.getItem('user') ?? 'System'
-    const idcarga: number = this.datosInventario.idcarga
-    const estado: string = '0'
-    const reqDatos: RequestAnularInventario = { rucempresa, idcarga, usuarioAnulador, estado };
+    const rucempresa = this.datosInventario.rucempresa;
+    const usuarioAnulador: string = sessionStorage.getItem('user') ?? 'System';
+    const idcarga: number = this.datosInventario.idcarga;
+    const estado: string = '0';
+    const reqDatos: RequestAnularInventario = {
+      rucempresa,
+      idcarga,
+      usuarioAnulador,
+      estado,
+    };
 
-    reqDatos.usuarioAnulador = usuarioAnulador
-    reqDatos.rucempresa = rucempresa
-    reqDatos.idcarga = idcarga
+    reqDatos.usuarioAnulador = usuarioAnulador;
+    reqDatos.rucempresa = rucempresa;
+    reqDatos.idcarga = idcarga;
 
     this.ObjectInventarioAnular.anularInventario(reqDatos).subscribe(
       (response: ResponseAnularInventario) => {
-        response.exito ? this.Alert_InventarioAnulado_Correctamente() : this.Alert_InventarioAnulado_Error()
+        response.exito
+          ? this.Alert_InventarioAnulado_Correctamente()
+          : this.Alert_InventarioAnulado_Error();
       }
     );
   }
@@ -295,7 +305,7 @@ export class ListaInventariosCargadosComponent implements AfterViewInit {
   }
 
   Alert_InventarioAnulado_Error() {
-    this.mensajeAlert.Alert_InventarioAnulado_Error()
+    this.mensajeAlert.Alert_InventarioAnulado_Error();
   }
 
   // ================================================================================
@@ -317,7 +327,6 @@ export class ListaInventariosCargadosComponent implements AfterViewInit {
   // ================================================================================
   ngOnDestroy(): void {
     this.EmpresasSubscription?.unsubscribe();
-    this.UsuariosSubscription?.unsubscribe()
+    this.UsuariosSubscription?.unsubscribe();
   }
 }
-

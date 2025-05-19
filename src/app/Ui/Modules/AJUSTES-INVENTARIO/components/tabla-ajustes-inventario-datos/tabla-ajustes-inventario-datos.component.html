@@ -51,7 +51,7 @@
           codigoproducto
         </th>
         <td mat-cell *matCellDef="let row">
-          <button class="px-6 py-3 flex gap-2 align-center">
+          <button class="px-6 flex gap-2 align-center">
             <span class="text-sm text-gray-600 text-left">{{
               row.codigoproducto
             }}</span>
@@ -63,7 +63,7 @@
       <ng-container matColumnDef="codigobarra">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>codigobarra</th>
         <td mat-cell *matCellDef="let row">
-          <button class="px-6 py-3 flex gap-2 align-center">
+          <button class="px-6 flex gap-2 align-center">
             <span class="text-sm text-gray-600 text-left">{{
               row.codigobarra
             }}</span>
@@ -75,7 +75,7 @@
       <ng-container matColumnDef="descripcionProducto">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Descripción</th>
         <td mat-cell *matCellDef="let row">
-          <button class="px-6 py-3 flex gap-2 align-left">
+          <button class="px-6 flex gap-2 align-left">
             <span class="text-sm text-gray-600 text-left">{{
               row.descripcionProducto
             }}</span>
@@ -87,7 +87,7 @@
       <ng-container matColumnDef="stockL">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Stock L</th>
         <td mat-cell *matCellDef="let row">
-          <button class="px-6 py-3 flex gap-2 align-center">
+          <button class="px-6 flex gap-2 align-center">
             <span class="text-sm text-gray-600">{{ row.stockL }}</span>
           </button>
         </td>
@@ -97,7 +97,7 @@
       <ng-container matColumnDef="stockF">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Stock F</th>
         <td mat-cell *matCellDef="let row">
-          <button class="px-6 py-3 flex gap-2 align-center">
+          <button class="px-6 flex gap-2 align-center">
             <span class="text-sm text-gray-600">{{ row.stockF }}</span>
           </button>
         </td>
@@ -109,7 +109,7 @@
           Stock Resultante
         </th>
         <td mat-cell *matCellDef="let row">
-          <button class="px-6 py-3 flex gap-2 align-center">
+          <button class="px-6 flex gap-2 align-center">
             <span
               class="text-sm"
               [ngClass]="{

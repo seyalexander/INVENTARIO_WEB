@@ -103,9 +103,6 @@ export class RegistroCargaInventariosComponent {
   columnasExcel: string[] = [];
   columnasMapeadas: Record<string, string> = {};
 
-  // ================================================================================
-  // INYECCIÓN DE SERVICIOS
-  // ================================================================================
   constructor(
     private readonly cargaExcelsService: CargaDatosService,
     private readonly _empresas: EmpresasService,
@@ -122,9 +119,6 @@ export class RegistroCargaInventariosComponent {
   private readonly listaUsuarios = inject(GetUsuariosUseCases);
   private readonly mapeoCamposService = inject(MapeoCamposService);
 
-  // ================================================================================
-  // FUNCIÓN PRINCIPAL
-  // ================================================================================
   ngOnInit(): void {
     this.listarUsuarios();
     this.listaEmpresas();
@@ -263,38 +257,30 @@ export class RegistroCargaInventariosComponent {
     const totalRegistros = jsonData.length;
     const loteSize = 250;
     let registrosProcesados = 0;
+    const nombreUsuario = idUsuario ?? 'Registro sistema';
 
     this.alertService_CargaInventario.Save_GuardadoRegistros();
 
     const procesarLote = (inicio: number) => {
-      if (inicio >= totalRegistros) {
-        Swal.close();
-        this.alertService_CargaInventario
-          .Info_MensajeCargaCompleta()
-          .then(() => {
-            window.location.reload();
-          });
+      if (
+        this.validacionService_CargaInventario.validarTieneRegistros(
+          totalRegistros,
+          inicio
+        )
+      ) {
         return;
       }
 
       const fin = Math.min(inicio + loteSize, totalRegistros);
-      const detalleData = jsonData.slice(inicio, fin).map((item: any) => {
-        return Object.keys(columnasMapeadas).reduce((acc, key) => {
-          let valor = item[columnasMapeadas[key]] || '';
+      const detalleData =
+        this.validacionService_CargaInventario.obtenerLoteTransformado(
+          jsonData,
+          columnasMapeadas,
+          inicio,
+          loteSize,
+          totalRegistros
+        );
 
-          if (['stockL'].includes(key)) {
-            valor =
-              typeof valor === 'string' && valor.trim() === ''
-                ? 0.0
-                : parseFloat(valor) || 0.0;
-          }
-
-          acc[key] = valor;
-          return acc;
-        }, {} as Record<string, any>);
-      });
-
-      const nombreUsuario = idUsuario ?? 'Registro sistema';
       const cabecera = {
         ...this.Cabecera,
         usuariocreacion: nombreUsuario,
@@ -349,14 +335,14 @@ export class RegistroCargaInventariosComponent {
       }
     });
 
-    if (duplicados.length > 0) {
-      const tablaDuplicados =
-        this.validacionService_CargaInventario.generarTablaHTMLDuplicados(
-          duplicados
-        );
-      this.alertService_CargaInventario.Alert_MensajeDuplicados(
-        tablaDuplicados
+    const hayDuplicados =
+      this.validacionService_CargaInventario.validarExisteDuplicados(
+        duplicados,
+        this.validacionService_CargaInventario.generarTablaHTMLDuplicados,
+        this.alertService_CargaInventario
       );
+
+    if (hayDuplicados) {
       return;
     }
 
@@ -428,9 +414,6 @@ export class RegistroCargaInventariosComponent {
     }
   }
 
-  // ================================================================================
-  // SELECIÓN ARCHIVOS EN EL HTML
-  // ================================================================================
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
@@ -497,9 +480,6 @@ export class RegistroCargaInventariosComponent {
     }
   }
 
-  // ================================================================================
-  // LISTA EMPRESAS
-  // ================================================================================
   listaEmpresas() {
     this.empresasSubscription = this._empresas
       .ListarEmpresas()
@@ -508,16 +488,10 @@ export class RegistroCargaInventariosComponent {
       });
   }
 
-  // ================================================================================
-  // LIMPIAR DATOS PREVIEW
-  // ================================================================================
   limpiarDatosPreview(): void {
     window.location.reload();
   }
 
-  // ================================================================================
-  // DESTRUCCIÓN DE SUBSCRIPCIONES
-  // ================================================================================
   ngOnDestroy(): void {
     this.empresasSubscription?.unsubscribe();
     this.UsuariosSubscription?.unsubscribe();

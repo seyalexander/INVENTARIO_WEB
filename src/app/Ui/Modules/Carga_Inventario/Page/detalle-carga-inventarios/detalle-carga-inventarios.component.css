@@ -48,3 +48,36 @@ mat-paginator {
 .boder-target {
   border: 1px solid #00D1AE;
 }
+
+
+
+
+.offcanvas-body::-webkit-scrollbar {
+  width: 8px;
+  border-radius: 10px;
+}
+
+.offcanvas-body::-webkit-scrollbar-track {
+  background: #e0e6ed;
+  border-radius: 10px;
+}
+
+.offcanvas-body::-webkit-scrollbar-thumb {
+  background: #20477E;
+  border-radius: 10px;
+  border: 2px solid #e0e6ed;
+}
+
+.offcanvas-body::-webkit-scrollbar-thumb:hover {
+  background: #16325A;
+}
+
+.offcanvas-body {
+  scrollbar-width: thin;
+  scrollbar-color: #20477E #e0e6ed;
+}
+
+
+.container-datos-page {
+  height: calc(100vh - 8rem);
+}

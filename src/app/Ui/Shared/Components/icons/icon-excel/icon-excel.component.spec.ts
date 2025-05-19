@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TargetOpcionComponent } from './target-opcion.component';
+import { IconExcelComponent } from './icon-excel.component';
 
-describe('TargetOpcionComponent', () => {
-  let component: TargetOpcionComponent;
-  let fixture: ComponentFixture<TargetOpcionComponent>;
+describe('IconExcelComponent', () => {
+  let component: IconExcelComponent;
+  let fixture: ComponentFixture<IconExcelComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TargetOpcionComponent]
+      imports: [IconExcelComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(TargetOpcionComponent);
+    fixture = TestBed.createComponent(IconExcelComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
