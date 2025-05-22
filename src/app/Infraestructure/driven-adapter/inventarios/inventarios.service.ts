@@ -159,7 +159,6 @@ export class InventariosService extends InventariosGateway {
 
 
    getInventariosAjustesByFiltros(requFiltros: RequestObtenerDetalleAjusteFiltros): Observable<Array<detalleCarga>> {
-    console.log("DATOS ENVIADOS A SERVICIO", requFiltros);
 
     return this.httpClient.post<detalleCarga[]>(
       `${this.URL}/ObtenerDetalleInventarioAjustadosByFiltros`,

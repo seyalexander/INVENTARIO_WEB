@@ -146,7 +146,6 @@ export class ListaInventariosAjustePageComponent {
       .getDetalleInventario(reqDatos)
       .subscribe((response: detalleCarga[]) => {
         this.listaProductos = response;
-        console.log('DATA LSITA PRODUCTOS: ', this.listaProductos);
       });
   }
 

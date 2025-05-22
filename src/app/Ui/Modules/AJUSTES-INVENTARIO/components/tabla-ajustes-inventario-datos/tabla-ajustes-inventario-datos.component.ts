@@ -88,8 +88,7 @@ export class TablaAjustesInventarioDatosComponent {
 
     const enviarLote = (loteIndex: number) => {
       if (loteIndex >= totalBatches) {
-        Swal.close();
-        // console.log("✅ Todos los lotes enviados correctamente.");
+        Swal.close(); // Todos los lotes enviados correctamente
         return;
       }
 
@@ -102,8 +101,6 @@ export class TablaAjustesInventarioDatosComponent {
         rucempresa: this.inventarioSeleccionado.rucempresa,
         detalle: lote
       };
-
-      console.log("GUARDADO AJUSTES: ",cabeceraAjuste);
 
       this.inventariosService.newAjusteInventario(cabeceraAjuste).subscribe({
         next: (response) => {

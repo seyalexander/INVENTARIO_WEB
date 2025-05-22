@@ -25,8 +25,6 @@ export class ColumnMatcherComponent {
   selectedColumns: Record<string, string> = {};
 
   ngOnInit() {
-    console.log(this.columnasMapeadas);
-
     Object.keys(this.columnasEsperadas).forEach((key) => {
       this.selectedColumns[key] = this.mapeoGuardado[key] || '';
     });

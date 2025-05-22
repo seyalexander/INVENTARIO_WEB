@@ -34,6 +34,6 @@ export class MensajesListaInventarioService {
       backdrop: `rgba(0,0,0,0.4)`,
       allowOutsideClick: false,
       allowEscapeKey: true,
-    });
+    })
   }
 }

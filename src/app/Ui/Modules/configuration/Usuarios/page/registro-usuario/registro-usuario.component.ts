@@ -26,6 +26,7 @@ import { MensajesRegistroUsuarioService } from 'src/app/Infraestructure/core/See
   styleUrl: './registro-usuario.component.css',
 })
 export class RegistroUsuarioComponent {
+
   DatosEmpresas: Array<EmpresasModel> = [];
   DatosRoles: Array<RolesModel> = [];
   ObjtEmpresa: EmpresasModel = {} as EmpresasModel;
@@ -155,7 +156,6 @@ export class RegistroUsuarioComponent {
    * @returns void
    */
   cerrarRegistro(): void {
-    // this.formularioRegistro.reset();
     window.location.reload()
   }
 

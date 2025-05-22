@@ -84,6 +84,7 @@ interface Estados {
   styleUrl: './lista-inventarios-cargados.component.css',
 })
 export class ListaInventariosCargadosComponent implements AfterViewInit {
+
   @Input() dataListaInventarios: inventariosModel[] = [];
   @Output() filtrosInventario = new EventEmitter<{
     estado: string;
@@ -144,8 +145,6 @@ export class ListaInventariosCargadosComponent implements AfterViewInit {
   descripcionButtonAnular: string = '';
   cantidadDatosInventarioLista: number = 0;
   cantidadListaProductos: number = 0;
-  currentPage: number = 1;
-  p: number = 1;
 
   datosInventario: inventariosModel = {} as inventariosModel;
 
@@ -157,6 +156,7 @@ export class ListaInventariosCargadosComponent implements AfterViewInit {
   paginatedProductos: Array<detalleCarga> = [];
 
   showListOpciones: boolean = false;
+  isLoadingInventarios = false
 
   ngOnInit(): void {
     this.ObtenerEmpresas();
@@ -244,10 +244,15 @@ export class ListaInventariosCargadosComponent implements AfterViewInit {
   // DATOS INVENTARIO PARA ASIGNAR USUARIO
   // ================================================================================
   ObtenerDetatosInventarios(rucempresa: string, idcarga: number) {
+    this.isLoadingInventarios = true
     const reqDatos: requestDatosasignar = { rucempresa, idcarga };
     this.ObjectInventario.getInventarioById(reqDatos).subscribe(
       (response: inventariosModel) => {
+        this.isLoadingInventarios = false
         this.datosInventario = response;
+      },
+      (error) => {
+        this.isLoadingInventarios = false
       }
     );
   }

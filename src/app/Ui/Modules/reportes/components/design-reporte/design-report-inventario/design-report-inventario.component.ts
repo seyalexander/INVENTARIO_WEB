@@ -477,10 +477,9 @@ export class DesignReportInventarioComponent {
       }.pdf`;
       doc.save(nombreArchivo);
 
-      this.mensajeExportPdf.cerrarAlerta();
+      // this.mensajeExportPdf.cerrarAlerta();
 
     } catch (error) {
-      console.error('Error al exportar a PDF:', error);
       this.mensajeExportPdf.cerrarAlerta();
       Swal.fire({
         icon: 'error',

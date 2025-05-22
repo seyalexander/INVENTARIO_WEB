@@ -22,11 +22,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
-import {
-  FormControl,
-  FormsModule,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ReqActualizarUsuario } from 'src/app/Domain/models/seguridad/requestActualizarusuario.mode';
 import Swal from 'sweetalert2';
 import { SeguridadService } from 'src/app/Infraestructure/driven-adapter/seguridad/seguridad.service';
@@ -42,6 +38,7 @@ import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { TarjetaUsuarioEnviarComponent } from '../../tarjeta/tarjeta-usuario-enviar/tarjeta-usuario-enviar.component';
 import * as bootstrap from 'bootstrap';
+import { MensajeActualizarUsuarioService } from 'src/app/Infraestructure/core/SeetAlert/Usuarios/mensaje-actualizar-usuario.service';
 
 @Component({
   selector: 'table-usuarios',
@@ -65,7 +62,7 @@ import * as bootstrap from 'bootstrap';
     FormsModule,
     MatSelectModule,
     MatSortModule,
-    TarjetaUsuarioEnviarComponent
+    TarjetaUsuarioEnviarComponent,
   ],
   templateUrl: './table-usuarios.component.html',
   styleUrl: './table-usuarios.component.css',
@@ -74,8 +71,6 @@ import * as bootstrap from 'bootstrap';
 export class TableUsuariosComponent {
   switchControl = new FormControl(true);
 
-  value = '';
-
   DatosRoles: Array<RolesModel> = [];
   DatosEmpresas: Array<EmpresasModel> = [];
 
@@ -83,11 +78,11 @@ export class TableUsuariosComponent {
   private actualizarUsuario: Subscription | undefined;
   private empresasSubscription: Subscription | undefined;
 
-  constructor(private readonly _usuarios: SeguridadService) {}
-
+  private readonly _usuarios = inject(SeguridadService);
   private readonly _roles = inject(RolesService);
   private readonly _empresas = inject(EmpresasService);
   private readonly ObjectUsuario = inject(GetUsuariosByIdUseCases);
+  private readonly mensajesActualizar = inject(MensajeActualizarUsuarioService)
   private _liveAnnouncer = inject(LiveAnnouncer);
 
   datosSeguridadDetalle: SeguridadModel = {} as SeguridadModel;
@@ -102,11 +97,20 @@ export class TableUsuariosComponent {
     'apellido',
     'clave',
     'copy',
-    'opciones'
+    'opciones',
   ];
 
-  @ViewChild(TarjetaUsuarioEnviarComponent) tarjetaComponent!: TarjetaUsuarioEnviarComponent;
+  @ViewChild(TarjetaUsuarioEnviarComponent)
+  tarjetaComponent!: TarjetaUsuarioEnviarComponent;
 
+  /**
+   * Copia los datos del usuario a un componente de tarjeta y ejecuta la función para copiar su imagen.
+   *
+   * @param usuario - Objeto que contiene los datos del usuario a copiar.
+   *
+   * La ejecución de `copiarImagen()` se retrasa 100 ms para asegurar que el componente
+   * haya actualizado correctamente el estado antes de intentar copiar la imagen.
+   */
   copiarTarjeta(usuario: any) {
     this.tarjetaComponent.usuario = usuario;
     setTimeout(() => this.tarjetaComponent.copiarImagen(), 100);
@@ -125,32 +129,28 @@ export class TableUsuariosComponent {
       });
   }
 
-   listaEmpresas() {
-      this.empresasSubscription = this._empresas
-        .ListarEmpresas()
-        .subscribe((response: MensajeResponseEmpresas) => {
-          this.DatosEmpresas = response.empresas;
-        });
-    }
+  listaEmpresas() {
+    this.empresasSubscription = this._empresas
+      .ListarEmpresas()
+      .subscribe((response: MensajeResponseEmpresas) => {
+        this.DatosEmpresas = response.empresas;
+      });
+  }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
 
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
+    this.dataSource.paginator?.firstPage();
   }
 
-   announceSortChange(sortState: Sort) {
-        if (sortState.direction) {
-          this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
-        } else {
-          this._liveAnnouncer.announce('Sorting cleared');
-        }
-      }
-
-
+  announceSortChange(sortState: Sort) {
+    if (sortState.direction) {
+      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+    } else {
+      this._liveAnnouncer.announce('Sorting cleared');
+    }
+  }
 
   cambiarEstadoUsuario(usuario: SeguridadModel) {
     const nuevoEstado = usuario.estado === '1' ? '0' : '1';
@@ -172,7 +172,7 @@ export class TableUsuariosComponent {
         window.location.reload();
       },
       error: () => {
-        Swal.fire('Error', 'No se pudo actualizar el estado', 'error');
+        this.mensajesActualizar.mensajeErrorActualizar('No se pudo actualizar el estado')
       },
     });
   }
@@ -211,37 +211,24 @@ export class TableUsuariosComponent {
   }
 
   abrirModalDetalle = '';
-  @ViewChild(DetalleUsuarioPageComponent) detalleUsuarioComponent!: DetalleUsuarioPageComponent;
+  @ViewChild(DetalleUsuarioPageComponent)
+  detalleUsuarioComponent!: DetalleUsuarioPageComponent;
 
-private cdRef = inject(ChangeDetectorRef);
+  private cdRef = inject(ChangeDetectorRef);
 
-ObtenerDetalleUsuario(usuario: SeguridadModel) {
-  if (this.detalleUsuarioComponent) {
-    this.detalleUsuarioComponent.datosUsuario = usuario;
-    this.cdRef.detectChanges();
+  ObtenerDetalleUsuario(usuario: SeguridadModel) {
+    if (this.detalleUsuarioComponent) {
+      this.detalleUsuarioComponent.datosUsuario = usuario;
+      this.cdRef.detectChanges();
+    }
+
+    // 🔹 Abrimos el modal después de asignar los datos
+    const modalElement = document.getElementById('detalleUsuario');
+    if (modalElement) {
+      const modal = new bootstrap.Modal(modalElement);
+      modal.show();
+    }
   }
-
-  // 🔹 Abrimos el modal después de asignar los datos
-  const modalElement = document.getElementById('detalleUsuario');
-  if (modalElement) {
-    const modal = new bootstrap.Modal(modalElement);
-    modal.show();
-  }
-}
-
-  // ObtenerDetalleUsuario(idusuario: string) {
-  //   if (idusuario != '') {
-  //     const reqDatos: RequestDetalleUsuario = { idusuario };
-  //     this.actualizarUsuario = this.ObjectUsuario.detalleUsuario(
-  //       reqDatos
-  //     ).subscribe((response: SeguridadModel) => {
-  //       this.datosSeguridadDetalle = response;
-  //       this.abrirModalDetalle = '#detalleUsuario';
-  //     });
-  //   } else {
-  //     this.abrirModalEditar = '';
-  //   }
-  // }
 
   // ====================================================================
   // EDITAR SOLO NOMBRE
@@ -276,7 +263,7 @@ ObtenerDetalleUsuario(usuario: SeguridadModel) {
         window.location.reload();
       },
       error: () => {
-        Swal.fire('Error', 'No se pudo actualizar el nombre', 'error');
+        this.mensajesActualizar.mensajeErrorActualizar('No se pudo actualizar el nombre')
       },
     });
   }
@@ -314,7 +301,7 @@ ObtenerDetalleUsuario(usuario: SeguridadModel) {
         window.location.reload();
       },
       error: () => {
-        Swal.fire('Error', 'No se pudo actualizar el nombre', 'error');
+        this.mensajesActualizar.mensajeErrorActualizar('No se pudo actualizar el nombre')
       },
     });
   }
@@ -356,7 +343,7 @@ ObtenerDetalleUsuario(usuario: SeguridadModel) {
         usuario.editandoCargo = false;
       },
       error: () => {
-        Swal.fire('Error', 'No se pudo actualizar el cargo', 'error');
+        this.mensajesActualizar.mensajeErrorActualizar('No se pudo actualizar el cargo.')
       },
     });
   }
@@ -398,22 +385,27 @@ ObtenerDetalleUsuario(usuario: SeguridadModel) {
         usuario.editandoEmpresa = false;
       },
       error: () => {
-        Swal.fire('Error', 'No se pudo actualizar la empresa', 'error');
+         this.mensajesActualizar.mensajeErrorActualizar('No se pudo actualizar la empresa.')
       },
     });
   }
 
-
-    // ====================================================================
+  // ====================================================================
   // EDITAR SOLO CONTRASEÑA
   // ====================================================================
 
+  /**
+   * Activa el modo de edición de contraseña para el usuario.
+   *
+   * Esta función se ejecuta cuando se hace doble clic en el botón de edición.
+   * Permite mostrar los campos de contraseña y asigna la contraseña actual a una variable temporal,
+   * para que el usuario pueda modificarla sin afectar directamente el valor original.
+   *
+   * @param usuario - Objeto que representa al usuario que está editando su contraseña.
+   */
   editarContrasenia(usuario: any) {
     usuario.editandocontrasenia = true;
     usuario.contraseniaTemporal = usuario.contrasenia;
-    console.log(usuario.contrasenia);
-    console.log(usuario.contraseniaTemporal);
-
   }
 
   guardarContrasenia(usuario: any) {
@@ -431,7 +423,7 @@ ObtenerDetalleUsuario(usuario: SeguridadModel) {
       cargo: usuario.cargo,
       contrasenia: usuario.contraseniaTemporal ?? '',
       usuariomodificador: sessionStorage.getItem('user') ?? 'System',
-      estado: usuario.estado, // Mantiene el estado actual
+      estado: usuario.estado,
     };
 
     this._usuarios.actualizarUsuario(formActualizar).subscribe({
@@ -440,14 +432,24 @@ ObtenerDetalleUsuario(usuario: SeguridadModel) {
         usuario.editandocontrasenia = false;
       },
       error: () => {
-        Swal.fire('Error', 'No se pudo actualizar la contraseña', 'error');
+        this.mensajesActualizar.mensajeErrorActualizar('No se pudo actualizar la contraseña.')
       },
     });
   }
 
+  /**
+   * Realiza la limpieza de las suscripciones al destruir el componente.
+   *
+   * Esta función es parte del ciclo de vida de Angular. Se llama cuando el componente
+   * está por ser destruido, lo que permite limpiar los recursos y evitar posibles
+   * fugas de memoria. En este caso, se encargará de cancelar las suscripciones activas
+   * a los servicios de `empresas`, `usuarios` y `roles` mediante el método `unsubscribe()`.
+   *
+   * @returns void
+   */
   ngOnDestroy(): void {
     this.actualizarUsuario?.unsubscribe();
     this.rolesSubscription?.unsubscribe();
-    this.empresasSubscription?.unsubscribe()
+    this.empresasSubscription?.unsubscribe();
   }
 }

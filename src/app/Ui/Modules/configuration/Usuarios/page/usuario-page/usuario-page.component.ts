@@ -5,6 +5,7 @@ import { RegistroUsuarioComponent } from '../registro-usuario/registro-usuario.c
 import { SeguridadModel } from 'src/app/Domain/models/seguridad/seguridad.model';
 import { Subscription } from 'rxjs';
 import { MensajeSeguridadModel } from 'src/app/Domain/models/seguridad/mensajeSeguridad.model';
+import { MensajesListaUsuariosService } from 'src/app/Infraestructure/core/SeetAlert/Usuarios/mensajes-lista-usuarios.service';
 
 @Component({
   selector: 'app-usuario-page',
@@ -14,10 +15,12 @@ import { MensajeSeguridadModel } from 'src/app/Domain/models/seguridad/mensajeSe
   styleUrl: './usuario-page.component.css',
 })
 export class UsuarioPageComponent {
+
   private seguridadSubscription: Subscription | undefined;
   DatosUsuarios: Array<SeguridadModel> = [];
 
   private readonly _usuario = inject(SeguridadService);
+  private readonly _mensajesUsuario = inject(MensajesListaUsuariosService);
 
   ngOnInit(): void {
     this.listaUsuarios();
@@ -36,13 +39,41 @@ export class UsuarioPageComponent {
    * @returns void
    */
   listaUsuarios() {
-    this.seguridadSubscription = this._usuario
-      .ListarUsuarios()
-      .subscribe((response: MensajeSeguridadModel) => {
-        this.DatosUsuarios = response.usuarios;
+    try {
+      this.seguridadSubscription = this._usuario.ListarUsuarios().subscribe({
+        next: (response: MensajeSeguridadModel) => {
+          if (response.exito) {
+            if (Array.isArray(response.usuarios)) {
+              this.DatosUsuarios = response.usuarios;
+            } else {
+              this.DatosUsuarios = [];
+              this._mensajesUsuario.MensajeDatosNoValidos();
+            }
+          } else {
+            this.DatosUsuarios = [];
+            this._mensajesUsuario.MensajeRespuestaApiFalse();
+          }
+        },
+        error: (error) => {
+          this.DatosUsuarios = [];
+          this._mensajesUsuario.Error_ConexionApi(error);
+        },
       });
+    } catch (err) {
+      this._mensajesUsuario.mostrarMensajeError();
+    }
   }
 
+  /**
+   * Realiza la limpieza de las suscripciones al destruir el componente.
+   *
+   * Esta función es parte del ciclo de vida de Angular. Se llama cuando el componente
+   * está por ser destruido, lo que permite limpiar los recursos y evitar posibles
+   * fugas de memoria. En este caso, se encargará de cancelar las suscripciones activas
+   * a los servicios de `usuarios` mediante el método `unsubscribe()`.
+   *
+   * @returns void
+   */
   ngOnDestroy(): void {
     this.seguridadSubscription?.unsubscribe();
   }

@@ -10,8 +10,6 @@ import { EmpresasService } from 'src/app/Infraestructure/driven-adapter/empresas
 import { MensajeSeguridadModel } from 'src/app/Domain/models/seguridad/mensajeSeguridad.model';
 import { MatInputModule } from '@angular/material/input';
 import { inventariosModel } from 'src/app/Domain/models/inventarios/inventarios.models';
-import { InventariosUseCases } from 'src/app/Domain/use-case/inventarios/get-inventarios-useCase';
-import Swal from 'sweetalert2';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatPaginator } from '@angular/material/paginator';

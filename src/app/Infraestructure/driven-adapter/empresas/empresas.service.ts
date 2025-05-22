@@ -12,6 +12,8 @@ import { ResponseObtenerSucursales } from 'src/app/Domain/models/empresas/Respon
   providedIn: 'root'
 })
 export class EmpresasService {
+
+
   private readonly URL = environment.api;
 
 
@@ -44,9 +46,7 @@ export class EmpresasService {
   }
 
 
-
-
-
-
-  constructor(private readonly httpCliente: HttpClient) { }
+  constructor(
+    private readonly httpCliente: HttpClient
+  ) { }
 }
