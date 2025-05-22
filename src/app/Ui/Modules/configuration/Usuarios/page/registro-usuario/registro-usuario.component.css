@@ -1,6 +1,4 @@
 .bg-fondo-header {
-  /* background-image: url('../../../../../../../assets/images/bg_fondo.webp'); */
-  /* background-image: url("/db-inventory-gestor/browser/assets/images/bg_fondo.webp"); */
   background-color: #fcfcfc;
   background-repeat: no-repeat;
   object-fit: contain;
@@ -18,7 +16,3 @@ form select {
   background-color: #f7f7f7;
   border: none;
 }
-
-/* input {
-  height: 3.5rem;
-} */

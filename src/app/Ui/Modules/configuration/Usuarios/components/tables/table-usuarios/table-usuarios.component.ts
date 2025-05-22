@@ -14,7 +14,6 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { TdEstado2Component } from 'src/app/Ui/Shared/Components/tables/td-estado-2/td-estado-2.component';
 import { TdEstado1Component } from 'src/app/Ui/Shared/Components/tables/td-estado-1/td-estado-1.component';
 import { MatMenuModule } from '@angular/material/menu';
-import { ActualizarUsuarioPageComponent } from '@modules/configuration/Usuarios/page/actualizar-usuario-page/actualizar-usuario-page.component';
 import { GetUsuariosByIdUseCases } from 'src/app/Domain/use-case/seguridad/get-usuarioById-useCase';
 import { RequestDetalleUsuario } from 'src/app/Domain/models/seguridad/requestDetalleUsuario.mode';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -49,7 +48,6 @@ import { MensajeActualizarUsuarioService } from 'src/app/Infraestructure/core/Se
     TdEstado2Component,
     TdEstado1Component,
     MatMenuModule,
-    ActualizarUsuarioPageComponent,
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,

@@ -174,15 +174,6 @@ mat-form-field {
   color: #fff;
 }
 
-
-.bg-fondo-detalle {
-  background-image: url("../../../../../../assets/images/bg_fondo.webp");
-  /* background-image: url("/db-inventory-gestor/browser/assets/images/bg_fondo.webp"); */
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
 .titulo-detalle {
   color: white;
   font-size: 1.5rem;

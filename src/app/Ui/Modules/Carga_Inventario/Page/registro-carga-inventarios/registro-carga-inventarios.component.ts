@@ -25,7 +25,6 @@ import { EmpresasService } from 'src/app/Infraestructure/driven-adapter/empresas
 import { InventariosService } from 'src/app/Infraestructure/driven-adapter/inventarios/inventarios.service';
 import Swal from 'sweetalert2';
 import * as XLSX from 'xlsx';
-import { PreviewCargaInventariosComponent } from '../preview-carga-inventarios/preview-carga-inventarios.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
@@ -49,7 +48,6 @@ import { ExcelRow } from 'src/app/Infraestructure/core/Interfaces/ExcelRow.model
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
-    PreviewCargaInventariosComponent,
     MatFormFieldModule,
     MatSelectModule,
     MatInputModule,
