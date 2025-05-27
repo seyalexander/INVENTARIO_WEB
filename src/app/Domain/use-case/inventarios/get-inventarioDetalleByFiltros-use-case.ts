@@ -14,7 +14,7 @@ export class InventarioDetallesByFiltrosUseCases {
     private readonly _getInventariosGateWay: InventariosGateway,
   ) {}
 
-  getDetalleInventarioByFiltros(reqDetalle: RequestObtenerDetalleFiltros): Observable<Array<detalleCarga>> {
+  getDetalleInventarioByFiltros(reqDetalle: RequestObtenerDetalleFiltros): Observable<detalleCarga[]> {
     return this._getInventariosGateWay.getDetalleInventarioByFiltros(reqDetalle);
   }
 

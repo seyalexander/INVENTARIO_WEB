@@ -13,8 +13,8 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrl: './button-asignar.component.css'
 })
 export class ButtonAsignarComponent {
-  @Input() rucempresa: string = ''
-  @Input() idcarga: number = 0
+  @Input() rucempresa = ''
+  @Input() idcarga = 0
 
   @Output() obtenerDetalle = new EventEmitter<{ rucempresa: string; idcarga: number }>();
 

@@ -5,7 +5,7 @@ import {
   inject,
   Input,
   SimpleChanges,
-  ViewChild,
+  ViewChild, OnInit, AfterViewInit, OnChanges, OnDestroy,
 } from '@angular/core';
 import { SeguridadModel } from '../../../../../../../Domain/models/seguridad/seguridad.model';
 import { DetalleUsuarioPageComponent } from '@modules/configuration/Usuarios/page/detalle-usuario-page/detalle-usuario-page.component';
@@ -23,7 +23,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ReqActualizarUsuario } from 'src/app/Domain/models/seguridad/requestActualizarusuario.mode';
-import Swal from 'sweetalert2';
 import { SeguridadService } from 'src/app/Infraestructure/driven-adapter/seguridad/seguridad.service';
 import { Subscription } from 'rxjs';
 import { MatSelectModule } from '@angular/material/select';
@@ -40,7 +39,7 @@ import * as bootstrap from 'bootstrap';
 import { MensajeActualizarUsuarioService } from 'src/app/Infraestructure/core/SeetAlert/Usuarios/mensaje-actualizar-usuario.service';
 
 @Component({
-  selector: 'table-usuarios',
+  selector: 'app-table-usuarios',
   standalone: true,
   imports: [
     MatTableModule,
@@ -66,11 +65,11 @@ import { MensajeActualizarUsuarioService } from 'src/app/Infraestructure/core/Se
   styleUrl: './table-usuarios.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TableUsuariosComponent {
+export class TableUsuariosComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
   switchControl = new FormControl(true);
 
-  DatosRoles: Array<RolesModel> = [];
-  DatosEmpresas: Array<EmpresasModel> = [];
+  DatosRoles: RolesModel[] = [];
+  DatosEmpresas: EmpresasModel[] = [];
 
   private rolesSubscription: Subscription | undefined;
   private actualizarUsuario: Subscription | undefined;
@@ -109,7 +108,7 @@ export class TableUsuariosComponent {
    * La ejecución de `copiarImagen()` se retrasa 100 ms para asegurar que el componente
    * haya actualizado correctamente el estado antes de intentar copiar la imagen.
    */
-  copiarTarjeta(usuario: any) {
+  copiarTarjeta(usuario: SeguridadModel) {
     this.tarjetaComponent.usuario = usuario;
     setTimeout(() => this.tarjetaComponent.copiarImagen(), 100);
   }
@@ -175,7 +174,7 @@ export class TableUsuariosComponent {
     });
   }
 
-  @Input() DatosUsuario: Array<SeguridadModel> = [];
+  @Input() DatosUsuario: SeguridadModel[] = [];
 
   dataSource = new MatTableDataSource<SeguridadModel>([]);
 
@@ -232,12 +231,12 @@ export class TableUsuariosComponent {
   // EDITAR SOLO NOMBRE
   // ====================================================================
 
-  editarNombre(usuario: any) {
+  editarNombre(usuario: SeguridadModel) {
     usuario.editando = true;
     usuario.nombreTemporal = usuario.nombreusuario;
   }
 
-  guardarNombre(usuario: any) {
+  guardarNombre(usuario: SeguridadModel) {
     usuario.editando = false;
     usuario.nombreusuario = usuario.nombreTemporal;
     this.actualizarNombreUsuario(usuario);
@@ -270,12 +269,12 @@ export class TableUsuariosComponent {
   // EDITAR SOLO APELLIDO
   // ====================================================================
 
-  editarApellidos(usuario: any) {
+  editarApellidos(usuario: SeguridadModel) {
     usuario.editandoApellido = true;
     usuario.apellidoTemporal = usuario.apellido;
   }
 
-  guardarApellidos(usuario: any) {
+  guardarApellidos(usuario: SeguridadModel) {
     usuario.editandoApellido = false;
     usuario.apellido = usuario.apellidoTemporal;
     this.actualizarNombreUsuario(usuario);
@@ -308,16 +307,16 @@ export class TableUsuariosComponent {
   // EDITAR SOLO CARGO
   // ====================================================================
 
-  cerrarEdit(usuario: any) {
+  cerrarEdit(usuario: SeguridadModel) {
     usuario.editandoCargo = false;
   }
 
-  editarCargo(usuario: any) {
+  editarCargo(usuario: SeguridadModel) {
     usuario.editandoCargo = true;
     usuario.cargoTemporal = usuario.cargo;
   }
 
-  guardarCargo(usuario: any) {
+  guardarCargo(usuario: SeguridadModel) {
     usuario.editandoCargo = false;
     usuario.cargo = usuario.cargoTemporal;
     this.actualizarCargoUsuario(usuario);
@@ -350,16 +349,16 @@ export class TableUsuariosComponent {
   // EDITAR SOLO CARGO
   // ====================================================================
 
-  cerrarEditEmpresa(usuario: any) {
+  cerrarEditEmpresa(usuario: SeguridadModel) {
     usuario.editandoEmpresa = false;
   }
 
-  editarEmpresa(usuario: any) {
+  editarEmpresa(usuario: SeguridadModel) {
     usuario.editandoEmpresa = true;
     usuario.empresaTemporal = usuario.rucempresa;
   }
 
-  guardarEmpresa(usuario: any) {
+  guardarEmpresa(usuario: SeguridadModel) {
     usuario.editandoEmpresa = false;
     usuario.rucempresa = usuario.empresaTemporal;
     this.actualizarEmpresaUsuario(usuario);
@@ -401,12 +400,12 @@ export class TableUsuariosComponent {
    *
    * @param usuario - Objeto que representa al usuario que está editando su contraseña.
    */
-  editarContrasenia(usuario: any) {
+  editarContrasenia(usuario: SeguridadModel) {
     usuario.editandocontrasenia = true;
     usuario.contraseniaTemporal = usuario.contrasenia;
   }
 
-  guardarContrasenia(usuario: any) {
+  guardarContrasenia(usuario: SeguridadModel) {
     usuario.editandocontrasenia = false;
     usuario.contrasenia = usuario.contraseniaTemporal;
     this.actualizarContraseniaUsuario(usuario);

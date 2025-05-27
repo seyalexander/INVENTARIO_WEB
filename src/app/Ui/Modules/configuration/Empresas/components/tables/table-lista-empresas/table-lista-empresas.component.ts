@@ -1,4 +1,4 @@
-import { Component, inject, ViewChild } from '@angular/core';
+import { Component, inject, ViewChild, AfterViewInit, OnInit, OnDestroy } from '@angular/core';
 import { EmpresasService } from '../../../../../../../Infraestructure/driven-adapter/empresas/empresas.service';
 import { EmpresasModel } from '../../../../../../../Domain/models/empresas/empresas.model';
 import { Subscription } from 'rxjs';
@@ -19,7 +19,7 @@ import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 
 @Component({
-  selector: 'table-lista-empresas',
+  selector: 'app-table-lista-empresas',
   standalone: true,
   imports: [
     CommonModule,
@@ -37,7 +37,7 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
   templateUrl: './table-lista-empresas.component.html',
   styleUrl: './table-lista-empresas.component.css',
 })
-export class TableListaEmpresasComponent {
+export class TableListaEmpresasComponent implements AfterViewInit, OnInit, OnDestroy {
   displayedColumns: string[] = [
     'fechacreacion',
     'rucempresa',
@@ -62,10 +62,10 @@ export class TableListaEmpresasComponent {
   private empresaDetalleSubscription: Subscription | undefined;
 
   detalleEmpresa: EmpresasModel = {} as EmpresasModel;
-  sucursales: Array<Sucursales> = [];
-  DatosEmpresas: Array<EmpresasModel> = [];
-  cantidadEmpresas: number = 0;
-  cantidadSucursales: number = 0;
+  sucursales: Sucursales[] = [];
+  DatosEmpresas: EmpresasModel[] = [];
+  cantidadEmpresas = 0;
+  cantidadSucursales = 0;
 
   ngOnInit(): void {
     this.listaEmpresas();

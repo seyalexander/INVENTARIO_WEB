@@ -15,8 +15,8 @@ import { inventariosModel } from 'src/app/Domain/models/inventarios/inventarios.
 })
 export class ButtonProductoComponent {
   @Input() datosInventario: inventariosModel = {} as inventariosModel;
-  @Input() rucempresa: string = ''
-  @Input() idcarga: number = 0
+  @Input() rucempresa = ''
+  @Input() idcarga = 0
 
   @Output() obtenerDetalle = new EventEmitter<{ rucempresa: string; idcarga: number }>();
 

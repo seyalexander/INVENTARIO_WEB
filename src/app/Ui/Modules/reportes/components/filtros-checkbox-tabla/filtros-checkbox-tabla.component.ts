@@ -34,7 +34,7 @@ export class FiltrosCheckboxTablaComponent {
   ];
 
   // Estado del checkbox "Seleccionar todas"
-  todasSeleccionadas: boolean = true;
+  todasSeleccionadas = true;
 
   // Método para alternar el estado de visibilidad de cada columna
   toggleColumna(id: string, event: Event): void {

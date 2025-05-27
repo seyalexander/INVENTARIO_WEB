@@ -1,5 +1,5 @@
 import { SeguridadService } from 'src/app/Infraestructure/driven-adapter/seguridad/seguridad.service';
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { TableUsuariosComponent } from '../../components/tables/table-usuarios/table-usuarios.component';
 import { RegistroUsuarioComponent } from '../registro-usuario/registro-usuario.component';
 import { SeguridadModel } from 'src/app/Domain/models/seguridad/seguridad.model';
@@ -14,10 +14,10 @@ import { MensajesListaUsuariosService } from 'src/app/Infraestructure/core/SeetA
   templateUrl: './usuario-page.component.html',
   styleUrl: './usuario-page.component.css',
 })
-export class UsuarioPageComponent {
+export class UsuarioPageComponent implements OnInit, OnDestroy {
 
   private seguridadSubscription: Subscription | undefined;
-  DatosUsuarios: Array<SeguridadModel> = [];
+  DatosUsuarios: SeguridadModel[] = [];
 
   private readonly _usuario = inject(SeguridadService);
   private readonly _mensajesUsuario = inject(MensajesListaUsuariosService);
@@ -60,6 +60,7 @@ export class UsuarioPageComponent {
         },
       });
     } catch (err) {
+      console.log(err);
       this._mensajesUsuario.mostrarMensajeError();
     }
   }

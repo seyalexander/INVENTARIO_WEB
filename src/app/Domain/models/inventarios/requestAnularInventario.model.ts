@@ -1,6 +1,6 @@
 export class RequestAnularInventario {
-  rucempresa: string = ''
-  idcarga: number = 0
-  usuarioAnulador: string = ''
-  estado: string = ''
+  rucempresa = ''
+  idcarga = 0
+  usuarioAnulador = ''
+  estado = ''
 }

@@ -87,10 +87,6 @@ mat-form-field {
   background-color: rgba(229, 231, 235, 0.2);
 }
 
-.upload-label.dark {
-  border-color: #3f3f3f;
-}
-
 .upload-input {
   position: absolute;
   width: 0;
@@ -106,9 +102,6 @@ mat-form-field {
   color: #9ca3af;
 }
 
-.upload-icon.dark {
-  color: #4b5563;
-}
 
 
 .upload-text {
@@ -116,9 +109,6 @@ mat-form-field {
   color: #1f2937;
 }
 
-.upload-text.dark {
-  color: var(--color-principal-5);
-}
 
 .upload-highlight {
   color: #00D1AE;
@@ -135,9 +125,6 @@ mat-form-field {
   color: #6b7280;
 }
 
-.upload-help.dark {
-  color: #9ca3af;
-}
 
 .Nombre_Inventario {
   display: flex;

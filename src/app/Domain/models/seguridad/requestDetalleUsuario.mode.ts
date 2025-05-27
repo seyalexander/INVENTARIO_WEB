@@ -1,3 +1,3 @@
 export class RequestDetalleUsuario {
-  idusuario: string = ''
+  idusuario = ''
 }

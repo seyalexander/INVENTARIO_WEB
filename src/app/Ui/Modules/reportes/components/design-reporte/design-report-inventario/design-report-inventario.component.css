@@ -95,7 +95,6 @@
 }
 
 .button-opcion:hover {
-  cursor: pointer;
   transform:  scale(1.03);
   box-shadow: 0 12px 24px rgba(32, 71, 126, 0.3);
 }

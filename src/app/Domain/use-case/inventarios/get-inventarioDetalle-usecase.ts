@@ -14,7 +14,7 @@ export class InventarioDetallesUseCases {
     private readonly _getInventariosGateWay: InventariosGateway,
   ) {}
 
-  getDetalleInventario(reqDetalle: RequestObtenerDetalle): Observable<Array<detalleCarga>> {
+  getDetalleInventario(reqDetalle: RequestObtenerDetalle): Observable<detalleCarga[]> {
     return this._getInventariosGateWay.getDetalleInventario(reqDetalle);
   }
 

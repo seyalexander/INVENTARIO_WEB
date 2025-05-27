@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'header-table',
+  selector: 'app-header-table',
   standalone: true,
   imports: [],
   templateUrl: './header-table.component.html',

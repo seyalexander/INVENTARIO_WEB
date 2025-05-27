@@ -1,3 +1,3 @@
 export class RequestConsultaRuc {
-  nroDocumento: string = ''
+  nroDocumento = ''
 }

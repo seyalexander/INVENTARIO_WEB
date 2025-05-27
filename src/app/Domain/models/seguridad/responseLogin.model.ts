@@ -1,7 +1,7 @@
 export class ResponseLoginModel {
-  msgerror: string = ''
-	exito: boolean = true
-  cargo: string = ''
-  idusuario: string = ''
-  nombreusuario: string = ''
+  msgerror = ''
+	exito = true
+  cargo = ''
+  idusuario = ''
+  nombreusuario = ''
 }

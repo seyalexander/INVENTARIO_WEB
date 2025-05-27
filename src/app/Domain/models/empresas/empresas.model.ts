@@ -1,12 +1,12 @@
 export class EmpresasModel {
-  rucempresa : string = ""
-	razonsocial  : string = ""
-	direccion  : string = ""
-	telefono  : string = ""
-	estado   : string = ""
-	fechacreacion  : string = ""
-	usuariocreacion : string = ""
-	fechamodificacion : string = ""
-	usuariomodificacion : string = ""
-  cantidadSucursales: number = 0
+  rucempresa  = ""
+	razonsocial   = ""
+	direccion   = ""
+	telefono   = ""
+	estado    = ""
+	fechacreacion   = ""
+	usuariocreacion  = ""
+	fechamodificacion  = ""
+	usuariomodificacion  = ""
+  cantidadSucursales = 0
 }

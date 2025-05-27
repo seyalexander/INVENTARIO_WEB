@@ -1,3 +1,3 @@
 export class MapeoObtenerMapeoById {
-  id: number = 0
+  id = 0
 }

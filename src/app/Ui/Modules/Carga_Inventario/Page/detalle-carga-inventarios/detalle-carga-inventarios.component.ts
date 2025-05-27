@@ -1,5 +1,5 @@
 import { CommonModule, NgClass } from '@angular/common';
-import { Component, Input, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, Input, SimpleChanges, ViewChild, AfterViewInit, OnChanges } from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -23,7 +23,7 @@ import { inventariosModel } from 'src/app/Domain/models/inventarios/inventarios.
   templateUrl: './detalle-carga-inventarios.component.html',
   styleUrls: ['./detalle-carga-inventarios.component.css']
 })
-export class DetalleCargaInventariosComponent {
+export class DetalleCargaInventariosComponent implements AfterViewInit, OnChanges {
 
   displayedColumns: string[] = [
     'codigoproducto',
@@ -50,9 +50,9 @@ export class DetalleCargaInventariosComponent {
     }
   }
 
-  itemsPerPage: number = 10; // Valor predeterminado
+  itemsPerPage = 10; // Valor predeterminado
 
-  @Input() detalleProductos: Array<detalleCarga> = [];
+  @Input() detalleProductos: detalleCarga[] = [];
   dataSource = new MatTableDataSource<detalleCarga>([]);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -82,9 +82,9 @@ export class DetalleCargaInventariosComponent {
   }
 
   @Input() citaSeleccionada: inventariosModel = {} as inventariosModel;
-  @Input() cantidadInventarios: number = 0;
+  @Input() cantidadInventarios = 0;
 
-  encabezadoTable: Array<BodyDetalle> = [];
+  encabezadoTable: BodyDetalle[] = [];
 }
 
 interface BodyDetalle {

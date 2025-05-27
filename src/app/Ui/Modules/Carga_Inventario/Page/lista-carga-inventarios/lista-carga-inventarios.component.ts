@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { EmpresasModel } from 'src/app/Domain/models/empresas/empresas.model';
 import { SeguridadModel } from 'src/app/Domain/models/seguridad/seguridad.model';
@@ -18,6 +18,7 @@ import { RequestInventarioByFiltros } from 'src/app/Domain/models/inventarios/re
 import { MatIcon } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MensajesListaInventarioService } from 'src/app/Infraestructure/core/SeetAlert/cargaInventario/mensajes-lista-inventario.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-lista-carga-inventarios',
@@ -35,7 +36,7 @@ import { MensajesListaInventarioService } from 'src/app/Infraestructure/core/See
   templateUrl: './lista-carga-inventarios.component.html',
   styleUrl: './lista-carga-inventarios.component.css',
 })
-export class ListaCargaInventariosComponent {
+export class ListaCargaInventariosComponent implements OnInit, OnDestroy {
   // ================================================================================
   // INYECCIÓN DE SERVICIOS
   // ================================================================================
@@ -50,15 +51,16 @@ export class ListaCargaInventariosComponent {
   private UsuariosSubscription: Subscription | undefined;
   private inventarioSubscription: Subscription | undefined;
 
-  datosInventarioslista: Array<inventariosModel> = [];
+  datosInventarioslista: inventariosModel[] = [];
   datosFiltrados: inventariosModel[] = [];
-  getEmpresas_All: Array<EmpresasModel> = [];
-  getUsuarios_All: Array<SeguridadModel> = [];
-  datosPaginated: Array<inventariosModel> = [];
-  cantidadDatosInventarioLista: number = 0;
+  getEmpresas_All: EmpresasModel[] = [];
+  getUsuarios_All: SeguridadModel[] = [];
+  datosPaginated: inventariosModel[] = [];
+  cantidadDatosInventarioLista = 0;
 
   dataSource = new MatTableDataSource<inventariosModel>();
   paginator!: MatPaginator;
+  private socketSub!: Subscription;
 
   // ================================================================================
   // FUNCIÓN PRINCIPAL
@@ -78,8 +80,8 @@ export class ListaCargaInventariosComponent {
   // ================================================================================
   // LISTA INVENTARIOS
   // ================================================================================
-  selectedEmpresa: string = '';
-  selected: string = '';
+  selectedEmpresa = '';
+  selected = '';
 
   aplicarFiltros(filtros: { estado: string; rucempresa: string }) {
     this.listarInventarios(filtros.estado, filtros.rucempresa);
@@ -146,6 +148,7 @@ export class ListaCargaInventariosComponent {
         });
     } catch (err) {}
   }
+
 
   // ================================================================================
   // DESTRUCCIÓN DE SUBSCRIPCIONES

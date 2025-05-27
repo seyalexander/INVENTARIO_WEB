@@ -3,7 +3,7 @@ import { EmpresasModel } from 'src/app/Domain/models/empresas/empresas.model';
 import { Sucursales } from 'src/app/Domain/models/empresas/sucursales.model';
 
 @Component({
-  selector: 'detalle-empresa-page',
+  selector: 'app-detalle-empresa-page',
   standalone: true,
   imports: [],
   templateUrl: './detalle-empresa-page.component.html',
@@ -11,5 +11,5 @@ import { Sucursales } from 'src/app/Domain/models/empresas/sucursales.model';
 })
 export class DetalleEmpresaPageComponent {
   @Input() detalleEmpresa: EmpresasModel = {} as EmpresasModel
-  @Input() listaSucursales: Array<Sucursales> = []
+  @Input() listaSucursales: Sucursales[] = []
 }

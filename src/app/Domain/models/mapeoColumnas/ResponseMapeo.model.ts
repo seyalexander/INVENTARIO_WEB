@@ -1,4 +1,4 @@
 export class ResponseMapeo {
-  exito: boolean = false
-  mensaje: string = ''
+  exito = false
+  mensaje = ''
 }

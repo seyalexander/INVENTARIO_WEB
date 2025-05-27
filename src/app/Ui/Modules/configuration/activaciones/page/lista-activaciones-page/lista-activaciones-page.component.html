@@ -1,0 +1,160 @@
+<!-- ========== START - HEADER ========== -->
+<header
+  class="sticky top-0 inset-x-0 flex flex-wrap md:justify-start md:flex-nowrap z-[48] w-full bg-white text-sm py-2.5 lg:ps-[260px]"
+>
+  <nav class="px-4 sm:px-6 flex basis-full items-center w-full mx-auto">
+    <div class="me-5 lg:me-0 lg:hidden">
+      <a
+        class="flex-none rounded-md text-xl no-underline font-semibold"
+        aria-label="Preline"
+      >
+        <h3 class="md:flex-1"><span>ACTIVACIONES</span></h3>
+      </a>
+
+      <div class="lg:hidden ms-1"></div>
+    </div>
+
+    <div
+      class="w-full flex items-center justify-end ms-auto md:justify-between gap-x-1 md:gap-x-3"
+    >
+      <div class="hidden lg:block">
+        <h3 class="flex flex-row items-center justify-end gap-1">
+          <span>ACTIVACIONES</span>
+        </h3>
+      </div>
+
+      <!-- <div class="md:block">
+        <div class="relative">
+
+          <button type="button" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none" data-bs-toggle="modal" data-bs-target="#modalRegistroUsuario">
+            <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+            Nuevo
+          </button>
+        </div>
+      </div> -->
+    </div>
+  </nav>
+</header>
+<!-- ========== END - HEADER ========== -->
+
+<!-- ========== START - TABLA ========== -->
+<div class="w-full lg:ps-64">
+  <div class="w-full lg:ps-0">
+    <div class="px-4 sm:px-4 sm:pt-4 space-y-4 sm:space-y-6">
+      <div class="relative flex flex-col bg-white">
+        <div class="p-4 sm:p-10 overflow-y-auto">
+          <div class="space-y-4">
+            <!-- Card -->
+            <div
+              class="flex flex-col bg-white border border-gray-200 rounded-xl"
+            >
+              <div class="flex justify-between gap-x-5 p-4 md:p-5">
+                <span class="flex gap-x-5">
+                  <svg
+                    class="shrink-0 mt-1 size-5 text-gray-500"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+                    <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+                  </svg>
+
+                  <span class="grow">
+                    <label
+                      for="notifyRegistroInventario"
+                      class="block font-medium text-gray-800"
+                      >Notificaciones</label
+                    >
+                    <label
+                      for="notifyRegistroInventario"
+                      class="block text-sm text-gray-500"
+                      >Mostrar notificaciones cuando se registre el
+                      inventario</label
+                    >
+                  </span>
+                </span>
+
+                <div>
+                  <div class="form-check form-switch custom-switch-large">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      role="switch"
+                      id="notifyRegistroInventario"
+                      [checked]="notificacionesActivas"
+                      [disabled]="notificacionesDenegadas"
+                      (change)="toggleNotificaciones($event)"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- End Card -->
+
+            <!-- Card -->
+            <!-- <div
+              class="flex flex-col bg-white border border-gray-200 rounded-xl"
+            >
+              <div class="flex justify-between gap-x-5 p-4 md:p-5">
+                <span class="flex gap-x-5">
+                  <svg
+                    class="shrink-0 mt-1 size-5 text-gray-500 "
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path
+                      d="M14 9a2 2 0 0 1-2 2H6l-4 4V4c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v5Z"
+                    />
+                    <path
+                      d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"
+                    />
+                  </svg>
+
+                  <span class="grow">
+                    <label
+                    for="emailactualizarconteo"
+                      class="block font-medium text-gray-800 "
+                      >E-mail</label
+                    >
+                    <label
+                    for="emailactualizarconteo"
+                      class="block text-sm text-gray-500 "
+                      >Enviar correos electrónicos al recibir el conteo de un inventario</label
+                    >
+                  </span>
+                </span>
+
+                <div>
+                  <div class="form-check form-switch custom-switch-large">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      role="switch"
+                      id="emailactualizarconteo"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div> -->
+            <!-- End Card -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ========== END - TABLA ========== -->

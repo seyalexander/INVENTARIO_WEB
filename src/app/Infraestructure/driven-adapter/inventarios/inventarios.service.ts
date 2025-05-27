@@ -28,7 +28,7 @@ export class InventariosService extends InventariosGateway {
   // CONSUMO DE API
   //================================================================================
 
-  override getInventarios(): Observable<Array<inventariosModel>> {
+  override getInventarios(): Observable<inventariosModel[]> {
     return this.httpClient.get<inventariosModel[]>(
       `${this.URL}/CabeceraCargaDExcels_index`,
       {
@@ -77,7 +77,7 @@ export class InventariosService extends InventariosGateway {
     );
   }
 
-  override newCabecera(cabecera: inventariosModel): Observable<Object> {
+  override newCabecera(cabecera: inventariosModel): Observable<object> {
     return this.httpClient.post(
       `${this.URL}/CabeceraCargaDExcels_registrarCabeceraCargaExcels`,
       cabecera,
@@ -87,7 +87,7 @@ export class InventariosService extends InventariosGateway {
     );
   }
 
-  override newAjusteInventario(cabecera: AjusteInventariosModel): Observable<Object> {
+  override newAjusteInventario(cabecera: AjusteInventariosModel): Observable<object> {
     return this.httpClient.post(
       `${this.URL}/ActualizarAjusteInventario`,
       cabecera,
@@ -99,7 +99,7 @@ export class InventariosService extends InventariosGateway {
 
   override getDetalleInventario(
     reqDetalle: RequestObtenerDetalle
-  ): Observable<Array<detalleCarga>> {
+  ): Observable<detalleCarga[]> {
     return this.httpClient.post<detalleCarga[]>(
       `${this.URL}/ObtenerDetalleInventario`,
       reqDetalle,
@@ -109,7 +109,7 @@ export class InventariosService extends InventariosGateway {
     );
   }
 
-  override getDetalleInventarioByFiltros(reqDetalle: RequestObtenerDetalleFiltros): Observable<Array<detalleCarga>> {
+  override getDetalleInventarioByFiltros(reqDetalle: RequestObtenerDetalleFiltros): Observable<detalleCarga[]> {
     return this.httpClient.post<detalleCarga[]>(
       `${this.URL}/ObtenerDetalleInventarioByFiltros`,
       reqDetalle,
@@ -147,7 +147,7 @@ export class InventariosService extends InventariosGateway {
     );
   }
 
-  override getInventariosByFiltros(requFiltros: RequestInventarioByFiltros): Observable<Array<inventariosModel>> {
+  override getInventariosByFiltros(requFiltros: RequestInventarioByFiltros): Observable<inventariosModel[]> {
     return this.httpClient.post<inventariosModel[]>(
       `${this.URL}/InventariosByFiltros`,
       requFiltros,
@@ -158,7 +158,7 @@ export class InventariosService extends InventariosGateway {
   }
 
 
-   getInventariosAjustesByFiltros(requFiltros: RequestObtenerDetalleAjusteFiltros): Observable<Array<detalleCarga>> {
+   getInventariosAjustesByFiltros(requFiltros: RequestObtenerDetalleAjusteFiltros): Observable<detalleCarga[]> {
 
     return this.httpClient.post<detalleCarga[]>(
       `${this.URL}/ObtenerDetalleInventarioAjustadosByFiltros`,

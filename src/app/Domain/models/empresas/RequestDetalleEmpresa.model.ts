@@ -1,3 +1,3 @@
 export class RequestDetalleEmpresa {
-  rucEmpresa: string = ''
+  rucEmpresa = ''
 }

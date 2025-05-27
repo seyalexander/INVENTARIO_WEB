@@ -5,7 +5,6 @@ import Swal from 'sweetalert2';
   providedIn: 'root',
 })
 export class MensajesListaUsuariosService {
-  constructor() {}
 
   mensajeCopiCorrecto(): Promise<any> {
     return Swal.fire({

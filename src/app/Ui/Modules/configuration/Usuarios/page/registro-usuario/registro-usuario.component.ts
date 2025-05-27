@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormControl,
@@ -19,16 +19,16 @@ import { MatInputModule } from '@angular/material/input';
 import { MensajesRegistroUsuarioService } from 'src/app/Infraestructure/core/SeetAlert/Usuarios/mensajes-registro-usuario.service';
 
 @Component({
-  selector: 'registro-usuario',
+  selector: 'app-registro-usuario',
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule, MatInputModule],
   templateUrl: './registro-usuario.component.html',
   styleUrl: './registro-usuario.component.css',
 })
-export class RegistroUsuarioComponent {
+export class RegistroUsuarioComponent implements OnInit, OnDestroy {
 
-  DatosEmpresas: Array<EmpresasModel> = [];
-  DatosRoles: Array<RolesModel> = [];
+  DatosEmpresas: EmpresasModel[] = [];
+  DatosRoles: RolesModel[] = [];
   ObjtEmpresa: EmpresasModel = {} as EmpresasModel;
   usuario: SeguridadModel = new SeguridadModel();
   formularioRegistro: FormGroup = new FormGroup({});
@@ -60,7 +60,7 @@ export class RegistroUsuarioComponent {
    * @returns void
    */
   ngOnInit(): void {
-    const estado: string = '1';
+    const estado = '1';
     this.listaEmpresas();
     this.listaRoles(estado);
     this.formularioRegistro = new FormGroup({
@@ -94,7 +94,7 @@ export class RegistroUsuarioComponent {
     formValue.usuariocreador = 'Usuario_front';
     formValue.usuariomodificador = 'Usuario_front';
     formValue.estado = '1';
-    formValue.cargo = formValue.cargo.toUpperCase();
+    formValue.cargo = formValue.cargo?.toUpperCase();
 
     this._usuarios.newUsuario(formValue).subscribe({
       next: (response) => {

@@ -2,12 +2,11 @@ import { CommonModule } from '@angular/common';
 import {
   ApplicationRef,
   Component,
-  ComponentRef,
   Inject,
   inject,
   Injector,
   ViewChild,
-  ViewContainerRef,
+  ViewContainerRef, OnInit, OnDestroy,
 } from '@angular/core';
 import {
   FormControl,
@@ -39,10 +38,9 @@ import { MapeoCamposService } from 'src/app/Infraestructure/driven-adapter/mapeo
 import { MapeoObtenerMapeoById } from 'src/app/Domain/models/mapeoColumnas/mapeoObtenerMapeoById.mode';
 import { MensajesRegistroInventarioService } from 'src/app/Infraestructure/core/SeetAlert/cargaInventario/mensajes-registro-inventario.service';
 import { ValidacionesRegistroInventarioService } from 'src/app/Infraestructure/core/Validaciones/cargaInventario/validaciones-registro-inventario.service';
-import { ExcelRow } from 'src/app/Infraestructure/core/Interfaces/ExcelRow.model,';
 
 @Component({
-  selector: 'registro-carga-inventarios',
+  selector: 'app-registro-carga-inventarios',
   standalone: true,
   imports: [
     FormsModule,
@@ -56,32 +54,32 @@ import { ExcelRow } from 'src/app/Infraestructure/core/Interfaces/ExcelRow.model
   templateUrl: './registro-carga-inventarios.component.html',
   styleUrl: './registro-carga-inventarios.component.css',
 })
-export class RegistroCargaInventariosComponent {
+export class RegistroCargaInventariosComponent implements OnInit, OnDestroy {
   // ================================================================================
   // DECLARACION VARIABLES
   // ================================================================================
-  mensajeCompleto: string = 'Error al cargar el archivo';
-  tituloSwalCorrecto: string = 'CONFIRMACIÓN';
-  selectedFileName: string = '';
+  mensajeCompleto = 'Error al cargar el archivo';
+  tituloSwalCorrecto = 'CONFIRMACIÓN';
+  selectedFileName = '';
   selectedFile: File | null = null;
   fileDetails: any = null;
   ultimoIdCargaRegistrado: any;
-  cantidadDatosExcel: number = 0;
+  cantidadDatosExcel = 0;
   detalle: detalleCarga[] = [];
-  HayArchivo: boolean = false;
-  usuarioLogueado: string = '';
+  HayArchivo = false;
+  usuarioLogueado = '';
   private empresasSubscription: Subscription | undefined;
   private UsuariosSubscription: Subscription | undefined;
 
   excelData: any[] = [];
-  DatosEmpresas: Array<EmpresasModel> = [];
-  getUsuarios_All: Array<SeguridadModel> = [];
+  DatosEmpresas: EmpresasModel[] = [];
+  getUsuarios_All: SeguridadModel[] = [];
   Cabecera: inventariosModel = new inventariosModel();
   formularioRegistro: FormGroup = new FormGroup({});
   @ViewChild('fileInput') fileInput: any;
 
-  activarGuardar: boolean = false;
-  activarButton: boolean = false;
+  activarGuardar = false;
+  activarButton = false;
 
   columnasEsperadas: Record<string, string> = {
     almacen: 'Almacén',
@@ -142,6 +140,7 @@ export class RegistroCargaInventariosComponent {
     this.formularioRegistro.patchValue({
       usuarioasignado: this.Cabecera.UsuarioAsignado || '',
     });
+
   }
 
   listarUsuarios(): void {
@@ -151,7 +150,9 @@ export class RegistroCargaInventariosComponent {
         .subscribe((Response: MensajeSeguridadModel) => {
           this.getUsuarios_All = Response.usuarios;
         });
-    } catch (err) {}
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   guardarCabecera(): void {
@@ -389,6 +390,7 @@ export class RegistroCargaInventariosComponent {
         this.procesarDatos(jsonData, columnasMapeadas, idUsuario);
       },
       error: (err) => {
+        console.log(err);
         this.alertService_CargaInventario.Error_GuardadoMapeoColumnas();
       },
     });
@@ -399,6 +401,7 @@ export class RegistroCargaInventariosComponent {
     this.mapeoCamposService.UpdateMapeoById(req).subscribe({
       next: (response) => {},
       error: (err) => {
+        console.log(err);
         this.alertService_CargaInventario.info_ObtenerMapeoColumnas();
       },
     });

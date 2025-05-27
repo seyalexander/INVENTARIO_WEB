@@ -9,8 +9,8 @@ import { MatIcon } from '@angular/material/icon';
   styleUrl: './td-table-btn-detalle.component.css'
 })
 export class TdTableBtnDetalleComponent {
-  @Input() rucempresa: string = '';
-  @Input() idcarga: number = 0;
+  @Input() rucempresa = '';
+  @Input() idcarga = 0;
 
   @Output() obtenerDetalle = new EventEmitter<{ rucempresa: string; idcarga: number }>();
 

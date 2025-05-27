@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
@@ -15,7 +15,7 @@ import { ResponseConsultaRuc } from 'src/app/Domain/models/empresas/ResponseCons
 import { RequestConsultaRuc } from 'src/app/Domain/models/empresas/RequestConsultaRuc.model';
 
 @Component({
-  selector: 'registro-empresa',
+  selector: 'app-registro-empresa',
   standalone: true,
   imports: [
     FormsModule,
@@ -30,11 +30,11 @@ import { RequestConsultaRuc } from 'src/app/Domain/models/empresas/RequestConsul
   templateUrl: './registro-empresa.component.html',
   styleUrl: './registro-empresa.component.css'
 })
-export class RegistroEmpresaComponent {
+export class RegistroEmpresaComponent implements OnInit, OnDestroy {
 
-  RazonSocial: string = ''
-  Direccion: String = ''
-  DatosEmpresas: Array<EmpresasModel> = [];
+  RazonSocial = ''
+  Direccion = ''
+  DatosEmpresas: EmpresasModel[] = [];
   ConsultaRuc: ResponseConsultaRuc = {} as ResponseConsultaRuc
 
   private  empresasRuc: Subscription | undefined;
@@ -69,7 +69,7 @@ export class RegistroEmpresaComponent {
     });
   }
 
-  mensajeRegistroEmpresa(mensaje: string, error: any): void {
+  mensajeRegistroEmpresa(mensaje: string, error: string): void {
 
     Swal.fire({
       icon: "error",
@@ -140,7 +140,7 @@ export class RegistroEmpresaComponent {
     this.formularioRegistro.reset();
   }
 
-  tituloSwalCorrecto: string = 'CONFIRMACIÓN';
+  tituloSwalCorrecto = 'CONFIRMACIÓN';
   mensajeValidacionRegistroCorrecto(response: any) {
     const message = response.message ? response.message : 'Empresa registrada correctamente';
     Swal.fire(`${this.tituloSwalCorrecto}`, message, 'success').then(() => {

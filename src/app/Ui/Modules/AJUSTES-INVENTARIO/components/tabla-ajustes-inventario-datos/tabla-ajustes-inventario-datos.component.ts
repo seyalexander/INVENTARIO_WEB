@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common';
-import { ChangeDetectorRef, Component, inject, Input, SimpleChanges, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, Input, SimpleChanges, ViewChild, AfterViewInit, OnChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -26,8 +26,8 @@ import Swal from 'sweetalert2';
   templateUrl: './tabla-ajustes-inventario-datos.component.html',
   styleUrl: './tabla-ajustes-inventario-datos.component.css'
 })
-export class TablaAjustesInventarioDatosComponent {
-  @Input() listaProductos: Array<detalleCarga> = [];
+export class TablaAjustesInventarioDatosComponent implements AfterViewInit, OnChanges {
+  @Input() listaProductos: detalleCarga[] = [];
   @Input() inventarioSeleccionado: inventariosModel = {} as inventariosModel;
 
   dataSource = new MatTableDataSource<detalleCarga>([]);

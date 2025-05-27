@@ -1,4 +1,4 @@
 export class ValidarDescripcion {
-  rucempresa: string = ''
-  descripcion: string = ''
+  rucempresa = ''
+  descripcion = ''
 }

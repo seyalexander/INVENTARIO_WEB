@@ -1,17 +1,17 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'menu-opciones',
+  selector: 'app-menu-opciones',
   standalone: true,
   imports: [RouterLink],
   templateUrl: './menu-opciones.component.html',
   styleUrls: ['./menu-opciones.component.css'],
 })
-export class MenuOpcionesGeneralComponent {
+export class MenuOpcionesGeneralComponent implements OnInit {
   mainMenu: {
-    defaultOptions: Array<any>;
-    accessLink: Array<any>;
+    defaultOptions: any[];
+    accessLink: any[];
   } = {
     defaultOptions: [],
     accessLink: [],
@@ -68,6 +68,11 @@ export class MenuOpcionesGeneralComponent {
             name: 'Tipo Usuario',
             icon: 'uil uil-users-alt',
             route: ['/dashboard', 'tipoUsuario'],
+          },
+          {
+            name: 'Activaciones',
+            icon: 'uil uil-users-alt',
+            route: ['/dashboard', 'activaciones'],
           },
         ],
       },

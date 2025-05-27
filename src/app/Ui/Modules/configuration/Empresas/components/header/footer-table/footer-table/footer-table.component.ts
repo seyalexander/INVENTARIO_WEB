@@ -1,12 +1,12 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'footer-table',
+  selector: 'app-footer-table',
   standalone: true,
   imports: [],
   templateUrl: './footer-table.component.html',
   styleUrl: './footer-table.component.css'
 })
 export class FooterTableComponent {
-  @Input() text: number = 0
+  @Input() text = 0
 }

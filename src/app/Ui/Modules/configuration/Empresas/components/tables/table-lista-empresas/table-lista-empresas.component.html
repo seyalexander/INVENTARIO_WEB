@@ -21,7 +21,7 @@
       <div class="-m-1.5 overflow-x-auto">
         <div class="p-1.5 min-w-full inline-block align-middle">
           <div
-            class="bg-white border border-gray-200 rounded-xl  overflow-hidden"
+            class="bg-white border border-gray-200 rounded-xl overflow-hidden"
           >
             <div class="mat-elevation-z8 h-auto">
               <table
@@ -30,9 +30,6 @@
                 matSort
                 (matSortChange)="announceSortChange($event)"
               >
-                <!-- =================================================================================== -->
-                <!-- Apartado fecha registro -->
-                <!-- =================================================================================== -->
                 <ng-container matColumnDef="fechacreacion">
                   <th
                     mat-header-cell
@@ -55,9 +52,6 @@
                   </td>
                 </ng-container>
 
-                <!-- =================================================================================== -->
-                <!-- Apartado documento -->
-                <!-- =================================================================================== -->
                 <ng-container matColumnDef="rucempresa">
                   <th
                     mat-header-cell
@@ -76,9 +70,6 @@
                   </td>
                 </ng-container>
 
-                <!-- =================================================================================== -->
-                <!-- Apartado razon social -->
-                <!-- =================================================================================== -->
                 <ng-container matColumnDef="razonsocial">
                   <th
                     mat-header-cell
@@ -97,9 +88,6 @@
                   </td>
                 </ng-container>
 
-                <!-- =================================================================================== -->
-                <!-- Apartado estado -->
-                <!-- =================================================================================== -->
                 <ng-container matColumnDef="estado">
                   <th
                     mat-header-cell
@@ -116,35 +104,14 @@
                       aria-haspopup="dialog"
                       aria-expanded="false"
                     >
-                      @if (element.estado == "1") {
-                      <body-table-estado-activo />
+                      @if (element.estado === "1") {
+                      <app-body-table-estado-activo />
                       }@else {
-                      <body-table-estado-inactivo />
+                      <app-body-table-estado-inactivo />
                       }
                     </button>
                   </td>
                 </ng-container>
-
-                <!-- =================================================================================== -->
-                <!-- Apartado opciones -->
-                <!-- =================================================================================== -->
-                <!-- <ng-container matColumnDef="opciones">
-                  <th mat-header-cell *matHeaderCellDef class="mat-accent"></th>
-                  <td mat-cell *matCellDef="let element">
-                    <div class="px-1 py-3 flex gap-2">
-                      <button
-                        (click)="DetalleEmpresas(element.rucempresa)"
-                        data-bs-toggle="offcanvas"
-                        data-bs-target="#detalleEmpresa"
-                        aria-controls="detalleEmpresa"
-                        class=" py-2 px-3  flex items-center justify-center gap-x-2 text-xs rounded-lg  bg-white text-gray-800 hover:shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none "
-                        type="button"
-                      >
-                        <mat-icon>visibility</mat-icon>
-                      </button>
-                    </div>
-                  </td>
-                </ng-container> -->
 
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                 <tr
@@ -171,8 +138,8 @@
   </div>
 </section>
 
-<detalle-empresa-page
+<app-detalle-empresa-page
   [detalleEmpresa]="detalleEmpresa"
   [listaSucursales]="sucursales"
 />
-<registro-empresa />
+<app-registro-empresa />

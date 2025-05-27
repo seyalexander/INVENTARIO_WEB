@@ -8,5 +8,5 @@ import { Component, Input } from '@angular/core';
   styleUrl: './body-table-button-icon.component.css'
 })
 export class BodyTableButtonIconComponent {
-  @Input() text: string = ""
+  @Input() text = ""
 }

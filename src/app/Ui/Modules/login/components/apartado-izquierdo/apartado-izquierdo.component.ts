@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'apartado-izquierdo',
+  selector: 'app-apartado-izquierdo',
   standalone: true,
   imports: [],
   templateUrl: './apartado-izquierdo.component.html',

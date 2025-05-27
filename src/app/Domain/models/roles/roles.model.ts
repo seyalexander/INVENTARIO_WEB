@@ -1,9 +1,9 @@
 export class RolesModel {
-    idRol: number = 0
-    rol: string = ""
-    estado: string = ""
-    usuariocreador: string = ""
-    fechacreacion: string = ""
-    usuariomodificador: string = ""
-    fechamodificacion: string = ""
+    idRol = 0
+    rol = ""
+    estado = ""
+    usuariocreador = ""
+    fechacreacion = ""
+    usuariomodificador = ""
+    fechamodificacion = ""
 }

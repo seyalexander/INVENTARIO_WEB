@@ -8,5 +8,5 @@ import { Component, Input } from '@angular/core';
   styleUrl: './header-table-title.component.css'
 })
 export class HeaderTableTitleComponent {
-  @Input() title: string = ""
+  @Input() title = ""
 }

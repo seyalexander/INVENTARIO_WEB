@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'header-buscador-usuario-movil',
+  selector: 'app-header-buscador-usuario-movil',
   standalone: true,
   imports: [],
   templateUrl: './header-buscador-usuario-movil.component.html',

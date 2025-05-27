@@ -1,4 +1,4 @@
 export class ResponseAnularInventario {
-  exito: boolean = false
-  msgerror: string = ''
+  exito = false
+  msgerror = ''
 }

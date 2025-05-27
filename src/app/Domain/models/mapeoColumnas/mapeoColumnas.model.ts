@@ -1,5 +1,5 @@
 export class RequestInsertarMapeo {
-  usuarioId: number = 0;
-  nombreConfiguracion: string = '';
-  mapeo: string = '';
+  usuarioId = 0;
+  nombreConfiguracion = '';
+  mapeo = '';
 }

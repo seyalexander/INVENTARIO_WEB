@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'mensaje-error-lista',
+  selector: 'app-mensaje-error-lista',
   standalone: true,
   imports: [],
   templateUrl: './mensaje-error-lista.component.html',

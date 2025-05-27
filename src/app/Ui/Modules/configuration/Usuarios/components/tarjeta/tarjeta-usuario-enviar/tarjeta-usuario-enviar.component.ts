@@ -11,7 +11,7 @@ import { SeguridadModel } from 'src/app/Domain/models/seguridad/seguridad.model'
 import { MensajesListaUsuariosService } from 'src/app/Infraestructure/core/SeetAlert/Usuarios/mensajes-lista-usuarios.service';
 
 @Component({
-  selector: 'tarjeta-usuario-enviar',
+  selector: 'app-tarjeta-usuario-enviar',
   standalone: true,
   imports: [],
   templateUrl: './tarjeta-usuario-enviar.component.html',

@@ -8,7 +8,8 @@
     "build": "ng build --configuration=production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "postinstall": "node set-env.ts"
+    "postinstall": "node set-env.ts",
+    "lint": "ng lint"
   },
   "private": true,
   "dependencies": {
@@ -44,6 +45,7 @@
     "popper.js": "^1.16.1",
     "preline": "^2.6.0",
     "rxjs": "~7.8.0",
+    "socket.io-client": "^4.8.1",
     "sweetalert2": "^11.14.5",
     "tslib": "^2.3.0",
     "xlsx": "^0.18.5",
@@ -56,9 +58,11 @@
     "@types/crypto-js": "^4.2.2",
     "@types/jasmine": "~5.1.0",
     "@types/leaflet": "^1.9.16",
+    "angular-eslint": "19.5.0",
     "autoprefixer": "^10.4.20",
     "electron": "^34.3.4",
     "electron-packager": "^17.1.2",
+    "eslint": "^9.27.0",
     "jasmine-core": "~5.1.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
@@ -67,6 +71,7 @@
     "karma-jasmine-html-reporter": "~2.1.0",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.17",
-    "typescript": "~5.4.2"
+    "typescript": "~5.4.2",
+    "typescript-eslint": "8.32.1"
   }
 }

@@ -1,6 +1,5 @@
-import { Component, inject, Signal, signal } from '@angular/core';
+import { Component, inject, Signal, signal, OnInit } from '@angular/core';
 import { TableListaTipoUsuarioComponent } from '../../components/tables/table-lista-tipo-usuario/table-lista-tipo-usuario.component';
-import { Subscription } from 'rxjs';
 import { RolesService } from 'src/app/Infraestructure/driven-adapter/roles/roles.service';
 import { RolesModel } from 'src/app/Domain/models/roles/roles.model';
 import { MensajeRolesModel } from 'src/app/Domain/models/roles/mensajeRoles.model';
@@ -12,7 +11,7 @@ import { MensajeRolesModel } from 'src/app/Domain/models/roles/mensajeRoles.mode
   templateUrl: './tipo-usuario-page.component.html',
   styleUrl: './tipo-usuario-page.component.css',
 })
-export class TipoUsuarioPageComponent {
+export class TipoUsuarioPageComponent implements OnInit {
 
   // DatosRoles: Array<RolesModel> = [];
 
@@ -58,7 +57,6 @@ export class TipoUsuarioPageComponent {
   // Inyección del servicio de roles
   private readonly _roles = inject(RolesService);
 
-  constructor() {}
 
   ngOnInit(): void {
     this.listaRoles('0');

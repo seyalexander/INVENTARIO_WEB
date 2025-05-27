@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { HeaderPageAsignarComponent } from '../header-page-asignar/header-page-asignar.component';
 import { Subscription } from 'rxjs';
@@ -12,7 +12,6 @@ import Swal from 'sweetalert2';
 import { RegistroAsignarPageComponent } from '@modules/Asignaciones/page/registro-asignar-page/registro-asignar-page.component';
 import { CommonModule } from '@angular/common';
 import { ThTableAsignarComponent } from 'src/app/Ui/Shared/feactures/asignarUsuario/table-asignar/th-table-asignar/th-table-asignar.component';
-import { MensajeErrorTablaDatosAsignarComponent } from 'src/app/Ui/Shared/feactures/asignarUsuario/table-asignar/mensaje-error-tabla-datos-asignar/mensaje-error-tabla-datos-asignar.component';
 import { TdDescripcionAsignarComponent } from 'src/app/Ui/Shared/feactures/asignarUsuario/table-asignar/td-descripcion-asignar/td-descripcion-asignar.component';
 import { TdUsuarioAsignarComponent } from 'src/app/Ui/Shared/feactures/asignarUsuario/table-asignar/td-usuario-asignar/td-usuario-asignar.component';
 import { MatButtonModule } from '@angular/material/button';
@@ -27,11 +26,8 @@ import { TdEstado1Component } from 'src/app/Ui/Shared/Components/tables/td-estad
 import { TdEstado2Component } from 'src/app/Ui/Shared/Components/tables/td-estado-2/td-estado-2.component';
 import { TdEstado3Component } from 'src/app/Ui/Shared/Components/tables/td-estado-3/td-estado-3.component';
 
-
-type FiltroInventario = 'todos' | 'asignados' | 'noAsignados';
-
 @Component({
-  selector: 'tabla-inventarios-asignados',
+  selector: 'app-tabla-inventarios-asignados',
   standalone: true,
   imports: [
     NgxPaginationModule,
@@ -39,7 +35,6 @@ type FiltroInventario = 'todos' | 'asignados' | 'noAsignados';
     RegistroAsignarPageComponent,
     CommonModule,
     ThTableAsignarComponent,
-    MensajeErrorTablaDatosAsignarComponent,
     TdDescripcionAsignarComponent,
     TdUsuarioAsignarComponent,
     MatButtonModule,
@@ -53,7 +48,7 @@ type FiltroInventario = 'todos' | 'asignados' | 'noAsignados';
   templateUrl: './tabla-inventarios-asignados.component.html',
   styleUrl: './tabla-inventarios-asignados.component.css'
 })
-export class TablaInventariosAsignadosComponent {
+export class TablaInventariosAsignadosComponent implements OnInit, OnDestroy {
 
   // ================================================================================
   // INYECCIÓN DE SERVICIOS
@@ -66,25 +61,25 @@ export class TablaInventariosAsignadosComponent {
   // ================================================================================
   // DECLARACION VARIABLES
   // ================================================================================
-  collection: Array<inventariosModel> = [];
-  getUsuarios_All: Array<SeguridadModel> = [];
-  listaProductos: Array<detalleCarga> = [];
-  paginatedProductos: Array<detalleCarga> = [];
-  datosInventarioslista: Array<inventariosModel> = [];
-  datosInventariosFiltradoslista: Array<inventariosModel> = [];
+  collection: inventariosModel[] = [];
+  getUsuarios_All: SeguridadModel[] = [];
+  listaProductos: detalleCarga[] = [];
+  paginatedProductos: detalleCarga[] = [];
+  datosInventarioslista: inventariosModel[] = [];
+  datosInventariosFiltradoslista: inventariosModel[] = [];
 
   datosInventario: inventariosModel = {} as inventariosModel;
 
   private inventarioSubscription: Subscription | undefined;
   private UsuariosSubscription: Subscription | undefined;
 
-  currentPageProductos: number = 1;
-  cantidadDatosInventarioLista: number = 0
-  cantidadListaProductos: number = 0;
-  mensajeCantidad: string = ''
-  p: number = 1;
+  currentPageProductos = 1;
+  cantidadDatosInventarioLista = 0
+  cantidadListaProductos = 0;
+  mensajeCantidad = ''
+  p = 1;
 
-  mostrarRefrescoPagina: boolean = true;
+  mostrarRefrescoPagina = true;
 
   // ================================================================================
   // FUNCIÓN PRINCIPAL
@@ -92,7 +87,7 @@ export class TablaInventariosAsignadosComponent {
   ngOnInit(): void {
     this.listarUsuarios();
     this.listarInventarios();
-    this.listarInventariosFiltro('asignados');
+    this.listarInventariosFiltro();
   }
 
 
@@ -135,7 +130,7 @@ export class TablaInventariosAsignadosComponent {
 
   onFiltroChange(filtro: string): void {
     if (filtro === 'todos' || filtro === 'asignados' || filtro === 'noAsignados') {
-      this.listarInventariosFiltro(filtro);
+      this.listarInventariosFiltro();
     } else {
       this.mostrarFiltroErroneo('Filtro inválido')
     }
@@ -144,7 +139,7 @@ export class TablaInventariosAsignadosComponent {
   // ================================================================================
   // LISTA INVENTARIOS FILTRADOS
   // ================================================================================
-  listarInventariosFiltro(filtro: FiltroInventario) {
+  listarInventariosFiltro() {
     try {
       this.inventarioSubscription = this.listaInventarios
         .getInventarios()
@@ -200,7 +195,10 @@ export class TablaInventariosAsignadosComponent {
         .subscribe((Response: MensajeSeguridadModel) => {
           this.getUsuarios_All = Response.usuarios;
         });
-    } catch (err) { }
+    } catch (err) {
+      console.log(err);
+
+     }
   }
 
   // ================================================================================
@@ -240,7 +238,7 @@ export class TablaInventariosAsignadosComponent {
   // PAGINADO
   // ================================================================================
 
-  itemsPerPage: number = 10;
+  itemsPerPage = 10;
 
   onItemsPerPageChange(event: Event) {
     const target = event.target as HTMLSelectElement;

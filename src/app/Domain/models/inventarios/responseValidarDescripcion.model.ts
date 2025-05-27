@@ -1,3 +1,3 @@
 export class ResponseValidarDescripcion {
-  existencia: number = 0
+  existencia = 0
 }

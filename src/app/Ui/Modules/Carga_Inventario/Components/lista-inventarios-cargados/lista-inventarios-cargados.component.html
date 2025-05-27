@@ -200,12 +200,12 @@
                     *matCellDef="let row"
                     class="px-4 py-2 text-center border-b border-gray-200"
                   >
-                    @if (row.estado == "1") {
-                    <td-estado-1 />
-                    } @if (row.estado == "2") {
-                    <td-estado-2 estado="'Inventariado'" />
-                    } @if (row.estado == "0") {
-                    <td-estado-3 [estado]="'Anulado'" />
+                    @if (row.estado === "1") {
+                    <app-td-estado-1 />
+                    } @if (row.estado === "2") {
+                    <app-td-estado-2 estado="'Inventariado'" />
+                    } @if (row.estado === "0") {
+                    <app-td-estado-3 [estado]="'Anulado'" />
                     }
                   </td>
                 </ng-container>
@@ -232,7 +232,7 @@
                           )
                         "
                       />
-                      @if (row.estado == '1') {
+                      @if (row.estado === '1') {
                       <button-asignar
                         [idcarga]="row.idcarga"
                         [rucempresa]="row.rucempresa"

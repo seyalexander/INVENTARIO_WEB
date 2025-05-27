@@ -1,4 +1,4 @@
 export class RequestObtenerDetalle {
-  rucempresa: string = ''
-  idcarga: number = 0
+  rucempresa = ''
+  idcarga = 0
 }

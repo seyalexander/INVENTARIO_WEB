@@ -1,4 +1,4 @@
-@for (item of mainMenu.accessLink; track $index) { @if (item.subMenu != true) {
+@for (item of mainMenu.accessLink; track $index) { @if (item.subMenu !== true) {
 <li id="menu-item-{{ $index }}" class="list-none">
   <a
     [routerLink]="item.route"
@@ -94,6 +94,8 @@
 <ul class="ps-0  space-y-1">
   <li id="menu-item-2" class="list-none">
     <a
+      tabindex="0"
+      (keydown)="logout()"
       class="flex  focus:ring-0 no-underline items-center outline-none justify-start gap-x-3.5 py-1.5 px-2.5 text-sm text-gray-100 rounded-lg hover:bg-gray-800 focus:outline-none focus:bg-gray-800"
       (click)="logout()">
       <i class="uil uil-signout"></i>

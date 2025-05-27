@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { MensajesRegistroInventarioService } from '../../SeetAlert/cargaInventario/mensajes-registro-inventario.service';
 import * as XLSX from 'xlsx';
 import Swal from 'sweetalert2';
+import { NotificacionesPlusService } from 'src/app/Infraestructure/driven-adaptar-interactions/notificaciones/notificaciones-plus.service';
 
 @Injectable({
   providedIn: 'root',
@@ -10,6 +11,8 @@ export class ValidacionesRegistroInventarioService {
   constructor(
     private alertService_CargaInventario: MensajesRegistroInventarioService
   ) {}
+
+  private readonly notify = inject(NotificacionesPlusService);
 
   /**
    * Procesa un archivo Excel (en formato ArrayBuffer) y lo convierte a un array de objetos JSON.
@@ -182,12 +185,33 @@ export class ValidacionesRegistroInventarioService {
   validarTieneRegistros(totalRegistros: any, inicio: number): boolean {
     if (inicio >= totalRegistros) {
       Swal.close();
+      if (document.visibilityState !== 'visible') {
+        this.notificacionInventarioNuevo();
+      }
+
       this.alertService_CargaInventario.Info_MensajeCargaCompleta().then(() => {
         window.location.reload();
       });
+
       return true;
     }
     return false;
+  }
+
+  notificacionInventarioNuevo() {
+    if ('Notification' in window && Notification.permission === 'granted') {
+      const notification = new Notification(
+        'Nuevo inventario listo para trabajar!',
+        {
+          body: 'Haz clic para revisarlo',
+        }
+      );
+
+      notification.onclick = () => {
+        window.focus();
+        window.location.href = 'http://localhost:4200/#/dashboard';
+      };
+    }
   }
 
   /**

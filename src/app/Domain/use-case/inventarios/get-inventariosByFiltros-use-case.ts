@@ -13,7 +13,7 @@ export class InventariosByFiltrosUseCases {
     private readonly _getInventariosGateWay: InventariosGateway,
   ) {}
 
-  getInventariosByFiltros(requFiltros: RequestInventarioByFiltros) : Observable<Array<inventariosModel>> {
+  getInventariosByFiltros(requFiltros: RequestInventarioByFiltros) : Observable<inventariosModel[]> {
     return this._getInventariosGateWay.getInventariosByFiltros(requFiltros);
   }
 

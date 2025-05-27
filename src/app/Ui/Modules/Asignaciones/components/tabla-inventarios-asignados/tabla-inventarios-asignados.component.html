@@ -1,25 +1,22 @@
 <header-page-asignar />
 
-@if (mostrarRefrescoPagina == true) {
-<mensaje-error-tabla-datos-asignar (recargar)="recargarPagina()" />
-}@else {
 <table class="min-w-full divide-y divide-gray-200">
   <thead class="bg-gray-50">
     <tr>
       <th scope="col" class="px-6 py-3 text-start">
-        <th-table-asignar [descripcion]="'Descripcion'" />
+        <app-th-table-asignar [descripcion]="'Descripcion'" />
       </th>
 
       <th scope="col" class="px-6 py-3 text-start">
-        <th-table-asignar [descripcion]="'Usuario Asignado'" />
+        <app-th-table-asignar [descripcion]="'Usuario Asignado'" />
       </th>
 
       <th scope="col" class="px-6 py-3 text-start">
-        <th-table-asignar [descripcion]="'Detalle'" />
+        <app-th-table-asignar [descripcion]="'Detalle'" />
       </th>
 
       <th scope="col" class="px-6 py-3 text-start">
-        <th-table-asignar [descripcion]="'Estado'" />
+        <app-th-table-asignar [descripcion]="'Estado'" />
       </th>
 
       <th scope="col" class="px-6 py-3 text-end"></th>
@@ -31,10 +28,10 @@
     itemsPerPage, currentPage: p }; track $index;) {
     <tr>
       <td class="size-px whitespace-nowrap">
-        <td-descripcion-asignar [descripcion]="item.Descripcion" />
+        <app-td-descripcion-asignar [descripcion]="item.Descripcion" />
       </td>
       <td class="size-px whitespace-nowrap">
-        <td-usuario-asignar [usuario]="item.usuarioAsignado" />
+        <app-td-usuario-asignar [usuario]="item.usuarioAsignado" />
       </td>
       <td class="size-px whitespace-nowrap">
         <td-table-btn-detalle
@@ -46,12 +43,12 @@
         />
       </td>
       <td class="size-px whitespace-nowrap">
-        @if (item.estado == "1") {
-        <td-estado-1 />
-        } @if (item.estado == "2") {
-        <td-estado-2 estado="'Inventariado'" />
-        } @if (item.estado == "0") {
-        <td-estado-3 [estado]="'Anulado'" />
+        @if (item.estado === "1") {
+        <app-td-estado-1 />
+        } @if (item.estado === "2") {
+        <app-td-estado-2 estado="'Inventariado'" />
+        } @if (item.estado === "0") {
+        <app-td-estado-3 [estado]="'Anulado'" />
         }
       </td>
       <td class="size-px whitespace-nowrap">
@@ -65,10 +62,10 @@
                 type="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
-              ></button>
+              ><span class="hidden">.</span></button>
               <ul class="dropdown-menu">
-                @if (item.estado == '0') { Inventario anulado } @if (item.estado
-                == '2') { Inventario culminado } @if (item.estado == '1') {
+                @if (item.estado === '0') { Inventario anulado } @if (item.estado
+                === '2') { Inventario culminado } @if (item.estado === '1') {
                 <button
                   (click)="
                     ObtenerDetatosInventarios(item.rucempresa, item.idcarga)
@@ -81,9 +78,9 @@
                   data-bs-toggle="modal"
                   data-bs-target="#staticBackdrop"
                 >
-                  @if (item.usuarioAsignado == "" || item.UsuarioAsignado ==
-                  null ) { Asignar } @if (item.usuarioAsignado != "" &&
-                  item.UsuarioAsignado != null) { Cambiar asignado }
+                  @if (item.usuarioAsignado === "" || item.UsuarioAsignado ===
+                  null ) { Asignar } @if (item.usuarioAsignado !== "" &&
+                  item.UsuarioAsignado !== null) { Cambiar asignado }
                 </button>
                 }
               </ul>
@@ -95,8 +92,6 @@
     }
   </tbody>
 </table>
-}
-
 <div
   class="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-t border-gray-200"
 >

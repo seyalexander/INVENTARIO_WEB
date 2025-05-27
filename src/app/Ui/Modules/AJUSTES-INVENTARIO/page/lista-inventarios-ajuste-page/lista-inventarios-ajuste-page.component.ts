@@ -1,6 +1,6 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { CommonModule } from '@angular/common';
-import { Component, inject, ViewChild } from '@angular/core';
+import { Component, inject, ViewChild, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
@@ -42,22 +42,22 @@ import { RequestObtenerDetalleAjusteFiltros } from 'src/app/Domain/models/invent
   templateUrl: './lista-inventarios-ajuste-page.component.html',
   styleUrl: './lista-inventarios-ajuste-page.component.css',
 })
-export class ListaInventariosAjustePageComponent {
+export class ListaInventariosAjustePageComponent implements OnInit, AfterViewInit, OnDestroy {
   // ---------------------------------------------------------------------------------------
   // DECLARACIÓN VARIABLES
   // ---------------------------------------------------------------------------------------
 
-  cantidadListaProductos: number = 0;
-  cantidadDatosInventarioLista: number = 0;
-  mostrarRefrescoPagina: boolean = true;
+  cantidadListaProductos = 0;
+  cantidadDatosInventarioLista = 0;
+  mostrarRefrescoPagina = true;
 
   datosInventario: inventariosModel = {} as inventariosModel;
   InventarioSeleccionado: inventariosModel = {} as inventariosModel;
   selectedItem!: { rucempresa: string; idcarga: string };
 
-  DetalleInventarioSeleccionado: Array<inventariosModel> = [];
-  datosInventarioslista: Array<inventariosModel> = [];
-  listaProductos: Array<detalleCarga> = [];
+  DetalleInventarioSeleccionado: inventariosModel[] = [];
+  datosInventarioslista: inventariosModel[] = [];
+  listaProductos: detalleCarga[] = [];
 
   // ---------------------------------------------------------------------------------------
   // INJECCIÓN SERVICIOS
@@ -79,7 +79,7 @@ export class ListaInventariosAjustePageComponent {
 
   private _inventarios = inject(InventariosService);
 
-  cantidadItemsAjustados: number = 0;
+  cantidadItemsAjustados = 0;
 
   mostrarInvenvtarioDetalleAjuste(rucempresa: string, idcarga: number) {
     const req: RequestObtenerDetalleAjusteFiltros = {

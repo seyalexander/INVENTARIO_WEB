@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -30,17 +30,17 @@ import Swal from 'sweetalert2';
   templateUrl: './registro-asignar-page.component.html',
   styleUrl: './registro-asignar-page.component.css',
 })
-export class RegistroAsignarPageComponent {
+export class RegistroAsignarPageComponent implements OnInit {
   // ================================================================================
   // DECORADORES
   // ================================================================================
-  @Input() getUsuarios_All: Array<SeguridadModel> = [];
-  @Input() rucEmpresa: string = '';
-  @Input() idCarga: number = 0;
+  @Input() getUsuarios_All: SeguridadModel[] = [];
+  @Input() rucEmpresa = '';
+  @Input() idCarga = 0;
   @Input() usuarios: any[] = [];
   @Input() requUser: RequestAsignarUsuario = {} as RequestAsignarUsuario;
-  @Input() UsuarioAsignado: string = '';
-  @Input() Inventario: String = '';
+  @Input() UsuarioAsignado = '';
+  @Input() Inventario = '';
 
   // ================================================================================
   // INYECCIÓN DE SERVICIOS
@@ -91,7 +91,7 @@ export class RegistroAsignarPageComponent {
     this.formularioRegistro.markAsUntouched();
   }
 
-  Alert_AsignarUsuario(descripcion: String, asignado: string) {
+  Alert_AsignarUsuario(descripcion: string, asignado: string) {
     this.mensaje_alertar
       .Alert_AsignarUsuario(descripcion, asignado)
       .then((confirmado) => {

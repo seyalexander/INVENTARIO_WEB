@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output, signal, WritableSignal } from '@angular/core';
+import { Component, EventEmitter, Input, Output, signal, WritableSignal, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTab, MatTabsModule } from '@angular/material/tabs';
 
@@ -16,7 +16,7 @@ import { MatTab, MatTabsModule } from '@angular/material/tabs';
   templateUrl: './column-matcher.component.html',
   styleUrl: './column-matcher.component.css'
 })
-export class ColumnMatcherComponent {
+export class ColumnMatcherComponent implements OnInit {
   @Input() columnasEsperadas: Record<string, string> = {};
   @Input() columnasExcel: string[] = [];
   @Input() mapeoGuardado: Record<string, string> = {}; // Nuevo Input para el mapeo guardado

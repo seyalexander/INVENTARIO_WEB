@@ -1,4 +1,4 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, Input, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { RequestDetalleUsuario } from 'src/app/Domain/models/seguridad/requestDetalleUsuario.mode';
@@ -12,7 +12,7 @@ import { GetUsuariosByIdUseCases } from 'src/app/Domain/use-case/seguridad/get-u
   templateUrl: './usuario-logueado-page.component.html',
   styleUrl: './usuario-logueado-page.component.css'
 })
-export class UsuarioLogueadoPageComponent {
+export class UsuarioLogueadoPageComponent implements OnInit, OnDestroy {
   datosSeguridadDetalle: SeguridadModel = {} as SeguridadModel;
   private readonly ObjectUsuario = inject(GetUsuariosByIdUseCases);
   private actualizarUsuario: Subscription | undefined;

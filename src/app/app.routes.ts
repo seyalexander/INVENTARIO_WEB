@@ -41,6 +41,10 @@ export const routes: Routes = [
         path: 'ajustesInventario',
         loadComponent: () => import('./Ui/Modules/AJUSTES-INVENTARIO/page/lista-inventarios-ajuste-page/lista-inventarios-ajuste-page.component').then(m=>m.ListaInventariosAjustePageComponent)
       },
+      {
+        path: 'activaciones',
+        loadComponent: () => import('./Ui/Modules/configuration/activaciones/page/lista-activaciones-page/lista-activaciones-page.component').then(m=>m.ListaActivacionesPageComponent)
+      },
 
     ]
   },

@@ -1,10 +1,9 @@
-import { Subscription } from 'rxjs';
 import {
   ChangeDetectorRef,
   Component,
   inject,
   Input,
-  ViewChild,
+  ViewChild, OnInit, AfterViewInit,
 } from '@angular/core';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
@@ -32,7 +31,7 @@ import { MensajeGenerarReportePdfService } from 'src/app/Infraestructure/core/Se
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'design-report-inventario',
+  selector: 'app-design-report-inventario',
   standalone: true,
   imports: [
     FiltrosCheckboxTablaComponent,
@@ -46,17 +45,17 @@ import Swal from 'sweetalert2';
   templateUrl: './design-report-inventario.component.html',
   styleUrl: './design-report-inventario.component.css',
 })
-export class DesignReportInventarioComponent {
+export class DesignReportInventarioComponent implements OnInit, AfterViewInit {
   // ---------------------------------------------------------------------------------------
   // DECLARACIÓN VARIABLES
   // ---------------------------------------------------------------------------------------
   datosInventario: inventariosModel = {} as inventariosModel;
   InventarioSeleccionado: inventariosModel = {} as inventariosModel;
-  DetalleInventarioSeleccionado: Array<detalleCarga> = [];
-  datosInventarioslista: Array<inventariosModel> = [];
+  DetalleInventarioSeleccionado: detalleCarga[] = [];
+  datosInventarioslista: inventariosModel[] = [];
   columnasSeleccionadas: string[] = [];
   columnasSeleccionadasAjuste: string[] = [];
-  listaProductos: Array<detalleCarga> = [];
+  listaProductos: detalleCarga[] = [];
   displayedColumns: string[] = [];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -70,10 +69,10 @@ export class DesignReportInventarioComponent {
   );
   private readonly mensajeExportPdf = inject(MensajeGenerarReportePdfService);
 
-  titulosOpciones: string = '';
-  selectedOption: string = '';
+  titulosOpciones = '';
+  selectedOption = '';
 
-  showPantalla_data: boolean = false;
+  showPantalla_data = false;
   cambiarPantalla() {
     this.showPantalla_data = !this.showPantalla_data;
   }
@@ -127,16 +126,16 @@ export class DesignReportInventarioComponent {
   // ---------------------------------------------------------------------------------------
 
   @Input() citaSeleccionada: inventariosModel = {} as inventariosModel;
-  @Input() detalleProductos: Array<detalleCarga> = [];
+  @Input() detalleProductos: detalleCarga[] = [];
   @Input() rucEmpresa!: string;
   @Input() idCarga!: number;
-  @Input() TotalRegistros: number = 0;
-  @Input() RegistrosFaltantes: number = 0;
-  @Input() RegistrosNoFaltantes: number = 0;
-  @Input() NuevosRegistros: number = 0;
-  @Input() ConteosExactos: number = 0;
-  @Input() ItemsAjustados: number = 0;
-  @Input() EditadosManual: number = 0;
+  @Input() TotalRegistros = 0;
+  @Input() RegistrosFaltantes = 0;
+  @Input() RegistrosNoFaltantes = 0;
+  @Input() NuevosRegistros = 0;
+  @Input() ConteosExactos = 0;
+  @Input() ItemsAjustados = 0;
+  @Input() EditadosManual = 0;
 
   ObtenerDetalleInventariosPDF(
     diferencias: number,
@@ -480,6 +479,8 @@ export class DesignReportInventarioComponent {
       // this.mensajeExportPdf.cerrarAlerta();
 
     } catch (error) {
+      console.log(error);
+
       this.mensajeExportPdf.cerrarAlerta();
       Swal.fire({
         icon: 'error',
@@ -494,7 +495,7 @@ export class DesignReportInventarioComponent {
   // ---------------------------------------------------------------------------------------
   // DECLARACIÓN VARIABLES
   // ---------------------------------------------------------------------------------------
-  detalleInventario: Array<detalleCarga> = [];
+  detalleInventario: detalleCarga[] = [];
 
   private readonly ObjectInventarioExcel = inject(InventariosByIdUseCases);
   private readonly ObjetDetalleInventario = inject(InventarioDetallesUseCases);

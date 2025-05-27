@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
-  selector: 'mensaje-error-tabla-datos-asignar',
+  selector: 'app-mensaje-error-tabla-datos-asignar',
   standalone: true,
   imports: [],
   templateUrl: './mensaje-error-tabla-datos-asignar.component.html',

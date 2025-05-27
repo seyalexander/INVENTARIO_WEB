@@ -1,9 +1,8 @@
-import { Component, inject, ViewChild } from '@angular/core';
+import { Component, inject, ViewChild, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { inventariosModel } from '../../../../../Domain/models/inventarios/inventarios.models';
 import { InventariosByIdUseCases } from '../../../../../Domain/use-case/inventarios/get-inventarioById-useCase';
 import { detalleCarga } from '../../../../../Domain/models/cargaDatos/cargaDatos.model';
 import { Subscription } from 'rxjs';
-import { InventariosUseCases } from '../../../../../Domain/use-case/inventarios/get-inventarios-useCase';
 import Swal from 'sweetalert2';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { DesignReportInventarioComponent } from '@modules/reportes/components/design-reporte/design-report-inventario/design-report-inventario.component';
@@ -28,7 +27,7 @@ import { RequestObtenerDetalleAjusteFiltros } from 'src/app/Domain/models/invent
 import { InventariosService } from 'src/app/Infraestructure/driven-adapter/inventarios/inventarios.service';
 
 @Component({
-  selector: 'reporte-inventario',
+  selector: 'app-reporte-inventario',
   standalone: true,
   imports: [
     MatTableModule,
@@ -47,22 +46,22 @@ import { InventariosService } from 'src/app/Infraestructure/driven-adapter/inven
   templateUrl: './reporte-inventario.component.html',
   styleUrl: './reporte-inventario.component.css',
 })
-export class ReporteInventarioComponent {
+export class ReporteInventarioComponent implements OnInit, AfterViewInit, OnDestroy {
   // ---------------------------------------------------------------------------------------
   // DECLARACIÓN VARIABLES
   // ---------------------------------------------------------------------------------------
 
-  cantidadListaProductos: number = 0;
-  cantidadDatosInventarioLista: number = 0;
-  mostrarRefrescoPagina: boolean = true;
+  cantidadListaProductos = 0;
+  cantidadDatosInventarioLista = 0;
+  mostrarRefrescoPagina = true;
 
   datosInventario: inventariosModel = {} as inventariosModel;
   InventarioSeleccionado: inventariosModel = {} as inventariosModel;
   selectedItem!: { rucempresa: string; idcarga: string };
 
-  DetalleInventarioSeleccionado: Array<inventariosModel> = [];
-  datosInventarioslista: Array<inventariosModel> = [];
-  listaProductos: Array<detalleCarga> = [];
+  DetalleInventarioSeleccionado: inventariosModel[] = [];
+  datosInventarioslista: inventariosModel[] = [];
+  listaProductos: detalleCarga[] = [];
 
   // ---------------------------------------------------------------------------------------
   // INJECCIÓN SERVICIOS
@@ -129,9 +128,9 @@ export class ReporteInventarioComponent {
     );
   }
 
-  cantidadItemsAjustados: number = 0
+  cantidadItemsAjustados = 0
 
-  ObtenerDetalleInventariosAjustados(rucempresa: string = '', idcarga:number ) {
+  ObtenerDetalleInventariosAjustados(rucempresa = '', idcarga:number ) {
     const req: RequestObtenerDetalleAjusteFiltros = {
           rucempresa,
           idcarga,
@@ -143,11 +142,11 @@ export class ReporteInventarioComponent {
         });
   }
 
-  TotalRegistros: number = 0
+  TotalRegistros = 0
   ObtenerDetalleInventariosCantidadTotal(rucempresa: string, idcarga: number) {
-    const diferencias: number = 0
-    const esnuevo: number = 2
-    const esEditado: number = 2
+    const diferencias = 0
+    const esnuevo = 2
+    const esEditado = 2
     const reqDatos: RequestObtenerDetalleFiltros = { rucempresa, idcarga, diferencias, esnuevo, esEditado };
     this.listDetalleByFiltros
       .getDetalleInventarioByFiltros(reqDatos)
@@ -157,11 +156,11 @@ export class ReporteInventarioComponent {
   }
 
 
-  RegistrosFaltantes: number = 0
+  RegistrosFaltantes = 0
   ObtenerDetalleInventariosCantidadRegistrosFaltantes(rucempresa: string, idcarga: number) {
-    const diferencias: number = 3
-    const esnuevo: number = 0
-    const esEditado: number = 2
+    const diferencias = 3
+    const esnuevo = 0
+    const esEditado = 2
     const reqDatos: RequestObtenerDetalleFiltros = { rucempresa, idcarga, diferencias, esnuevo, esEditado };
     this.TotalCantidadSubscription = this.listDetalleByFiltros
       .getDetalleInventarioByFiltros(reqDatos)
@@ -170,11 +169,11 @@ export class ReporteInventarioComponent {
       });
   }
 
-  RegistrosNoFaltantes: number = 0
+  RegistrosNoFaltantes = 0
   ObtenerDetalleInventariosCantidadRegistrosNoFaltantes(rucempresa: string, idcarga: number) {
-    const diferencias: number = 2
-    const esnuevo: number = 0
-    const esEditado: number = 2
+    const diferencias = 2
+    const esnuevo = 0
+    const esEditado = 2
     const reqDatos: RequestObtenerDetalleFiltros = { rucempresa, idcarga, diferencias, esnuevo, esEditado  };
     this.listDetalleByFiltros
       .getDetalleInventarioByFiltros(reqDatos)
@@ -183,11 +182,11 @@ export class ReporteInventarioComponent {
       });
   }
 
-  NuevosRegistros: number = 0
+  NuevosRegistros = 0
   ObtenerDetalleInventariosCantidadNuevosRegistros(rucempresa: string, idcarga: number) {
-    const diferencias: number = 0
-    const esnuevo: number = 1
-    const esEditado: number = 2
+    const diferencias = 0
+    const esnuevo = 1
+    const esEditado = 2
     const reqDatos: RequestObtenerDetalleFiltros = { rucempresa, idcarga, diferencias, esnuevo, esEditado  };
     this.listDetalleByFiltros
       .getDetalleInventarioByFiltros(reqDatos)
@@ -196,11 +195,11 @@ export class ReporteInventarioComponent {
       });
   }
 
-  ConteosExactos: number = 0
+  ConteosExactos = 0
   ObtenerDetalleInventariosCantidadConteosExactos(rucempresa: string, idcarga: number) {
-    const diferencias: number = 1
-    const esnuevo: number = 2
-    const esEditado: number = 2
+    const diferencias = 1
+    const esnuevo = 2
+    const esEditado = 2
     const reqDatos: RequestObtenerDetalleFiltros = { rucempresa, idcarga, diferencias, esnuevo, esEditado  };
     this.listDetalleByFiltros
       .getDetalleInventarioByFiltros(reqDatos)
@@ -209,11 +208,11 @@ export class ReporteInventarioComponent {
       });
   }
 
-  EditadosManual: number = 0
+  EditadosManual = 0
   ObtenerDetalleInventariosEditadosManual(rucempresa: string, idcarga: number) {
-    const diferencias: number = 0
-    const esnuevo: number = 2
-    const esEditado: number = 1
+    const diferencias = 0
+    const esnuevo = 2
+    const esEditado = 1
     const reqDatos: RequestObtenerDetalleFiltros = { rucempresa, idcarga, diferencias, esnuevo, esEditado  };
     this.listDetalleByFiltros
       .getDetalleInventarioByFiltros(reqDatos)
@@ -319,7 +318,7 @@ export class ReporteInventarioComponent {
   // ---------------------------------------------------------------------------------------
   // MODALES DE LOS MENSAJES ALERTS - SWEET ALERT
   // ---------------------------------------------------------------------------------------
-  respuestaInventariosNoValidos(response: any): void {
+  respuestaInventariosNoValidos(response: string): void {
     Swal.fire({
       icon: 'error',
       title: 'DATOS NO VÁLIDOS',
@@ -327,15 +326,15 @@ export class ReporteInventarioComponent {
     });
   }
 
-  respuestaInventariosSinAcceso(response: any): void {
+  respuestaInventariosSinAcceso(response: string): void {
     Swal.fire({
       icon: 'error',
       title: `${response}`,
       text: 'verifique que la conexión del api y recargue el listado',
-    }).then((respuesta) => { });
+    }).then();
   }
 
-  respuestaInventariosErrorInesperado(response: any): void {
+  respuestaInventariosErrorInesperado(response: string): void {
     Swal.fire({
       icon: 'error',
       title: `Error inesperado en listarInventarios`,

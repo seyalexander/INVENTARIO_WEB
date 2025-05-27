@@ -12,7 +12,7 @@ export class InventariosUseCases {
     private readonly _getInventariosGateWay: InventariosGateway,
   ) {}
 
-  getInventarios() : Observable<Array<inventariosModel>> {
+  getInventarios() : Observable<inventariosModel[]> {
     return this._getInventariosGateWay.getInventarios();
   }
 

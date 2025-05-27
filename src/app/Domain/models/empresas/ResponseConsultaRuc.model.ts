@@ -1,6 +1,6 @@
 import { ResponseConsultaEmpresasModel } from "./ResponseEmpresasConsulta.model"
 
 export class ResponseConsultaRuc {
-  success: boolean = false
+  success = false
   result: ResponseConsultaEmpresasModel = {} as ResponseConsultaEmpresasModel
 }

@@ -6,7 +6,7 @@ import {
   Input,
   Output,
   SimpleChanges,
-  ViewChild,
+  ViewChild, OnChanges, OnInit, OnDestroy,
 } from '@angular/core';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { DetalleCargaInventariosComponent } from '@modules/Carga_Inventario/Page/detalle-carga-inventarios/detalle-carga-inventarios.component';
@@ -83,7 +83,7 @@ interface Estados {
   templateUrl: './lista-inventarios-cargados.component.html',
   styleUrl: './lista-inventarios-cargados.component.css',
 })
-export class ListaInventariosCargadosComponent implements AfterViewInit {
+export class ListaInventariosCargadosComponent implements AfterViewInit, OnChanges, OnInit, OnDestroy {
 
   @Input() dataListaInventarios: inventariosModel[] = [];
   @Output() filtrosInventario = new EventEmitter<{
@@ -142,20 +142,20 @@ export class ListaInventariosCargadosComponent implements AfterViewInit {
   private EmpresasSubscription: Subscription | undefined;
   private UsuariosSubscription: Subscription | undefined;
 
-  descripcionButtonAnular: string = '';
-  cantidadDatosInventarioLista: number = 0;
-  cantidadListaProductos: number = 0;
+  descripcionButtonAnular = '';
+  cantidadDatosInventarioLista = 0;
+  cantidadListaProductos = 0;
 
   datosInventario: inventariosModel = {} as inventariosModel;
 
-  detalleInvenario: Array<detalleCarga> = [];
-  listaProductos: Array<detalleCarga> = [];
-  DatosEmpresas: Array<EmpresasModel> = [];
-  datosInventarioslista: Array<inventariosModel> = [];
-  getUsuarios_All: Array<SeguridadModel> = [];
-  paginatedProductos: Array<detalleCarga> = [];
+  detalleInvenario: detalleCarga[] = [];
+  listaProductos: detalleCarga[] = [];
+  DatosEmpresas: EmpresasModel[] = [];
+  datosInventarioslista: inventariosModel[] = [];
+  getUsuarios_All: SeguridadModel[] = [];
+  paginatedProductos: detalleCarga[] = [];
 
-  showListOpciones: boolean = false;
+  showListOpciones = false;
   isLoadingInventarios = false
 
   ngOnInit(): void {
@@ -282,7 +282,7 @@ export class ListaInventariosCargadosComponent implements AfterViewInit {
     const rucempresa = this.datosInventario.rucempresa;
     const usuarioAnulador: string = sessionStorage.getItem('user') ?? 'System';
     const idcarga: number = this.datosInventario.idcarga;
-    const estado: string = '0';
+    const estado = '0';
     const reqDatos: RequestAnularInventario = {
       rucempresa,
       idcarga,

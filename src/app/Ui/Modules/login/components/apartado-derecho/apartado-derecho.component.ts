@@ -12,14 +12,14 @@ import { RequestLoginModel } from 'src/app/Domain/models/seguridad/requestLogin.
 import { SeguridadService } from 'src/app/Infraestructure/driven-adapter/seguridad/seguridad.service';
 
 @Component({
-  selector: 'apartado-derecho',
+  selector: 'app-apartado-derecho',
   standalone: true,
   imports: [ReactiveFormsModule, FormsModule, CommonModule],
   templateUrl: './apartado-derecho.component.html',
   styleUrl: './apartado-derecho.component.css',
 })
 export class ApartadoDerechoComponent {
-  claseErrorVisible: string = 'alert alert-danger mx-4 hidden';
+  claseErrorVisible = 'alert alert-danger mx-4 hidden';
 
   requestLogin: RequestLoginModel = {} as RequestLoginModel;
 
@@ -29,7 +29,7 @@ export class ApartadoDerechoComponent {
     contrasenia: ['', [Validators.required]],
   });
 
-  errorMessage: string = '';
+  errorMessage = '';
 
   constructor(
     private readonly formBuilder: FormBuilder,
@@ -66,6 +66,7 @@ export class ApartadoDerechoComponent {
       .login(reqLogin)
       .pipe(
         catchError((error) => {
+          console.log(error);
           this.errorMessage = 'Credenciales incorrectas o problema de red.';
           return of(null);
         })

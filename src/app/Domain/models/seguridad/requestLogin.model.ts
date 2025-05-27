@@ -1,5 +1,5 @@
 export class RequestLoginModel {
-  rucempresa: string = ''
-  idusuario: string = ''
-  contrasenia: string = ''
+  rucempresa = ''
+  idusuario = ''
+  contrasenia = ''
 }

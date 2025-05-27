@@ -144,8 +144,7 @@
           </p>
         </button>
 
-        <button disabled class="button-opcion_vacias"></button>
-        <button disabled class="button-opcion_vacias"></button>
+
       </div>
     </div>
   </div>
@@ -200,8 +199,11 @@
                     <div class="opciones">
                       <div
                         class="opcion flex-1 boder-target rounded-lg p-2 gap-2 active:bg-white flex justify-center items-center text-center transition-transform transform cursor-pointer"
+                        tabindex="0"
                         [class.selected]="selectedOption === 'excel'"
                         (click)="selectOptionEXCEL('excel')"
+                        (keydown.enter)="selectOptionEXCEL('excel')"
+                        (keydown.space)="selectOptionEXCEL('excel')"
                       >
                         <svg
                           class="shrink-0 size-5"
@@ -270,7 +272,10 @@
                       <div
                         class="opcion flex-1 boder-target rounded-lg p-2 gap-2 active:bg-white flex justify-center items-center text-center transition-transform transform cursor-pointer"
                         [class.selected]="selectedOption === 'pdf'"
+                        tabindex="0"
                         (click)="selectOptionPDF('pdf')"
+                        (keydown.enter)="selectOptionPDF('excel')"
+                        (keydown.space)="selectOptionPDF('excel')"
                       >
                         <svg
                           class="shrink-0 size-5"
@@ -368,8 +373,8 @@
                             <button
                               class="px-6 py-3 flex gap-2 align-center"
                               [ngClass]="{
-                                'bg-white text-white': row.esnuevo == 0,
-                                '': row.esnuevo == 1
+                                '': row.esnuevo === 0,
+                                '': row.esnuevo === 1
                               }"
                             >
                               <span class="text-sm text-gray-600">
@@ -390,8 +395,8 @@
                             <button
                               class="px-6 py-3 flex gap-2 align-center"
                               [ngClass]="{
-                                'bg-white text-white': row.esnuevo == 0,
-                                '': row.esnuevo == 1
+                                '': row.esnuevo === 0,
+                                '': row.esnuevo === 1
                               }"
                             >
                               <span class="text-sm text-gray-600">
@@ -412,8 +417,8 @@
                             <button
                               class="px-6 py-3 flex gap-2 align-center"
                               [ngClass]="{
-                                'bg-white text-white': row.esnuevo == 0,
-                                '': row.esnuevo == 1
+                                '': row.esnuevo === 0,
+                                '': row.esnuevo === 1
                               }"
                             >
                               <span class="text-sm text-gray-600">
@@ -434,8 +439,8 @@
                             <button
                               class="px-6 py-3 flex gap-2 align-center"
                               [ngClass]="{
-                                'bg-white text-white': row.esnuevo == 0,
-                                'bg-slate-50e text-white': row.esnuevo == 1
+                                '': row.esnuevo === 0,
+                                'bg-slate-50e text-white': row.esnuevo === 1
                               }"
                             >
                               <span class="text-sm text-gray-600">
@@ -456,8 +461,8 @@
                             <button
                               class="px-6 py-3 flex gap-2 align-center"
                               [ngClass]="{
-                                'bg-white text-white': row.esnuevo == 0,
-                                '': row.esnuevo == 1
+                                '': row.esnuevo === 0,
+                                '': row.esnuevo === 1
                               }"
                             >
                               <span class="text-sm text-gray-600">
@@ -478,8 +483,8 @@
                             <button
                               class="px-6 py-3 flex gap-2 align-center"
                               [ngClass]="{
-                                'bg-white text-white': row.esnuevo == 0,
-                                '': row.esnuevo == 1
+                                '': row.esnuevo === 0,
+                                '': row.esnuevo === 1
                               }"
                             >
                               <span class="text-sm text-gray-600">
@@ -500,8 +505,8 @@
                             <button
                               class="px-6 py-3 flex gap-2 align-center"
                               [ngClass]="{
-                                'bg-white text-white': row.esnuevo == 0,
-                                '': row.esnuevo == 1
+                                '': row.esnuevo === 0,
+                                '': row.esnuevo === 1
                               }"
                             >
                               <span
@@ -509,7 +514,7 @@
                                 [ngClass]="{
           ' text-red-600': row.stockresultante < 0,
           ' text-blue-700': row.stockresultante > 0,
-          ' text-gray-600': row.stockresultante == 0,
+          ' text-gray-600': row.stockresultante === 0,
         }"
                               >
                                 {{ row.stockF - row.stockL }}
@@ -529,8 +534,8 @@
                             <button
                               class="px-6 py-3 flex gap-2 align-center"
                               [ngClass]="{
-                                'bg-white text-white': row.esnuevo == 0,
-                                '': row.esnuevo == 1
+                                '': row.esnuevo === 0,
+                                '': row.esnuevo === 1
                               }"
                             >
                               <span
@@ -538,7 +543,7 @@
                                 [ngClass]="{
           ' text-red-600': row.ajuste < 0,
           ' text-blue-700': row.ajuste > 0,
-          ' text-gray-600': row.ajuste == 0,
+          ' text-gray-600': row.ajuste === 0,
         }"
                               >
                                 {{ row.ajuste }}
@@ -558,8 +563,8 @@
                             <button
                               class="px-6 py-3 flex gap-2 align-center"
                               [ngClass]="{
-                                'bg-white text-white': row.esnuevo == 0,
-                                '': row.esnuevo == 1
+                                '': row.esnuevo === 0,
+                                '': row.esnuevo === 1
                               }"
                             >
                               <span class="text-sm text-gray-600">
@@ -580,8 +585,8 @@
                             <button
                               class="px-6 py-3 flex gap-2 align-center"
                               [ngClass]="{
-                                'bg-white text-white': row.esnuevo == 0,
-                                '': row.esnuevo == 1
+                                '': row.esnuevo === 0,
+                                '': row.esnuevo === 1
                               }"
                             >
                               <span class="text-sm text-gray-600">
@@ -602,8 +607,8 @@
                             <button
                               class="px-6 py-3 flex gap-2 align-center"
                               [ngClass]="{
-                                'bg-white text-white': row.esnuevo == 0,
-                                '': row.esnuevo == 1
+                                '': row.esnuevo === 0,
+                                '': row.esnuevo === 1
                               }"
                             >
                               <span class="text-sm text-gray-600">
@@ -624,8 +629,8 @@
                             <button
                               class="px-6 py-3 flex gap-2 align-center"
                               [ngClass]="{
-                                'bg-white text-white': row.esnuevo == 0,
-                                '': row.esnuevo == 1
+                                '': row.esnuevo === 0,
+                                '': row.esnuevo === 1
                               }"
                             >
                               <span class="text-sm text-gray-600">
@@ -646,8 +651,8 @@
                             <button
                               class="px-6 py-3 flex gap-2 align-center"
                               [ngClass]="{
-                                'bg-white text-white': row.esnuevo == 0,
-                                '': row.esnuevo == 1
+                                '': row.esnuevo === 0,
+                                '': row.esnuevo === 1
                               }"
                             >
                               <span class="text-sm text-gray-600">
@@ -668,8 +673,8 @@
                             <button
                               class="px-6 py-3 flex gap-2 align-center"
                               [ngClass]="{
-                                'bg-white text-white': row.esnuevo == 0,
-                                '': row.esnuevo == 1
+                                '': row.esnuevo === 0,
+                                '': row.esnuevo === 1
                               }"
                             >
                               <span class="text-sm text-gray-600">
@@ -690,8 +695,8 @@
                             <button
                               class="px-6 py-3 flex gap-2 align-center"
                               [ngClass]="{
-                                'bg-white text-white': row.esnuevo == 0,
-                                '': row.esnuevo == 1
+                                'e': row.esnuevo === 0,
+                                '': row.esnuevo === 1
                               }"
                             >
                               <span class="text-sm text-gray-600">
@@ -712,8 +717,8 @@
                             <button
                               class="px-6 py-3 flex gap-2 align-center"
                               [ngClass]="{
-                                'bg-white text-white': row.esnuevo == 0,
-                                '': row.esnuevo == 1
+                                '': row.esnuevo === 0,
+                                '': row.esnuevo === 1
                               }"
                             >
                               <span class="text-sm text-gray-600">
@@ -733,7 +738,7 @@
                           <td mat-cell *matCellDef="let row">
                             <button class="px-6 py-3 flex gap-2 align-center">
                               <span
-                                class="text-sm text-gray-600 dark:text-neutral-400"
+                                class="text-sm text-gray-600 "
                               >
                                 {{ row.descripcionajuste }}
                               </span>

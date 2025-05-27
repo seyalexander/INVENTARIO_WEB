@@ -3,7 +3,7 @@ import { Component, Input } from '@angular/core';
 import { SeguridadModel } from 'src/app/Domain/models/seguridad/seguridad.model';
 
 @Component({
-  selector: 'detalle-usuario-page',
+  selector: 'app-detalle-usuario-page',
   standalone: true,
   imports: [
     CommonModule

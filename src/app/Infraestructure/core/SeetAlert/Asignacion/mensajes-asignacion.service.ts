@@ -37,7 +37,7 @@ export class MensajesAsignacionService {
   }
 
   Alert_AsignarUsuario(
-    descripcion: String,
+    descripcion: string,
     asignado: string
   ): Promise<boolean> {
     return new Promise((resolve) => {
