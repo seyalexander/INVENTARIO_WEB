@@ -67,7 +67,7 @@
                     Seleccione una Usuario
                   </option>
                   @for (item of getUsuarios_All; track $index) { @if
-                  (item.estado == '1') {
+                  (item.estado === '1') {
                   <option [value]="item.idusuario">
                     {{ item.idusuario }} - {{ item.nombreusuario }}
                     {{ item.apellido }}

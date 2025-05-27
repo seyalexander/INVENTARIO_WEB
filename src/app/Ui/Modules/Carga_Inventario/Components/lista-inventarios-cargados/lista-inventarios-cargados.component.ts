@@ -54,7 +54,7 @@ interface Estados {
 }
 
 @Component({
-  selector: 'lista-inventarios-cargados',
+  selector: 'app-lista-inventarios-cargados',
   standalone: true,
   imports: [
     ButtonAsignarComponent,
@@ -225,7 +225,9 @@ export class ListaInventariosCargadosComponent implements AfterViewInit, OnChang
         .subscribe((Response: MensajeSeguridadModel) => {
           this.getUsuarios_All = Response.usuarios;
         });
-    } catch (err) {}
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   // ================================================================================
@@ -252,6 +254,7 @@ export class ListaInventariosCargadosComponent implements AfterViewInit, OnChang
         this.datosInventario = response;
       },
       (error) => {
+        console.log(error);
         this.isLoadingInventarios = false
       }
     );
@@ -265,7 +268,9 @@ export class ListaInventariosCargadosComponent implements AfterViewInit, OnChang
     this.ObjectInventario.getInventarioById(reqDatos).subscribe(
       (response: inventariosModel) => {
         this.datosInventario = response;
-        response.estado == '1' ? this.Alert_AnularInventario(response) : '';
+        if(response.estado == '1'){
+          this.Alert_AnularInventario(response)
+        }
       }
     );
   }
@@ -296,9 +301,11 @@ export class ListaInventariosCargadosComponent implements AfterViewInit, OnChang
 
     this.ObjectInventarioAnular.anularInventario(reqDatos).subscribe(
       (response: ResponseAnularInventario) => {
-        response.exito
-          ? this.Alert_InventarioAnulado_Correctamente()
-          : this.Alert_InventarioAnulado_Error();
+        if(response.exito){
+          this.Alert_InventarioAnulado_Correctamente()
+        }else {
+          this.Alert_InventarioAnulado_Error()
+        }
       }
     );
   }

@@ -18,7 +18,6 @@ import { RequestInventarioByFiltros } from 'src/app/Domain/models/inventarios/re
 import { MatIcon } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MensajesListaInventarioService } from 'src/app/Infraestructure/core/SeetAlert/cargaInventario/mensajes-lista-inventario.service';
-import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-lista-carga-inventarios',
@@ -133,7 +132,9 @@ export class ListaCargaInventariosComponent implements OnInit, OnDestroy {
         .subscribe((Response: MensajeResponseEmpresas) => {
           this.getEmpresas_All = Response.empresas;
         });
-    } catch (err) {}
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   // ================================================================================
@@ -146,7 +147,9 @@ export class ListaCargaInventariosComponent implements OnInit, OnDestroy {
         .subscribe((Response: MensajeSeguridadModel) => {
           this.getUsuarios_All = Response.usuarios;
         });
-    } catch (err) {}
+    } catch (err) {
+      console.log(err);
+    }
   }
 
 

@@ -64,7 +64,7 @@
             (change)="toggleColumna(columna.id, $event)"
             class="w-4 h-4 accent-gray-800"
           />
-          <label class="text-gray-900 text-sm font-medium cursor-pointer">{{
+          <label class="text-gray-900 text-sm font-medium cursor-pointer" [for]="columna.id">{{
             columna.titulo
           }}</label>
         </li>

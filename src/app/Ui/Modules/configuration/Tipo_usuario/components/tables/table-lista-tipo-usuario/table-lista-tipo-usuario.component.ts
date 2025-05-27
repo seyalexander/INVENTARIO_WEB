@@ -15,7 +15,7 @@ import { TdEstado2Component } from 'src/app/Ui/Shared/Components/tables/td-estad
 import { TdEstado1Component } from 'src/app/Ui/Shared/Components/tables/td-estado-1/td-estado-1.component';
 
 @Component({
-  selector: 'table-lista-tipo-usuario',
+  selector: 'app-table-lista-tipo-usuario',
   standalone: true,
   imports: [
     MatTableModule,

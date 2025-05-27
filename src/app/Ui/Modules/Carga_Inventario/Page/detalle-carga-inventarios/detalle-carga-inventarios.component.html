@@ -32,12 +32,12 @@
             class="py-1 px-1.5 w-14 inline-flex content-center items-center justify-center gap-x-1 text-xs font-medium rounded-full"
             [ngClass]="{
               'bg-[var(--color-principal-3)] text-white':
-                citaSeleccionada.estado == '1',
+                citaSeleccionada.estado === '1',
               'bg-[var(--color-principal-6)] text-white':
-                citaSeleccionada.estado == '0'
+                citaSeleccionada.estado === '0'
             }"
           >
-            {{ citaSeleccionada.estado == "1" ? "Activo" : "Inactivo" }}
+            {{ citaSeleccionada.estado === "1" ? "Activo" : "Inactivo" }}
           </span>
         </div>
       </div>

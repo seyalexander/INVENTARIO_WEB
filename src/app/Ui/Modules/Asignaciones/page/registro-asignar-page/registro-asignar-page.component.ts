@@ -14,10 +14,9 @@ import { RequestAsignarUsuario } from 'src/app/Domain/models/inventarios/request
 import { SeguridadModel } from 'src/app/Domain/models/seguridad/seguridad.model';
 import { UpdateUsuarioAsignadoUseCase } from 'src/app/Domain/use-case/inventarios/update-usuarioAsignado-useCase';
 import { MensajesAsignacionService } from 'src/app/Infraestructure/core/SeetAlert/Asignacion/mensajes-asignacion.service';
-import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'registro-asignar-page',
+  selector: 'app-registro-asignar-page',
   standalone: true,
   imports: [
     CommonModule,

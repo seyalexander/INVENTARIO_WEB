@@ -2,7 +2,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 
 @Component({
-  selector: 'filtros-checkbox-tabla',
+  selector: 'app-filtros-checkbox-tabla',
   standalone: true,
   imports: [
     MatIcon

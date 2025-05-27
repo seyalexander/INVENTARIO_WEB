@@ -9,7 +9,7 @@ import { detalleCarga } from 'src/app/Domain/models/cargaDatos/cargaDatos.model'
 import { inventariosModel } from 'src/app/Domain/models/inventarios/inventarios.models';
 
 @Component({
-  selector: 'detalle-carga-inventarios',
+  selector: 'app-detalle-carga-inventarios',
   standalone: true,
   imports: [
     NgxPaginationModule,
