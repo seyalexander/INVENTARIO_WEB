@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { TablaInventariosAsignadosComponent } from '@modules/Asignaciones/components/tabla-inventarios-asignados/tabla-inventarios-asignados.component';
 @Component({
-  selector: 'lista-asignar-page',
+  selector: 'app-lista-asignar-page',
   standalone: true,
   imports: [
     TablaInventariosAsignadosComponent

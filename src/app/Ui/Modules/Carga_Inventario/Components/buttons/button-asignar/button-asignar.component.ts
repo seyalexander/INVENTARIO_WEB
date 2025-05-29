@@ -3,7 +3,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
-  selector: 'button-asignar',
+  selector: 'app-button-asignar',
   standalone: true,
   imports: [
     MatButtonModule,

@@ -61,9 +61,11 @@ export class RegistroAsignarPageComponent implements OnInit {
   // FUNCIÓN ASIGNACIÓN
   // ================================================================================
   validacionUsuarioAsignacion() {
-    this.UsuarioAsignado
-      ? this.Alert_AsignarUsuario(this.Inventario, this.UsuarioAsignado)
-      : this.onAsignarUsuario();
+    if(this.UsuarioAsignado) {
+      this.Alert_AsignarUsuario(this.Inventario, this.UsuarioAsignado)
+    }else {
+      this.onAsignarUsuario()
+    }
   }
 
   onAsignarUsuario() {

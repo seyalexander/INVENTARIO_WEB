@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output, signal, WritableSignal, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTab, MatTabsModule } from '@angular/material/tabs';
 
 @Component({
-  selector: 'column-matcher',
+  selector: 'app-column-matcher',
   standalone: true,
   imports: [
     CommonModule,

@@ -12,7 +12,7 @@ import { InventariosService } from 'src/app/Infraestructure/driven-adapter/inven
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'tabla-ajustes-inventario-datos',
+  selector: 'app-tabla-ajustes-inventario-datos',
   standalone: true,
   imports: [
     MatTableModule,

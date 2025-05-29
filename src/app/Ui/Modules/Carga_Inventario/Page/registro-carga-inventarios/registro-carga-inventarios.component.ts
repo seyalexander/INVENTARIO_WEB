@@ -32,12 +32,12 @@ import { detalleCarga } from 'src/app/Domain/models/cargaDatos/cargaDatos.model'
 import { MensajeSeguridadModel } from 'src/app/Domain/models/seguridad/mensajeSeguridad.model';
 import { GetUsuariosUseCases } from 'src/app/Domain/use-case/seguridad/get-usuarios-useCase';
 import { SeguridadModel } from 'src/app/Domain/models/seguridad/seguridad.model';
-import { ColumnMatcherComponent } from '@modules/Carga_Inventario/Components/column-matcher/column-matcher.component';
 import { RequestInsertarMapeo } from 'src/app/Domain/models/mapeoColumnas/mapeoColumnas.model';
 import { MapeoCamposService } from 'src/app/Infraestructure/driven-adapter/mapeoCampos/mapeo-campos.service';
 import { MapeoObtenerMapeoById } from 'src/app/Domain/models/mapeoColumnas/mapeoObtenerMapeoById.mode';
 import { MensajesRegistroInventarioService } from 'src/app/Infraestructure/core/SeetAlert/cargaInventario/mensajes-registro-inventario.service';
 import { ValidacionesRegistroInventarioService } from 'src/app/Infraestructure/core/Validaciones/cargaInventario/validaciones-registro-inventario.service';
+import { ColumnMatcherComponent } from '@modules/Carga_Inventario/Components/column-matcher/column-matcher.component';
 
 @Component({
   selector: 'app-registro-carga-inventarios',
@@ -439,7 +439,7 @@ export class RegistroCargaInventariosComponent implements OnInit, OnDestroy {
       this.HayArchivo = true;
 
       const reader = new FileReader();
-      reader.onload = (e) => {
+      reader.onload = () => {
         const data = new Uint8Array(reader.result as ArrayBuffer);
         const workbook = XLSX.read(data, { type: 'array' });
         const firstSheetName = workbook.SheetNames[0];

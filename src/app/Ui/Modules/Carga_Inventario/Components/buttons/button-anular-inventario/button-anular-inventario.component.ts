@@ -1,10 +1,10 @@
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { inventariosModel } from 'src/app/Domain/models/inventarios/inventarios.models';
 
 @Component({
-  selector: 'button-anular-inventario',
+  selector: 'app-button-anular-inventario',
   standalone: true,
   imports: [
     MatButtonModule,

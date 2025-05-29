@@ -5,8 +5,6 @@ import { Injectable } from '@angular/core';
 })
 export class NotificacionesPlusService {
 
-  constructor() { }
-
   notify(title: string, options?: NotificationOptions): void {
     if (!('Notification' in window)) {
       console.warn('Este navegador no soporta notificaciones.');

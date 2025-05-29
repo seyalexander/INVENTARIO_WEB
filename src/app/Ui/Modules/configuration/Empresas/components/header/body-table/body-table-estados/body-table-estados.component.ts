@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'body-table-estado-activo',
+  selector: 'app-body-table-estado-activo',
   standalone: true,
   imports: [],
   templateUrl: './body-table-estados.component.html',

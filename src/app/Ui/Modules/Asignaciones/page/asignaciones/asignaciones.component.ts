@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ListaAsignarPageComponent } from '../lista-asignar-page/lista-asignar-page.component';
 
 @Component({
-  selector: 'asignaciones',
+  selector: 'app-asignaciones',
   standalone: true,
   imports: [
     ListaAsignarPageComponent

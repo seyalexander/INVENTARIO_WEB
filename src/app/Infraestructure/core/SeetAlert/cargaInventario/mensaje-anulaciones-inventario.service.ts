@@ -6,7 +6,6 @@ import Swal from 'sweetalert2';
   providedIn: 'root',
 })
 export class MensajeAnulacionesInventarioService {
-  constructor() {}
 
   Alert_AnularInventario(response: inventariosModel): Promise<boolean> {
     return new Promise((resolve) => {

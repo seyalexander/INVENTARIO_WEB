@@ -5,7 +5,6 @@ import Swal from 'sweetalert2';
   providedIn: 'root',
 })
 export class MensajesListaInventarioService {
-  constructor() {}
 
   mostrarMensajeError(titulo: string, mensaje: string): void {
     Swal.fire({

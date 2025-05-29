@@ -4,10 +4,11 @@
     <div class="p-4">
       @for (key of Object.keys(columnasEsperadas).slice(0, 6); track key) {
         <div class="flex gap-4 items-center mb-2">
-          <label class="w-[15rem] text-right text-gray-600 font-medium">
+          <label for="matcher-column_primary" class="w-[15rem] text-right text-gray-600 font-medium">
             {{ columnasEsperadas[key] }}:
           </label>
           <select
+            id="matcher-column_primary"
             [(ngModel)]="selectedColumns[key]"
             class="w-full p-2 border rounded-md bg-gray-100"
           >
@@ -25,10 +26,11 @@
     <div class="p-4">
       @for (key of Object.keys(columnasEsperadas).slice(6); track key) {
         <div class="flex gap-4 items-center mb-2">
-          <label class="w-[15rem] text-right text-gray-600 font-medium">
+          <label for="matcher-column_secondary" class="w-[15rem] text-right text-gray-600 font-medium">
             {{ columnasEsperadas[key] }}:
           </label>
           <select
+            id="matcher-column_secondary"
             [(ngModel)]="selectedColumns[key]"
             class="w-full p-2 border rounded-md bg-gray-100"
           >

@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-lista-activaciones-page',
   standalone: true,
-  imports: [],
+  imports: [MatIconModule],
   templateUrl: './lista-activaciones-page.component.html',
   styleUrl: './lista-activaciones-page.component.css',
 })

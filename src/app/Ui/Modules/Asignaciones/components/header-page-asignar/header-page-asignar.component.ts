@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'header-page-asignar',
+  selector: 'app-header-page-asignar',
   standalone: true,
   imports: [],
   templateUrl: './header-page-asignar.component.html',

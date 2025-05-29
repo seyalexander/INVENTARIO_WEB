@@ -5,7 +5,6 @@ import Swal from 'sweetalert2';
   providedIn: 'root',
 })
 export class MensajesAsignacionService {
-  constructor() {}
 
   mensajeValidacionRegistroCorrecto(response: any) {
     const message = response?.message || 'Inventario reasignado correctamente.';

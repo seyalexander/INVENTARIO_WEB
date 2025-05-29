@@ -4,7 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { inventariosModel } from 'src/app/Domain/models/inventarios/inventarios.models';
 
 @Component({
-  selector: 'button-producto',
+  selector: 'app-button-producto',
   standalone: true,
   imports: [
     MatButtonModule,

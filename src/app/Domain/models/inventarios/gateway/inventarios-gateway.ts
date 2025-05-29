@@ -11,7 +11,6 @@ import { RequestInventarioByFiltros } from "../requestInventariosByFiltros.model
 import { ValidarDescripcion } from "../requestValidarDescripcion.model";
 import { ResponseValidarDescripcion } from "../responseValidarDescripcion.model";
 import { RequestObtenerDetalleFiltros } from "../requestObtenerDetalleInventarioByFiltros.mode";
-import { DetalleAjuste } from "../../cargaDatos/cargaAjustes.model";
 import { AjusteInventariosModel } from "../ajusteInventarios.models";
 
 export abstract class InventariosGateway {

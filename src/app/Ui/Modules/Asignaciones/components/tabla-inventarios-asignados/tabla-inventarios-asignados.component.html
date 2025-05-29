@@ -1,4 +1,4 @@
-<header-page-asignar />
+<app-header-page-asignar />
 
 <table class="min-w-full divide-y divide-gray-200">
   <thead class="bg-gray-50">
@@ -34,7 +34,7 @@
         <app-td-usuario-asignar [usuario]="item.usuarioAsignado" />
       </td>
       <td class="size-px whitespace-nowrap">
-        <td-table-btn-detalle
+        <app-td-table-btn-detalle
           [idcarga]="item.idcarga"
           [rucempresa]="item.rucempresa"
           (obtenerDetalle)="

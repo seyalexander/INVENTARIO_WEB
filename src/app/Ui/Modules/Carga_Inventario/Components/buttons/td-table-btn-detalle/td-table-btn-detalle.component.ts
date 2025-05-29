@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 
 @Component({
-  selector: 'td-table-btn-detalle',
+  selector: 'app-td-table-btn-detalle',
   standalone: true,
   imports: [MatIcon],
   templateUrl: './td-table-btn-detalle.component.html',

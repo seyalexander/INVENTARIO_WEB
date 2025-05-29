@@ -1,13 +1,11 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { TablaAjustesInventarioDatosComponent } from '@modules/AJUSTES-INVENTARIO/components/tabla-ajustes-inventario-datos/tabla-ajustes-inventario-datos.component';
 import { detalleCarga } from 'src/app/Domain/models/cargaDatos/cargaDatos.model';
 import { inventariosModel } from 'src/app/Domain/models/inventarios/inventarios.models';
-import { RequestObtenerDetalleAjusteFiltros } from 'src/app/Domain/models/inventarios/reqyestObtenerDetalleAjustadosFiltros.model';
-import { InventariosService } from 'src/app/Infraestructure/driven-adapter/inventarios/inventarios.service';
 
 @Component({
-  selector: 'detalle-inventario-ajustes-page',
+  selector: 'app-detalle-inventario-ajustes-page',
   standalone: true,
   imports: [
     MatIcon,
@@ -16,7 +14,7 @@ import { InventariosService } from 'src/app/Infraestructure/driven-adapter/inven
   templateUrl: './detalle-inventario-ajustes-page.component.html',
   styleUrl: './detalle-inventario-ajustes-page.component.css'
 })
-export class DetalleInventarioAjustesPageComponent implements OnInit {
+export class DetalleInventarioAjustesPageComponent {
 
   // ---------------------------------------------------------------------------------------
   // DECORADORES
@@ -34,15 +32,6 @@ export class DetalleInventarioAjustesPageComponent implements OnInit {
   InventarioSeleccionado: inventariosModel = {} as inventariosModel;
   DetalleInventarioSeleccionado: detalleCarga[] = [];
   datosInventarioslista: inventariosModel[] = [];
-
-
-  // ---------------------------------------------------------------------------------------
-  // FUNCIÓN PRINCIPAL
-  // ---------------------------------------------------------------------------------------
-  ngOnInit(): void {
-
-  }
-
 
   // ---------------------------------------------------------------------------------------
   // DECLARACIÓN VARIABLES

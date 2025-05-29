@@ -14,7 +14,6 @@ import { detalleCarga } from 'src/app/Domain/models/cargaDatos/cargaDatos.model'
 import { inventariosModel } from 'src/app/Domain/models/inventarios/inventarios.models';
 import { RequestInventarioByFiltros } from 'src/app/Domain/models/inventarios/requestInventariosByFiltros.model';
 import { requestDatosasignar } from 'src/app/Domain/models/inventarios/requestObtenerDatosAsignar.model';
-import { RequestObtenerDetalleFiltros } from 'src/app/Domain/models/inventarios/requestObtenerDetalleInventarioByFiltros.mode';
 import { InventariosByIdUseCases } from 'src/app/Domain/use-case/inventarios/get-inventarioById-useCase';
 import { InventarioDetallesUseCases } from 'src/app/Domain/use-case/inventarios/get-inventarioDetalle-usecase';
 import { InventarioDetallesByFiltrosUseCases } from 'src/app/Domain/use-case/inventarios/get-inventarioDetalleByFiltros-use-case';
@@ -245,7 +244,7 @@ export class ListaInventariosAjustePageComponent implements OnInit, AfterViewIni
       icon: 'error',
       title: `${response}`,
       text: 'verifique que la conexión del api y recargue el listado',
-    }).then((respuesta) => {});
+    });
   }
 
   respuestaInventariosErrorInesperado(response: any): void {
